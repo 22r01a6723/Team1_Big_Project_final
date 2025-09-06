@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EmailMessage",
+  "type": "object",
+  "required": ["tenantId", "network", "payload"],
+  "properties": {
+    "tenantId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "network": {
+      "type": "string",
+      "enum": ["email"]
+    },
+    "payload": {
+      "type": "object",
+      "required": ["from", "to", "subject", "body", "sentAt"],
+      "properties": {
+        "from": { "type": "string", "format": "email" },
+        "to": {
+          "type": "array",
+          "items": { "type": "string", "format": "email" },
+          "minItems": 1
+        },
+        "subject": { "type": "string" },
+        "body": { "type": "string" },
+        "sentAt": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

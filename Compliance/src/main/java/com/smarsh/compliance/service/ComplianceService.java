@@ -1,0 +1,79 @@
+package com.smarsh.compliance.service;
+
+import com.smarsh.compliance.entity.Policy;
+import com.smarsh.compliance.entity.Tenant;
+import com.smarsh.compliance.evaluators.PolicyEvaluator;
+import com.smarsh.compliance.models.Message;
+import com.smarsh.compliance.repository.TenantPolicyRepository;
+import com.smarsh.compliance.repository.TenantRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
+
+
+@Slf4j
+@Service
+public class ComplianceService {
+
+
+    private final List<PolicyEvaluator> evaluators;
+    private final PolicyService policyService;
+    private final TenantRepository tenantRepository;
+    private final FlagService flagService;
+    private final AuditService auditService;
+
+    public ComplianceService(List<PolicyEvaluator> evaluators,
+                             PolicyService policyService, TenantRepository tenantRepository,
+                             FlagService flagService,
+                             AuditService auditService) {
+        this.evaluators = evaluators;
+        this.policyService = policyService;
+        this.tenantRepository = tenantRepository;
+        this.flagService = flagService;
+        this.auditService = auditService;
+    }
+
+    public Message process(Message message) {
+        Optional<Tenant> tenant = tenantRepository.findByTenantId(message.getTenantId());
+        List<String>policyIds = new ArrayList<>();
+        tenant.ifPresent(value -> policyIds.addAll(value.getPolicyIds()));
+        log.info("Policy Ids: {}", policyIds);
+        List<Policy> policies=policyService.getPoliciesByIds(policyIds);
+        log.info("Compliance Processing started,{}",message.getMessageId());
+
+        StringBuilder flagDescription = new StringBuilder();
+        AtomicBoolean flagged = new AtomicBoolean(false);
+        // Filter policies by network
+        policies.stream()
+                .filter(p -> p.getWhen().getNetworkEquals().equalsIgnoreCase(message.getNetwork()))
+                .forEach(policy -> evaluators.stream()
+                        .filter(e -> e.supports(policy.getType()))
+                        .forEach(e -> {
+                            e.evaluate(message, policy)
+                                    .ifPresent(flag -> {
+                                        flagService.saveFlag(flag);
+                                        flagDescription.append(policy.getDescription()).append(" ");
+                                        flagged.set(true);
+                                    });
+                        })
+                );
+        if(!flagged.get()){
+            return message;
+        }
+        Message.FlagInfo flagInfo = new Message.FlagInfo();
+        message.setFlagged(true);
+        flagInfo.setFlagDescription(flagDescription.toString());
+        flagInfo.setTimestamp(Instant.now());
+        message.setFlagInfo(flagInfo);
+        auditService.logEvent(message.getTenantId(),message.getMessageId(),message.getNetwork(),"POLICIES_EVALUATED",
+                Map.of());
+        return message;
+    }
+}

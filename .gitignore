@@ -1,0 +1,7 @@
+.idea
+
+log
+target
+**/target/
+**/log/
+normalizer/target/classes
