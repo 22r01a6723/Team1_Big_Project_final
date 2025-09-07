@@ -33,8 +33,6 @@ public abstract class BaseMessageDTO {
     private String tenantId;
     private String stableMessageId;   // <--- used for deduplication
 
-    public String getTenantId() { return tenantId; }
-
     @Override
     public String toString() {
         return "BaseMessageDTO{" +
