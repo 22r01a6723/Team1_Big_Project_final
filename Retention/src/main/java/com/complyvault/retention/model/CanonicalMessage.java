@@ -1,10 +1,17 @@
-package com.project_1.normalizer.Retention.model;
+package com.complyvault.retention.model;
 
-import lombok.*;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.Instant;
 import java.util.List;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -13,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Document(collection = "messages")
-public class RetentionMessage {
+public class CanonicalMessage {
     @Id
     private String messageId;
     private String tenantId;
@@ -59,5 +66,3 @@ public class RetentionMessage {
         private String rawReference;
     }
 }
-
-

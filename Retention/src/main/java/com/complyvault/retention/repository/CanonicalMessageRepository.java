@@ -1,13 +1,15 @@
-package com.project_1.normalizer.Retention.Repository;
+package com.complyvault.retention.repository;
 
-import com.project_1.normalizer.model.CanonicalMessage;
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Repository;
 import java.time.Instant;
 import java.util.List;
 
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
+
+import com.complyvault.retention.model.CanonicalMessage;
+
 @Repository
-public interface RetensionMessageRepository extends MongoRepository<CanonicalMessage, String> {
+public interface CanonicalMessageRepository extends MongoRepository<CanonicalMessage, String> {
 
     // If you want to use the network field instead of context.channel
     List<CanonicalMessage> findByTenantIdAndNetwork(String tenantId, String network);
@@ -21,8 +23,3 @@ public interface RetensionMessageRepository extends MongoRepository<CanonicalMes
     // Find messages before a certain timestamp
     List<CanonicalMessage> findByTimestampBefore(Instant timestamp);
 }
-
-
-
-
-

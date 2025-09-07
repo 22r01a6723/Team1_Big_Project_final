@@ -1,9 +1,11 @@
-package com.project_1.normalizer.Retention.config;
+package com.complyvault.retention.config;
 
-import com.project_1.normalizer.Retention.service.RetentionService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import com.complyvault.retention.service.RetentionService;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor

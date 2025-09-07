@@ -1,10 +1,12 @@
-package com.project_1.normalizer.Retention.Repository;
+package com.complyvault.retention.repository;
 
-import com.project_1.normalizer.Retention.model.RetentionPolicy;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
-import java.util.Optional;
-import java.util.List;
+
+import com.complyvault.retention.model.RetentionPolicy;
 
 @Repository
 public interface RetentionPolicyRepository extends MongoRepository<RetentionPolicy, String> {

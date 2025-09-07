@@ -1,26 +1,29 @@
-package com.project_1.normalizer.Retention.controller;
-
-import com.project_1.normalizer.Retention.model.RetentionPolicy;
-import com.project_1.normalizer.Retention.service.RetentionService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+package com.complyvault.retention.controller;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.complyvault.retention.model.RetentionPolicy;
+import com.complyvault.retention.service.RetentionService;
+
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping("/api/retention-policies")
+@RequiredArgsConstructor
 public class RetentionPolicyController {
 
     private final RetentionService retentionService;
-
-    public RetentionPolicyController(RetentionService retentionService) {
-        this.retentionService = retentionService;
-    }
-
 
     @PostMapping
     public ResponseEntity<RetentionPolicy> createOrUpdatePolicy(@RequestBody RetentionPolicy policy) {
@@ -53,29 +56,12 @@ public class RetentionPolicyController {
 
     // Add debug endpoint
     @GetMapping("/check-db")
-    public ResponseEntity<String> checkDatabase() {
+    public ResponseEntity<Map<String, Object>> checkDatabaseConnection() {
         retentionService.checkDatabaseConnection();
-        return ResponseEntity.ok("Database check completed. Check logs.");
-    }
-
-    @GetMapping("/debug-all")
-    public ResponseEntity<String> debugAll() {
-//        retentionService.debugAllData();
-        return ResponseEntity.ok("Debug all data completed. Check logs.");
-    }
-
-    @GetMapping("/test-queries")
-    public ResponseEntity<String> testQueries() {
-//        retentionService.testSimpleQueries();
-        return ResponseEntity.ok("Query tests completed. Check logs.");
-    }
-
-    @GetMapping("/collection-names")
-    public ResponseEntity<Map<String, String>> getCollectionNames() {
-        Map<String, String> collections = new HashMap<>();
-        collections.put("messages", "CanonicalMessage collection");
-        collections.put("retention_policies", "RetentionPolicy collection");
-        return ResponseEntity.ok(collections);
+        retentionService.testFindByTenantIdAndNetwork();
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", "Database check completed - check logs for details");
+        return ResponseEntity.ok(response);
     }
 }
-

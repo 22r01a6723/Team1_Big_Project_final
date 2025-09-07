@@ -1,13 +1,11 @@
+package com.complyvault.retention.service;
 
-package com.project_1.normalizer.Retention.service;
-
-import com.project_1.normalizer.Retention.Repository.RetensionMessageRepository;
-import com.project_1.normalizer.Retention.Repository.RetentionAuditLogRepository;
-import com.project_1.normalizer.Retention.Repository.RetentionPolicyRepository;
-import com.project_1.normalizer.Retention.model.RetentionAuditLog;
-import com.project_1.normalizer.Retention.model.RetentionPolicy;
-import com.project_1.normalizer.model.CanonicalMessage;
-import com.project_1.normalizer.repository.MessageRepository;
+import com.complyvault.retention.repository.CanonicalMessageRepository;
+import com.complyvault.retention.repository.RetentionAuditLogRepository;
+import com.complyvault.retention.repository.RetentionPolicyRepository;
+import com.complyvault.retention.model.RetentionAuditLog;
+import com.complyvault.retention.model.RetentionPolicy;
+import com.complyvault.retention.model.CanonicalMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -25,27 +23,19 @@ import java.util.Optional;
 public class RetentionService {
 
     private final RetentionPolicyRepository policyRepository;
-    private final RetensionMessageRepository retensionMessageRepository;
+    private final CanonicalMessageRepository canonicalMessageRepository;
     private final RetentionAuditLogRepository auditLogRepository;
 
     @Value("${app.disk.path}")
     private String fileStorageDirectory;
-    // create a local file for all....
 
     public RetentionService(RetentionPolicyRepository policyRepository,
-                            RetensionMessageRepository retensionMessageRepository,
+                            CanonicalMessageRepository canonicalMessageRepository,
                             RetentionAuditLogRepository auditLogRepository) {
         this.policyRepository = policyRepository;
-        this.retensionMessageRepository = retensionMessageRepository;
+        this.canonicalMessageRepository = canonicalMessageRepository;
         this.auditLogRepository = auditLogRepository;
     }
-
-    // public RetentionPolicy saveOrUpdatePolicy(RetentionPolicy policy) {
-    //     String policyId = policy.getTenantId() + "_" + policy.getChannel();
-    //     policy.setId(policyId);
-    //     return policyRepository.save(policy);
-    // }
-
 
     public RetentionPolicy saveOrUpdatePolicy(RetentionPolicy policy) {
         String policyId = policy.getTenantId() + "_" + policy.getChannel();
@@ -72,8 +62,6 @@ public class RetentionService {
         return savedPolicy;
     }
 
-
-
     public Optional<RetentionPolicy> getPolicy(String tenantId, String channel) {
         return policyRepository.findByTenantIdAndChannel(tenantId, channel);
     }
@@ -83,7 +71,7 @@ public class RetentionService {
     }
 
     public void deleteMessageById(String id) {
-        retensionMessageRepository.deleteById(id);
+        canonicalMessageRepository.deleteById(id);
     }
 
     public void processExpiredMessages() {
@@ -102,7 +90,7 @@ public class RetentionService {
     }
 
     private void processMessagesForPolicy(RetentionPolicy policy) {
-        List<CanonicalMessage> messages = retensionMessageRepository
+        List<CanonicalMessage> messages = canonicalMessageRepository
                 .findByTenantIdAndNetwork(policy.getTenantId(), policy.getChannel());
         log.info("Query: findByTenantIdAndNetwork(tenantId={}, network={}) returned {} messages",
                 policy.getTenantId(), policy.getChannel(), messages.size());
@@ -119,8 +107,8 @@ public class RetentionService {
         for (CanonicalMessage message : messages) {
             if (shouldDeleteMessage(message, cutoffDate)) {
                 String messageId = message.getMessageId();
-                retensionMessageRepository.deleteById(messageId);
-                boolean fileDeleted = deleteFile(messageId,policy);
+                canonicalMessageRepository.deleteById(messageId);
+                boolean fileDeleted = deleteFile(messageId, policy);
 
                 // Save audit log
                 saveAuditLog(policy, messageId, cutoffDate,
@@ -141,26 +129,8 @@ public class RetentionService {
     }
 
     private boolean shouldDeleteMessage(CanonicalMessage message, Instant cutoffDate) {
-        return message.getCreatedAt().isBefore(cutoffDate);
+        return message.getTimestamp().isBefore(cutoffDate);
     }
-
-    // private boolean deleteFile(String id) {
-    //     try {
-    //         Path filePath = Paths.get(fileStorageDirectory, id + ".json");
-    //         if (Files.exists(filePath)) {
-    //             Files.delete(filePath);
-    //             log.info("Message deleted from disk, with file name: {}", id);
-    //             return true;
-    //         } else {
-    //             log.warn("File not found: {}", id);
-    //             return false;
-    //         }
-    //     } catch (IOException e) {
-    //         log.error("Failed to delete file {}: {}", id, e.getMessage());
-    //         return false;
-    //     }
-    // }
-
 
     private boolean deleteFile(String id, RetentionPolicy policy) {
         boolean deleted = false;
@@ -189,7 +159,6 @@ public class RetentionService {
         return deleted;
     }
 
-
     private void saveAuditLog(RetentionPolicy policy, String messageId, Instant cutoffDate,
                               String status, String details) {
         RetentionAuditLog logEntry = RetentionAuditLog.builder()
@@ -206,10 +175,10 @@ public class RetentionService {
         auditLogRepository.save(logEntry);
     }
 
-    // Debug methods remain intact
+    // Debug methods
     public void checkDatabaseConnection() {
         try {
-            long totalMessages = retensionMessageRepository.count();
+            long totalMessages = canonicalMessageRepository.count();
             long totalPolicies = policyRepository.count();
 
             log.info("=== DATABASE CONNECTION CHECK ===");
@@ -225,8 +194,8 @@ public class RetentionService {
         try {
             log.info("=== TESTING findByTenantIdAndNetwork ===");
 
-            List<CanonicalMessage> result1 = retensionMessageRepository.findByTenantIdAndNetwork("bank-001", "email");
-            List<CanonicalMessage> result2 = retensionMessageRepository.findByTenantIdAndNetwork("bank-001", "slack");
+            List<CanonicalMessage> result1 = canonicalMessageRepository.findByTenantIdAndNetwork("bank-001", "email");
+            List<CanonicalMessage> result2 = canonicalMessageRepository.findByTenantIdAndNetwork("bank-001", "slack");
 
             log.info("bank-001 + email: {} messages", result1.size());
             log.info("bank-001 + slack: {} messages", result2.size());
@@ -236,5 +205,3 @@ public class RetentionService {
         }
     }
 }
-
- 
