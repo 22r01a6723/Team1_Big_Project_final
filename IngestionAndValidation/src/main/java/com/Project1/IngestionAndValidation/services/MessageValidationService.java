@@ -14,7 +14,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @Service
 public class MessageValidationService {
-
     private final ValidatorRegistry validatorRegistry;
     private final AuditService auditService;
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -24,10 +23,8 @@ public class MessageValidationService {
     private final MessageProducerService messageProducerService;
     private final S3StorageService s3StorageService;
 
-
     public MessageValidationService(ValidatorRegistry validatorRegistry,
                                     AuditService auditService,
-                                    UniqueIdRepository uniqueIdRepository,
                                     DuplicateCheckService  duplicateCheckService,
                                     MessageIdGenerator messageIdGenerator,
                                     MessageProducerService messageProducerService,
@@ -38,21 +35,15 @@ public class MessageValidationService {
         this.messageIdGenerator=messageIdGenerator;
         this.messageProducerService=messageProducerService;
         this.s3StorageService = s3StorageService;
-
     }
 
     public String processIncoming(String payload) throws Exception {
-
         JsonNode root = mapper.readTree(payload);
-
         String network = root.path("network").asText();
         String tenantIdFromPayload = root.path("tenantId").asText();
-
         String stableId= messageIdGenerator.generate(root);
-
         ObjectNode objectNode = (ObjectNode) root;
         objectNode.put("stableMessageId", stableId);
-
         auditService.logEvent(
                 tenantIdFromPayload,
                 null,
@@ -60,17 +51,12 @@ public class MessageValidationService {
                 "INGESTED",
                 Map.of("rawPayload", payload)
         );
-
-
         String tenantId = "";
-        String messageId = "";
         try {
             MessageValidator validator = validatorRegistry.getValidator(network);
             validator.validate(payload);
-
             JsonNode node = objectMapper.readTree(payload);
             tenantId = node.has("tenantId") ? node.get("tenantId").asText() : "UNKNOWN";
-
             // ✅ Check if duplicate
             if (duplicateCheckService.isDuplicate(stableId)) {
                 auditService.logEvent(
@@ -83,8 +69,6 @@ public class MessageValidationService {
                 return "Duplicate message detected. ID=" + stableId;
             }
             System.out.println("no duplicate found");
-
-
             auditService.logEvent(
                     tenantId,
                     stableId,
@@ -92,15 +76,11 @@ public class MessageValidationService {
                     "VALIDATED",
                     Map.of("status", "success")
             );
-
             // Store raw message to S3
             s3StorageService.storeRawMessage(objectNode.toString());
-
             // Send to Kafka for normalization
             messageProducerService.produceMessage(objectNode);
-
             return "Message validated successfully. ID=" + stableId;
-
         } catch (Exception e) {
             auditService.logEvent(
                     tenantId,
