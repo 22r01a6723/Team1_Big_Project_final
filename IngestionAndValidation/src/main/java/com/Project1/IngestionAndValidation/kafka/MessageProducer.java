@@ -1,4 +1,6 @@
 package com.Project1.IngestionAndValidation.kafka;
+
+import com.Project1.IngestionAndValidation.exception.MessagePublishingException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -21,7 +23,9 @@ public class MessageProducer {
             kafkaTemplate.send("normalizer-topic", jsonMessage);
             System.out.println("✅ Sent to Kafka: " + jsonMessage);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to serialize message", e);
+            throw new MessagePublishingException("Failed to serialize message", e);
+        } catch (Exception e) {
+            throw new MessagePublishingException("Failed to send message to Kafka", e);
         }
     }
 }

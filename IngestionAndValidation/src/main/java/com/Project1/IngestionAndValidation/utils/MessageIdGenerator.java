@@ -30,12 +30,12 @@ public class MessageIdGenerator {
             byte[] hash = digest.digest(json.getBytes(StandardCharsets.UTF_8));
             String messageId=Base64.getUrlEncoder().withoutPadding().encodeToString(hash);
             auditService.logEvent(
-                        payload.get("tenantId").asText(),
+                    payload.get("tenantId").asText(),
                     messageId,
-                        payload.get("network").asText(),
-                        "ID_GENERATED",
-                        Map.of("stableMessageId", messageId)
-                );
+                    payload.get("network").asText(),
+                    "ID_GENERATED",
+                    Map.of("stableMessageId", messageId)
+            );
 
             return messageId;
         } catch (Exception e) {

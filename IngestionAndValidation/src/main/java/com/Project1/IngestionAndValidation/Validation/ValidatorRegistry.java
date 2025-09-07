@@ -1,5 +1,6 @@
 package com.Project1.IngestionAndValidation.Validation;
 
+import com.Project1.IngestionAndValidation.exception.UnsupportedNetworkException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -17,9 +18,13 @@ public class ValidatorRegistry {
 
     public MessageValidator getValidator(String network) {
         System.out.println(validators.size());
+//        if (!validators.containsKey(network.toLowerCase())) {
+//            throw new IllegalArgumentException("No validator found for network: " + network);
+//        }
         if (!validators.containsKey(network.toLowerCase())) {
-            throw new IllegalArgumentException("No validator found for network: " + network);
+            throw new UnsupportedNetworkException("Unsupported network: " + network);
         }
+
         return validators.get(network.toLowerCase());
     }
 }
