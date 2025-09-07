@@ -66,7 +66,7 @@ public class SlackDTO extends BaseMessageDTO {
 //    }
 
 
-    private boolean isNotBlank(String field) {
+    public boolean isNotBlank(String field) {
         return field != null && !field.trim().isEmpty();
     }
 
