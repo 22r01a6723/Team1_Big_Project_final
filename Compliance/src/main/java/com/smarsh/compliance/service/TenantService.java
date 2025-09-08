@@ -16,16 +16,40 @@ public class TenantService {
     }
 
     public String addTenant(Tenant tenant) {
-        tenantRepository.save(tenant);
-        return "Tenant added successfully";
+        try {
+            tenantRepository.save(tenant);
+            return "Tenant added successfully";
+        } catch (Exception e) {
+            org.slf4j.LoggerFactory.getLogger(TenantService.class).error("Error adding tenant", e);
+            throw new com.smarsh.compliance.exception.ComplianceException("Error adding tenant: " + e.getMessage(), e);
+        }
     }
 
     public List<Tenant> getAllTenant() {
-        return tenantRepository.findAll();
+        try {
+            return tenantRepository.findAll();
+        } catch (Exception e) {
+            org.slf4j.LoggerFactory.getLogger(TenantService.class).error("Error fetching tenants", e);
+            throw new com.smarsh.compliance.exception.ComplianceException("Error fetching tenants: " + e.getMessage(), e);
+        }
     }
 
-    public String updateTenant(String id,String ruleId) {
-        tenantRepository.findByTenantId(id).ifPresent(tenant -> {tenantRepository.save(tenant);});
-        return "Tenant Updated Successfully";
+    public String updateTenant(String id, String ruleId) {
+        try {
+            boolean updated = tenantRepository.findByTenantId(id).map(tenant -> {
+                // You may want to update tenant fields here using ruleId
+                tenantRepository.save(tenant);
+                return true;
+            }).orElse(false);
+            if (!updated) {
+                throw new com.smarsh.compliance.exception.ComplianceNotFoundException("Tenant not found for id: " + id);
+            }
+            return "Tenant Updated Successfully";
+        } catch (com.smarsh.compliance.exception.ComplianceNotFoundException nf) {
+            throw nf;
+        } catch (Exception e) {
+            org.slf4j.LoggerFactory.getLogger(TenantService.class).error("Error updating tenant", e);
+            throw new com.smarsh.compliance.exception.ComplianceException("Error updating tenant: " + e.getMessage(), e);
+        }
     }
 }

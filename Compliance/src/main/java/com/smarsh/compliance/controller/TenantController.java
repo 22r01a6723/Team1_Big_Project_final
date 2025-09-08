@@ -16,12 +16,14 @@ public class TenantController {
     }
 
     @PostMapping("/api/public/tenant")
-    public String addTenant(@RequestBody Tenant tenant) {
-        return tenantService.addTenant(tenant);
+    public org.springframework.http.ResponseEntity<String> addTenant(@RequestBody Tenant tenant) {
+        String result = tenantService.addTenant(tenant);
+        return org.springframework.http.ResponseEntity.ok(result);
     }
 
     @GetMapping("/api/public/tenant")
-    public List<Tenant> getAllTenant() {
-        return tenantService.getAllTenant();
+    public org.springframework.http.ResponseEntity<List<Tenant>> getAllTenant() {
+        List<Tenant> tenants = tenantService.getAllTenant();
+        return org.springframework.http.ResponseEntity.ok(tenants);
     }
 }

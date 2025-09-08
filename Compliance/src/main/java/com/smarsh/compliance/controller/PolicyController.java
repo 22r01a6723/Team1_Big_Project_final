@@ -1,6 +1,5 @@
 package com.smarsh.compliance.controller;
 
-import com.smarsh.compliance.entity.Flag;
 import com.smarsh.compliance.entity.Policy;
 import com.smarsh.compliance.service.PolicyService;
 import lombok.extern.slf4j.Slf4j;
@@ -25,14 +24,14 @@ public class PolicyController {
     @PostMapping("/api/public/policy")
     public ResponseEntity<String> createPolicy(@RequestBody Policy policy) {
         log.info("Creating policy {}", policy.toString());
-        return policyService.addPolicy(policy);
+        policyService.addPolicy(policy);
+        return ResponseEntity.ok("Policy created successfully");
     }
 
     @GetMapping("/api/public/policy")
-    public List<Policy> getAllPolicies(){
-        return policyService.getAllPolicies();
+    public ResponseEntity<List<Policy>> getAllPolicies() {
+        List<Policy> policies = policyService.getAllPolicies();
+        return ResponseEntity.ok(policies);
     }
-
-
 
 }

@@ -41,39 +41,51 @@ public class ComplianceService {
     }
 
     public Message process(Message message) {
-        Optional<Tenant> tenant = tenantRepository.findByTenantId(message.getTenantId());
-        List<String>policyIds = new ArrayList<>();
-        tenant.ifPresent(value -> policyIds.addAll(value.getPolicyIds()));
-        log.info("Policy Ids: {}", policyIds);
-        List<Policy> policies=policyService.getPoliciesByIds(policyIds);
-        log.info("Compliance Processing started,{}",message.getMessageId());
+        try {
+            Optional<Tenant> tenant = tenantRepository.findByTenantId(message.getTenantId());
+            List<String> policyIds = new ArrayList<>();
+            tenant.ifPresent(value -> policyIds.addAll(value.getPolicyIds()));
+            log.info("Policy Ids: {}", policyIds);
+            List<Policy> policies = policyService.getPoliciesByIds(policyIds);
+            log.info("Compliance Processing started,{}", message.getMessageId());
 
-        StringBuilder flagDescription = new StringBuilder();
-        AtomicBoolean flagged = new AtomicBoolean(false);
-        // Filter policies by network
-        policies.stream()
-                .filter(p -> p.getWhen().getNetworkEquals().equalsIgnoreCase(message.getNetwork()))
-                .forEach(policy -> evaluators.stream()
-                        .filter(e -> e.supports(policy.getType()))
-                        .forEach(e -> {
-                            e.evaluate(message, policy)
-                                    .ifPresent(flag -> {
-                                        flagService.saveFlag(flag);
-                                        flagDescription.append(policy.getDescription()).append(" ");
-                                        flagged.set(true);
-                                    });
-                        })
-                );
-        if(!flagged.get()){
+            StringBuilder flagDescription = new StringBuilder();
+            AtomicBoolean flagged = new AtomicBoolean(false);
+            // Filter policies by network
+            policies.stream()
+                    .filter(p -> p.getWhen().getNetworkEquals().equalsIgnoreCase(message.getNetwork()))
+                    .forEach(policy -> evaluators.stream()
+                            .filter(e -> e.supports(policy.getType()))
+                            .forEach(e -> {
+                                try {
+                                    e.evaluate(message, policy)
+                                            .ifPresent(flag -> {
+                                                flagService.saveFlag(flag);
+                                                flagDescription.append(policy.getDescription()).append(" ");
+                                                flagged.set(true);
+                                            });
+                                } catch (Exception ex) {
+                                    log.error("Error during policy evaluation or flag saving: {}", ex.getMessage(), ex);
+                                    throw new com.smarsh.compliance.exception.ComplianceException("Policy evaluation or flag saving failed", ex);
+                                }
+                            })
+                    );
+            if (!flagged.get()) {
+                return message;
+            }
+            Message.FlagInfo flagInfo = new Message.FlagInfo();
+            message.setFlagged(true);
+            flagInfo.setFlagDescription(flagDescription.toString());
+            flagInfo.setTimestamp(Instant.now());
+            message.setFlagInfo(flagInfo);
+            auditService.logEvent(message.getTenantId(), message.getMessageId(), message.getNetwork(), "POLICIES_EVALUATED",
+                    Map.of());
             return message;
+        } catch (com.smarsh.compliance.exception.ComplianceException ce) {
+            throw ce;
+        } catch (Exception e) {
+            log.error("Error in ComplianceService.process: {}", e.getMessage(), e);
+            throw new com.smarsh.compliance.exception.ComplianceException("Failed to process compliance message", e);
         }
-        Message.FlagInfo flagInfo = new Message.FlagInfo();
-        message.setFlagged(true);
-        flagInfo.setFlagDescription(flagDescription.toString());
-        flagInfo.setTimestamp(Instant.now());
-        message.setFlagInfo(flagInfo);
-        auditService.logEvent(message.getTenantId(),message.getMessageId(),message.getNetwork(),"POLICIES_EVALUATED",
-                Map.of());
-        return message;
     }
 }

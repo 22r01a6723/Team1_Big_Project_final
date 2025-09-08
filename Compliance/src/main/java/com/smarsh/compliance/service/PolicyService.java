@@ -2,13 +2,11 @@ package com.smarsh.compliance.service;
 
 import com.smarsh.compliance.entity.Flag;
 import com.smarsh.compliance.entity.Policy;
+import com.smarsh.compliance.exception.CompliancePolicyException;
 import com.smarsh.compliance.repository.FlagRepository;
 import com.smarsh.compliance.repository.PolicyRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,29 +24,35 @@ public class PolicyService {
     }
 
     public List<Policy>  getPoliciesByIds(List<String> policyIds) {
-        List<Policy> policies=new ArrayList<>();
-        policyIds.forEach(policyId->{
-            Optional<Policy> policy=policyRepository.findById(policyId);
-            policy.ifPresent(policies::add);
-        });
-        return policies;
+        try {
+            List<Policy> policies = new ArrayList<>();
+            policyIds.forEach(policyId -> {
+                Optional<Policy> policy = policyRepository.findById(policyId);
+                policy.ifPresent(policies::add);
+            });
+            return policies;
+        } catch (Exception e) {
+            log.error("Error fetching policies by IDs", e);
+            throw new CompliancePolicyException("Error fetching policies by IDs: " + e.getMessage(), e);
+        }
     }
 
-
-    public ResponseEntity<String> addPolicy(Policy policy) {
+    public void addPolicy(Policy policy) {
         try {
             policyRepository.save(policy);
+        } catch (Exception e) {
+            log.error("Error in saving policy", e);
+            throw new CompliancePolicyException("Error saving policy: " + e.getMessage(), e);
         }
-        catch (Exception e) {
-            log.info("Error in saving policy",e.getMessage());
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-        return ResponseEntity.ok("Policy added successfully");
     }
 
-    public List<Policy> getAllPolicies(){
-        return policyRepository.findAll();
+    public List<Policy> getAllPolicies() {
+        try {
+            return policyRepository.findAll();
+        } catch (Exception e) {
+            log.error("Error fetching all policies", e);
+            throw new CompliancePolicyException("Error fetching all policies: " + e.getMessage(), e);
+        }
     }
-
 
 }

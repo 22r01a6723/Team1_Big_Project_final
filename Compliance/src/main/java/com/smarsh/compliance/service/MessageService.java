@@ -13,7 +13,15 @@ public class MessageService {
     }
 
     public void publishMessage(Message message) {
-        System.out.println("Publishing Message to Kafka");
-        kafkaProducerService.publishMessage(message);
+        try {
+            System.out.println("Publishing Message to Kafka");
+            kafkaProducerService.publishMessage(message);
+        } catch (com.smarsh.compliance.exception.ComplianceKafkaException ke) {
+            throw ke;
+        } catch (Exception e) {
+            // Log and wrap any unexpected exception
+            org.slf4j.LoggerFactory.getLogger(MessageService.class).error("Error publishing message to Kafka", e);
+            throw new com.smarsh.compliance.exception.ComplianceKafkaException("Error publishing message to Kafka: " + e.getMessage(), e);
+        }
     }
 }

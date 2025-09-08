@@ -1,5 +1,5 @@
 package com.smarsh.compliance.service;
-
+import com.smarsh.compliance.exception.ComplianceMongoException;
 import com.smarsh.compliance.models.AuditEvent;
 import com.smarsh.compliance.mongodb.AuditRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,9 +34,11 @@ public class AuditService {
                 .performedBy("Compliance-App")
                 .details(details)
                 .build();
-
-        auditRepository.save(evt);
+        try {
+            auditRepository.save(evt);
+        } catch (Exception e) {
+            throw new ComplianceMongoException("Failed to save audit event: " + e.getMessage(), e);
+        }
     }
 }
-
-
+//indsia tvftsneu

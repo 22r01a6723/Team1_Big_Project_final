@@ -1,5 +1,6 @@
 package com.smarsh.compliance.service;
 import com.smarsh.compliance.entity.Flag;
+import com.smarsh.compliance.exception.ComplianceKafkaException;
 import com.smarsh.compliance.models.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -17,6 +18,11 @@ public class KafkaProducerService {
     }
 
     public void publishMessage(Message message) {
-        kafkaTemplate.send(topic,message.getMessageId(),message);
+        try {
+            kafkaTemplate.send(topic, message.getMessageId(), message);
+        } catch (Exception e) {
+            log.error("Failed to publish message to Kafka", e);
+            throw new ComplianceKafkaException("Failed to publish message to Kafka: " + e.getMessage(), e);
+        }
     }
 }
