@@ -45,6 +45,18 @@ public class DuplicateCheckService {
             return uniqueIdRepository.existsById(messageId);
         } catch (Exception e) {
             throw new CompanyVaultPersistenceException("Failed to check duplicate message in DB", e);
+
+            if (uniqueIdRepository.existsById(messageId)) {
+                return true; // duplicate
+            }
+            // save first time
+            uniqueIdRepository.save(new UniqueId(messageId));
+            return false;
+        } catch (DataAccessException e) {
+            throw new CompanyVaultPersistenceException(
+                    "Failed to check/save duplicate for messageId=" + messageId, e
+            );
+
         }
     }
 }

@@ -34,6 +34,21 @@ public class MessageIdGenerator {
         }
         return instance;
     }
+    private final AuditService auditService;
+
+
+    private MessageIdGenerator(AuditService auditService) {
+        this.auditService = auditService;
+    }
+
+
+    public static MessageIdGenerator getInstance(AuditService auditService) {
+        if (instance == null) {
+            instance = new MessageIdGenerator(auditService);
+        }
+        return instance;
+    }
+
 
     public String generate(JsonNode payload) {
         try {
@@ -41,6 +56,8 @@ public class MessageIdGenerator {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             System.out.println(json);
             byte[] hash = digest.digest(json.getBytes(StandardCharsets.UTF_8));
+
+
             String messageId = Base64.getUrlEncoder().withoutPadding().encodeToString(hash);
             auditService.logEvent(
                     payload.get("tenantId").asText(),
@@ -49,9 +66,41 @@ public class MessageIdGenerator {
                     "ID_GENERATED",
                     Map.of("stableMessageId", messageId)
             );
+
+
+            // Encode in Base64 (URL safe, no padding)
+
+            String messageId = Base64.getUrlEncoder().withoutPadding().encodeToString(hash);
+            auditService.logEvent(
+                    payload.get("tenantId").asText(),
+                    messageId,
+                    payload.get("network").asText(),
+                    "ID_GENERATED",
+                    Map.of("stableMessageId", messageId)
+            );
+
             return messageId;
         } catch (Exception e) {
-            throw new RuntimeException("Error generating stableMessageId", e);
+
+            throw new MessageIdGenerationException("Unexpected error generating stableMessageId", e);
         }
     }
+
+
+    private String safeGet(JsonNode node, String field) {
+        if (node != null && node.hasNonNull(field)) {
+            return node.get(field).asText();
+        }
+        return "UNKNOWN_" + field;
+    }
+
+    public static class MessageIdGenerationException extends RuntimeException {
+        public MessageIdGenerationException(String message, Throwable cause) {
+            super(message, cause);
+
+            throw new RuntimeException("Error generating stableMessageId", e);
+
+        }
+    }
+
 }

@@ -1,0 +1,454 @@
+2025-09-07T15:05:54.442+05:30  INFO 23696 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Starting IngestionAndValidationApplication using Java 21.0.8 with PID 23696 (C:\Users\pasupula.tejaswi\Team1_Big_Project_final\IngestionAndValidation\target\classes started by pasupula.tejaswi in C:\Users\pasupula.tejaswi\Team1_Big_Project_final)
+2025-09-07T15:05:54.447+05:30  INFO 23696 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : No active profile set, falling back to 1 default profile: "default"
+2025-09-07T15:05:57.176+05:30  INFO 23696 --- [IngestionAndValidation] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2025-09-07T15:05:57.372+05:30  INFO 23696 --- [IngestionAndValidation] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 154 ms. Found 3 MongoDB repository interfaces.
+2025-09-07T15:05:58.513+05:30  INFO 23696 --- [IngestionAndValidation] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-07T15:05:58.542+05:30  INFO 23696 --- [IngestionAndValidation] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-07T15:05:58.542+05:30  INFO 23696 --- [IngestionAndValidation] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.43]
+2025-09-07T15:05:58.688+05:30  INFO 23696 --- [IngestionAndValidation] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-07T15:05:58.689+05:30  INFO 23696 --- [IngestionAndValidation] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 4120 ms
+2025-09-07T15:06:00.314+05:30  INFO 23696 --- [IngestionAndValidation] [main] org.mongodb.driver.client                : MongoClient with metadata {"driver": {"name": "mongo-java-driver|sync|spring-boot", "version": "5.5.1"}, "os": {"type": "Windows", "name": "Windows 11", "architecture": "amd64", "version": "10.0"}, "platform": "Java/Eclipse Adoptium/21.0.8+9-LTS"} created with settings MongoClientSettings{readPreference=primary, writeConcern=WriteConcern{w=null, wTimeout=null ms, journal=null}, retryWrites=true, retryReads=true, readConcern=ReadConcern{level=null}, credential=null, transportSettings=null, commandListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsCommandListener@5e193ef5], codecRegistry=ProvidersCodecRegistry{codecProviders=[ValueCodecProvider{}, BsonValueCodecProvider{}, DBRefCodecProvider{}, DBObjectCodecProvider{}, DocumentCodecProvider{}, CollectionCodecProvider{}, IterableCodecProvider{}, MapCodecProvider{}, GeoJsonCodecProvider{}, GridFSFileCodecProvider{}, Jsr310CodecProvider{}, JsonObjectCodecProvider{}, BsonCodecProvider{}, EnumCodecProvider{}, com.mongodb.client.model.mql.ExpressionCodecProvider@106c988, com.mongodb.Jep395RecordCodecProvider@21274afe, com.mongodb.KotlinCodecProvider@76a362a4]}, loggerSettings=LoggerSettings{maxDocumentLength=1000}, clusterSettings={hosts=[localhost:27017], srvServiceName=mongodb, mode=SINGLE, requiredClusterType=UNKNOWN, requiredReplicaSetName='null', serverSelector='null', clusterListeners='[]', serverSelectionTimeout='30000 ms', localThreshold='15 ms'}, socketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=0, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, heartbeatSocketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=10000, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, connectionPoolSettings=ConnectionPoolSettings{maxSize=100, minSize=0, maxWaitTimeMS=120000, maxConnectionLifeTimeMS=0, maxConnectionIdleTimeMS=0, maintenanceInitialDelayMS=0, maintenanceFrequencyMS=60000, connectionPoolListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsConnectionPoolListener@61da0413], maxConnecting=2}, serverSettings=ServerSettings{heartbeatFrequencyMS=10000, minHeartbeatFrequencyMS=500, serverMonitoringMode=AUTO, serverListeners='[]', serverMonitorListeners='[]'}, sslSettings=SslSettings{enabled=false, invalidHostNameAllowed=false, context=null}, applicationName='null', compressorList=[], uuidRepresentation=JAVA_LEGACY, serverApi=null, autoEncryptionSettings=null, dnsClient=null, inetAddressResolver=null, contextProvider=null, timeoutMS=null}
+2025-09-07T15:06:00.355+05:30  INFO 23696 --- [IngestionAndValidation] [cluster-ClusterId{value='68bd51ffd4e1bc52d7760e7a', description='null'}-localhost:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=45017399, minRoundTripTimeNanos=0}
+2025-09-07T15:06:01.476+05:30  INFO 23696 --- [IngestionAndValidation] [main] c.P.I.services.S3StorageService          : 🔑 Using STATIC credentials for S3 (accessKey provided)
+2025-09-07T15:06:03.966+05:30  INFO 23696 --- [IngestionAndValidation] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2025-09-07T15:06:04.208+05:30  INFO 23696 --- [IngestionAndValidation] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-09-07T15:06:04.228+05:30  INFO 23696 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Started IngestionAndValidationApplication in 11.005 seconds (process running for 12.046)
+2025-09-07T15:06:17.634+05:30  INFO 23696 --- [IngestionAndValidation] [http-nio-8080-exec-3] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-09-07T15:06:17.634+05:30  INFO 23696 --- [IngestionAndValidation] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-09-07T15:06:17.636+05:30  INFO 23696 --- [IngestionAndValidation] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2025-09-07T15:09:39.376+05:30  INFO 23696 --- [IngestionAndValidation] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-07T15:09:39.391+05:30  INFO 23696 --- [IngestionAndValidation] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-07T15:09:43.540+05:30  INFO 42724 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Starting IngestionAndValidationApplication using Java 21.0.8 with PID 42724 (C:\Users\pasupula.tejaswi\Team1_Big_Project_final\IngestionAndValidation\target\classes started by pasupula.tejaswi in C:\Users\pasupula.tejaswi\Team1_Big_Project_final)
+2025-09-07T15:09:43.546+05:30 DEBUG 42724 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Running with Spring Boot v3.5.4, Spring v6.2.9
+2025-09-07T15:09:43.547+05:30  INFO 42724 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : No active profile set, falling back to 1 default profile: "default"
+2025-09-07T15:09:46.097+05:30  INFO 42724 --- [IngestionAndValidation] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2025-09-07T15:09:46.269+05:30  INFO 42724 --- [IngestionAndValidation] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 138 ms. Found 3 MongoDB repository interfaces.
+2025-09-07T15:09:47.428+05:30  INFO 42724 --- [IngestionAndValidation] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-07T15:09:47.463+05:30  INFO 42724 --- [IngestionAndValidation] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-07T15:09:47.464+05:30  INFO 42724 --- [IngestionAndValidation] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.43]
+2025-09-07T15:09:47.606+05:30  INFO 42724 --- [IngestionAndValidation] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-07T15:09:47.607+05:30  INFO 42724 --- [IngestionAndValidation] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3924 ms
+2025-09-07T15:09:49.077+05:30  INFO 42724 --- [IngestionAndValidation] [main] org.mongodb.driver.client                : MongoClient with metadata {"driver": {"name": "mongo-java-driver|sync|spring-boot", "version": "5.5.1"}, "os": {"type": "Windows", "name": "Windows 11", "architecture": "amd64", "version": "10.0"}, "platform": "Java/Eclipse Adoptium/21.0.8+9-LTS"} created with settings MongoClientSettings{readPreference=primary, writeConcern=WriteConcern{w=null, wTimeout=null ms, journal=null}, retryWrites=true, retryReads=true, readConcern=ReadConcern{level=null}, credential=null, transportSettings=null, commandListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsCommandListener@7ea42c82], codecRegistry=ProvidersCodecRegistry{codecProviders=[ValueCodecProvider{}, BsonValueCodecProvider{}, DBRefCodecProvider{}, DBObjectCodecProvider{}, DocumentCodecProvider{}, CollectionCodecProvider{}, IterableCodecProvider{}, MapCodecProvider{}, GeoJsonCodecProvider{}, GridFSFileCodecProvider{}, Jsr310CodecProvider{}, JsonObjectCodecProvider{}, BsonCodecProvider{}, EnumCodecProvider{}, com.mongodb.client.model.mql.ExpressionCodecProvider@39133244, com.mongodb.Jep395RecordCodecProvider@ceb7701, com.mongodb.KotlinCodecProvider@5e193ef5]}, loggerSettings=LoggerSettings{maxDocumentLength=1000}, clusterSettings={hosts=[localhost:27017], srvServiceName=mongodb, mode=SINGLE, requiredClusterType=UNKNOWN, requiredReplicaSetName='null', serverSelector='null', clusterListeners='[]', serverSelectionTimeout='30000 ms', localThreshold='15 ms'}, socketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=0, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, heartbeatSocketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=10000, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, connectionPoolSettings=ConnectionPoolSettings{maxSize=100, minSize=0, maxWaitTimeMS=120000, maxConnectionLifeTimeMS=0, maxConnectionIdleTimeMS=0, maintenanceInitialDelayMS=0, maintenanceFrequencyMS=60000, connectionPoolListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsConnectionPoolListener@106c988], maxConnecting=2}, serverSettings=ServerSettings{heartbeatFrequencyMS=10000, minHeartbeatFrequencyMS=500, serverMonitoringMode=AUTO, serverListeners='[]', serverMonitorListeners='[]'}, sslSettings=SslSettings{enabled=false, invalidHostNameAllowed=false, context=null}, applicationName='null', compressorList=[], uuidRepresentation=JAVA_LEGACY, serverApi=null, autoEncryptionSettings=null, dnsClient=null, inetAddressResolver=null, contextProvider=null, timeoutMS=null}
+2025-09-07T15:09:49.134+05:30  INFO 42724 --- [IngestionAndValidation] [cluster-ClusterId{value='68bd52e4fab995728e14bcdc', description='null'}-localhost:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=73280599, minRoundTripTimeNanos=0}
+2025-09-07T15:09:50.037+05:30  INFO 42724 --- [IngestionAndValidation] [main] c.P.I.services.S3StorageService          : 🔑 Using STATIC credentials for S3 (accessKey provided)
+2025-09-07T15:09:52.531+05:30  INFO 42724 --- [IngestionAndValidation] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2025-09-07T15:09:52.740+05:30  INFO 42724 --- [IngestionAndValidation] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-09-07T15:09:52.764+05:30  INFO 42724 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Started IngestionAndValidationApplication in 10.423 seconds (process running for 11.457)
+2025-09-07T15:10:20.657+05:30  INFO 42724 --- [IngestionAndValidation] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-09-07T15:10:20.659+05:30  INFO 42724 --- [IngestionAndValidation] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-09-07T15:10:20.663+05:30  INFO 42724 --- [IngestionAndValidation] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2025-09-07T15:15:25.519+05:30  INFO 42724 --- [IngestionAndValidation] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-07T15:15:25.541+05:30  INFO 42724 --- [IngestionAndValidation] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-07T15:15:34.251+05:30  INFO 4852 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Starting IngestionAndValidationApplication using Java 21.0.8 with PID 4852 (C:\Users\pasupula.tejaswi\Team1_Big_Project_final\IngestionAndValidation\target\classes started by pasupula.tejaswi in C:\Users\pasupula.tejaswi\Team1_Big_Project_final)
+2025-09-07T15:15:34.255+05:30 DEBUG 4852 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Running with Spring Boot v3.5.4, Spring v6.2.9
+2025-09-07T15:15:34.257+05:30  INFO 4852 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : No active profile set, falling back to 1 default profile: "default"
+2025-09-07T15:15:36.928+05:30  INFO 4852 --- [IngestionAndValidation] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2025-09-07T15:15:37.198+05:30  INFO 4852 --- [IngestionAndValidation] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 233 ms. Found 3 MongoDB repository interfaces.
+2025-09-07T15:15:38.336+05:30  INFO 4852 --- [IngestionAndValidation] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-07T15:15:38.374+05:30  INFO 4852 --- [IngestionAndValidation] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-07T15:15:38.376+05:30  INFO 4852 --- [IngestionAndValidation] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.43]
+2025-09-07T15:15:38.523+05:30  INFO 4852 --- [IngestionAndValidation] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-07T15:15:38.524+05:30  INFO 4852 --- [IngestionAndValidation] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 4119 ms
+2025-09-07T15:15:40.613+05:30  INFO 4852 --- [IngestionAndValidation] [main] org.mongodb.driver.client                : MongoClient with metadata {"driver": {"name": "mongo-java-driver|sync|spring-boot", "version": "5.5.1"}, "os": {"type": "Windows", "name": "Windows 11", "architecture": "amd64", "version": "10.0"}, "platform": "Java/Eclipse Adoptium/21.0.8+9-LTS"} created with settings MongoClientSettings{readPreference=primary, writeConcern=WriteConcern{w=null, wTimeout=null ms, journal=null}, retryWrites=true, retryReads=true, readConcern=ReadConcern{level=null}, credential=null, transportSettings=null, commandListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsCommandListener@5122e4bf], codecRegistry=ProvidersCodecRegistry{codecProviders=[ValueCodecProvider{}, BsonValueCodecProvider{}, DBRefCodecProvider{}, DBObjectCodecProvider{}, DocumentCodecProvider{}, CollectionCodecProvider{}, IterableCodecProvider{}, MapCodecProvider{}, GeoJsonCodecProvider{}, GridFSFileCodecProvider{}, Jsr310CodecProvider{}, JsonObjectCodecProvider{}, BsonCodecProvider{}, EnumCodecProvider{}, com.mongodb.client.model.mql.ExpressionCodecProvider@23e61112, com.mongodb.Jep395RecordCodecProvider@58a7dc4, com.mongodb.KotlinCodecProvider@61b60600]}, loggerSettings=LoggerSettings{maxDocumentLength=1000}, clusterSettings={hosts=[localhost:27017], srvServiceName=mongodb, mode=SINGLE, requiredClusterType=UNKNOWN, requiredReplicaSetName='null', serverSelector='null', clusterListeners='[]', serverSelectionTimeout='30000 ms', localThreshold='15 ms'}, socketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=0, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, heartbeatSocketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=10000, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, connectionPoolSettings=ConnectionPoolSettings{maxSize=100, minSize=0, maxWaitTimeMS=120000, maxConnectionLifeTimeMS=0, maxConnectionIdleTimeMS=0, maintenanceInitialDelayMS=0, maintenanceFrequencyMS=60000, connectionPoolListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsConnectionPoolListener@27f71195], maxConnecting=2}, serverSettings=ServerSettings{heartbeatFrequencyMS=10000, minHeartbeatFrequencyMS=500, serverMonitoringMode=AUTO, serverListeners='[]', serverMonitorListeners='[]'}, sslSettings=SslSettings{enabled=false, invalidHostNameAllowed=false, context=null}, applicationName='null', compressorList=[], uuidRepresentation=JAVA_LEGACY, serverApi=null, autoEncryptionSettings=null, dnsClient=null, inetAddressResolver=null, contextProvider=null, timeoutMS=null}
+2025-09-07T15:15:40.674+05:30  INFO 4852 --- [IngestionAndValidation] [cluster-ClusterId{value='68bd54441be9e2255641546f', description='null'}-localhost:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=64855100, minRoundTripTimeNanos=0}
+2025-09-07T15:15:41.684+05:30  INFO 4852 --- [IngestionAndValidation] [main] c.P.I.services.S3StorageService          : 🔑 Using STATIC credentials for S3 (accessKey provided)
+2025-09-07T15:15:44.108+05:30  INFO 4852 --- [IngestionAndValidation] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2025-09-07T15:15:44.371+05:30  INFO 4852 --- [IngestionAndValidation] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-09-07T15:15:44.401+05:30  INFO 4852 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Started IngestionAndValidationApplication in 11.453 seconds (process running for 12.559)
+2025-09-07T15:16:00.824+05:30  INFO 4852 --- [IngestionAndValidation] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-09-07T15:16:00.824+05:30  INFO 4852 --- [IngestionAndValidation] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-09-07T15:16:00.825+05:30  INFO 4852 --- [IngestionAndValidation] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2025-09-07T15:18:32.071+05:30  INFO 4852 --- [IngestionAndValidation] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-07T15:18:32.088+05:30  INFO 4852 --- [IngestionAndValidation] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-07T15:18:36.096+05:30  INFO 7384 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Starting IngestionAndValidationApplication using Java 21.0.8 with PID 7384 (C:\Users\pasupula.tejaswi\Team1_Big_Project_final\IngestionAndValidation\target\classes started by pasupula.tejaswi in C:\Users\pasupula.tejaswi\Team1_Big_Project_final)
+2025-09-07T15:18:36.104+05:30 DEBUG 7384 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Running with Spring Boot v3.5.4, Spring v6.2.9
+2025-09-07T15:18:36.106+05:30  INFO 7384 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : No active profile set, falling back to 1 default profile: "default"
+2025-09-07T15:18:38.612+05:30  INFO 7384 --- [IngestionAndValidation] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2025-09-07T15:18:38.775+05:30  INFO 7384 --- [IngestionAndValidation] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 133 ms. Found 3 MongoDB repository interfaces.
+2025-09-07T15:18:39.870+05:30  INFO 7384 --- [IngestionAndValidation] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-07T15:18:39.906+05:30  INFO 7384 --- [IngestionAndValidation] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-07T15:18:39.908+05:30  INFO 7384 --- [IngestionAndValidation] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.43]
+2025-09-07T15:18:40.042+05:30  INFO 7384 --- [IngestionAndValidation] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-07T15:18:40.043+05:30  INFO 7384 --- [IngestionAndValidation] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3810 ms
+2025-09-07T15:18:41.516+05:30  INFO 7384 --- [IngestionAndValidation] [main] org.mongodb.driver.client                : MongoClient with metadata {"driver": {"name": "mongo-java-driver|sync|spring-boot", "version": "5.5.1"}, "os": {"type": "Windows", "name": "Windows 11", "architecture": "amd64", "version": "10.0"}, "platform": "Java/Eclipse Adoptium/21.0.8+9-LTS"} created with settings MongoClientSettings{readPreference=primary, writeConcern=WriteConcern{w=null, wTimeout=null ms, journal=null}, retryWrites=true, retryReads=true, readConcern=ReadConcern{level=null}, credential=null, transportSettings=null, commandListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsCommandListener@76a362a4], codecRegistry=ProvidersCodecRegistry{codecProviders=[ValueCodecProvider{}, BsonValueCodecProvider{}, DBRefCodecProvider{}, DBObjectCodecProvider{}, DocumentCodecProvider{}, CollectionCodecProvider{}, IterableCodecProvider{}, MapCodecProvider{}, GeoJsonCodecProvider{}, GridFSFileCodecProvider{}, Jsr310CodecProvider{}, JsonObjectCodecProvider{}, BsonCodecProvider{}, EnumCodecProvider{}, com.mongodb.client.model.mql.ExpressionCodecProvider@61da0413, com.mongodb.Jep395RecordCodecProvider@5627cb29, com.mongodb.KotlinCodecProvider@4d4c1ba9]}, loggerSettings=LoggerSettings{maxDocumentLength=1000}, clusterSettings={hosts=[localhost:27017], srvServiceName=mongodb, mode=SINGLE, requiredClusterType=UNKNOWN, requiredReplicaSetName='null', serverSelector='null', clusterListeners='[]', serverSelectionTimeout='30000 ms', localThreshold='15 ms'}, socketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=0, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, heartbeatSocketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=10000, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, connectionPoolSettings=ConnectionPoolSettings{maxSize=100, minSize=0, maxWaitTimeMS=120000, maxConnectionLifeTimeMS=0, maxConnectionIdleTimeMS=0, maintenanceInitialDelayMS=0, maintenanceFrequencyMS=60000, connectionPoolListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsConnectionPoolListener@2017f6e6], maxConnecting=2}, serverSettings=ServerSettings{heartbeatFrequencyMS=10000, minHeartbeatFrequencyMS=500, serverMonitoringMode=AUTO, serverListeners='[]', serverMonitorListeners='[]'}, sslSettings=SslSettings{enabled=false, invalidHostNameAllowed=false, context=null}, applicationName='null', compressorList=[], uuidRepresentation=JAVA_LEGACY, serverApi=null, autoEncryptionSettings=null, dnsClient=null, inetAddressResolver=null, contextProvider=null, timeoutMS=null}
+2025-09-07T15:18:41.561+05:30  INFO 7384 --- [IngestionAndValidation] [cluster-ClusterId{value='68bd54f9ff0fc4153093220b', description='null'}-localhost:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=47716800, minRoundTripTimeNanos=0}
+2025-09-07T15:18:42.574+05:30  INFO 7384 --- [IngestionAndValidation] [main] c.P.I.services.S3StorageService          : 🔑 Using STATIC credentials for S3 (accessKey provided)
+2025-09-07T15:18:45.206+05:30  INFO 7384 --- [IngestionAndValidation] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2025-09-07T15:18:45.492+05:30  INFO 7384 --- [IngestionAndValidation] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-09-07T15:18:45.520+05:30  INFO 7384 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Started IngestionAndValidationApplication in 10.594 seconds (process running for 11.631)
+2025-09-07T15:18:58.339+05:30  INFO 7384 --- [IngestionAndValidation] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-09-07T15:18:58.340+05:30  INFO 7384 --- [IngestionAndValidation] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-09-07T15:18:58.345+05:30  INFO 7384 --- [IngestionAndValidation] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2025-09-07T15:21:43.318+05:30  INFO 7384 --- [IngestionAndValidation] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-07T15:21:43.342+05:30  INFO 7384 --- [IngestionAndValidation] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-07T15:21:51.859+05:30  INFO 39780 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Starting IngestionAndValidationApplication using Java 21.0.8 with PID 39780 (C:\Users\pasupula.tejaswi\Team1_Big_Project_final\IngestionAndValidation\target\classes started by pasupula.tejaswi in C:\Users\pasupula.tejaswi\Team1_Big_Project_final)
+2025-09-07T15:21:51.864+05:30 DEBUG 39780 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Running with Spring Boot v3.5.4, Spring v6.2.9
+2025-09-07T15:21:51.867+05:30  INFO 39780 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : No active profile set, falling back to 1 default profile: "default"
+2025-09-07T15:21:54.313+05:30  INFO 39780 --- [IngestionAndValidation] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2025-09-07T15:21:54.490+05:30  INFO 39780 --- [IngestionAndValidation] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 150 ms. Found 3 MongoDB repository interfaces.
+2025-09-07T15:21:55.571+05:30  INFO 39780 --- [IngestionAndValidation] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-07T15:21:55.597+05:30  INFO 39780 --- [IngestionAndValidation] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-07T15:21:55.598+05:30  INFO 39780 --- [IngestionAndValidation] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.43]
+2025-09-07T15:21:55.736+05:30  INFO 39780 --- [IngestionAndValidation] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-07T15:21:55.738+05:30  INFO 39780 --- [IngestionAndValidation] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3756 ms
+2025-09-07T15:21:57.461+05:30  INFO 39780 --- [IngestionAndValidation] [main] org.mongodb.driver.client                : MongoClient with metadata {"driver": {"name": "mongo-java-driver|sync|spring-boot", "version": "5.5.1"}, "os": {"type": "Windows", "name": "Windows 11", "architecture": "amd64", "version": "10.0"}, "platform": "Java/Eclipse Adoptium/21.0.8+9-LTS"} created with settings MongoClientSettings{readPreference=primary, writeConcern=WriteConcern{w=null, wTimeout=null ms, journal=null}, retryWrites=true, retryReads=true, readConcern=ReadConcern{level=null}, credential=null, transportSettings=null, commandListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsCommandListener@115c946b], codecRegistry=ProvidersCodecRegistry{codecProviders=[ValueCodecProvider{}, BsonValueCodecProvider{}, DBRefCodecProvider{}, DBObjectCodecProvider{}, DocumentCodecProvider{}, CollectionCodecProvider{}, IterableCodecProvider{}, MapCodecProvider{}, GeoJsonCodecProvider{}, GridFSFileCodecProvider{}, Jsr310CodecProvider{}, JsonObjectCodecProvider{}, BsonCodecProvider{}, EnumCodecProvider{}, com.mongodb.client.model.mql.ExpressionCodecProvider@79ca7bea, com.mongodb.Jep395RecordCodecProvider@54f6b629, com.mongodb.KotlinCodecProvider@4bc9ca97]}, loggerSettings=LoggerSettings{maxDocumentLength=1000}, clusterSettings={hosts=[localhost:27017], srvServiceName=mongodb, mode=SINGLE, requiredClusterType=UNKNOWN, requiredReplicaSetName='null', serverSelector='null', clusterListeners='[]', serverSelectionTimeout='30000 ms', localThreshold='15 ms'}, socketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=0, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, heartbeatSocketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=10000, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, connectionPoolSettings=ConnectionPoolSettings{maxSize=100, minSize=0, maxWaitTimeMS=120000, maxConnectionLifeTimeMS=0, maxConnectionIdleTimeMS=0, maintenanceInitialDelayMS=0, maintenanceFrequencyMS=60000, connectionPoolListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsConnectionPoolListener@3e43f049], maxConnecting=2}, serverSettings=ServerSettings{heartbeatFrequencyMS=10000, minHeartbeatFrequencyMS=500, serverMonitoringMode=AUTO, serverListeners='[]', serverMonitorListeners='[]'}, sslSettings=SslSettings{enabled=false, invalidHostNameAllowed=false, context=null}, applicationName='null', compressorList=[], uuidRepresentation=JAVA_LEGACY, serverApi=null, autoEncryptionSettings=null, dnsClient=null, inetAddressResolver=null, contextProvider=null, timeoutMS=null}
+2025-09-07T15:21:57.527+05:30  INFO 39780 --- [IngestionAndValidation] [cluster-ClusterId{value='68bd55bdea5eee301ac187e2', description='null'}-localhost:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=80136199, minRoundTripTimeNanos=0}
+2025-09-07T15:21:58.447+05:30  INFO 39780 --- [IngestionAndValidation] [main] c.P.I.services.S3StorageService          : 🔑 Using STATIC credentials for S3 (accessKey provided)
+2025-09-07T15:22:00.956+05:30  INFO 39780 --- [IngestionAndValidation] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2025-09-07T15:22:01.204+05:30  INFO 39780 --- [IngestionAndValidation] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-09-07T15:22:01.227+05:30  INFO 39780 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Started IngestionAndValidationApplication in 10.48 seconds (process running for 11.49)
+2025-09-07T15:24:15.390+05:30  INFO 39780 --- [IngestionAndValidation] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-09-07T15:24:15.392+05:30  INFO 39780 --- [IngestionAndValidation] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-09-07T15:24:15.396+05:30  INFO 39780 --- [IngestionAndValidation] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2025-09-07T15:33:48.659+05:30  INFO 39780 --- [IngestionAndValidation] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-07T15:33:48.674+05:30  INFO 39780 --- [IngestionAndValidation] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-07T15:33:52.862+05:30  INFO 20840 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Starting IngestionAndValidationApplication using Java 21.0.8 with PID 20840 (C:\Users\pasupula.tejaswi\Team1_Big_Project_final\IngestionAndValidation\target\classes started by pasupula.tejaswi in C:\Users\pasupula.tejaswi\Team1_Big_Project_final)
+2025-09-07T15:33:52.866+05:30 DEBUG 20840 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Running with Spring Boot v3.5.4, Spring v6.2.9
+2025-09-07T15:33:52.868+05:30  INFO 20840 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : No active profile set, falling back to 1 default profile: "default"
+2025-09-07T15:33:55.179+05:30  INFO 20840 --- [IngestionAndValidation] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2025-09-07T15:33:55.363+05:30  INFO 20840 --- [IngestionAndValidation] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 154 ms. Found 3 MongoDB repository interfaces.
+2025-09-07T15:33:56.459+05:30  INFO 20840 --- [IngestionAndValidation] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-07T15:33:56.488+05:30  INFO 20840 --- [IngestionAndValidation] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-07T15:33:56.489+05:30  INFO 20840 --- [IngestionAndValidation] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.43]
+2025-09-07T15:33:56.639+05:30  INFO 20840 --- [IngestionAndValidation] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-07T15:33:56.641+05:30  INFO 20840 --- [IngestionAndValidation] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3644 ms
+2025-09-07T15:33:58.786+05:30  INFO 20840 --- [IngestionAndValidation] [main] org.mongodb.driver.client                : MongoClient with metadata {"driver": {"name": "mongo-java-driver|sync|spring-boot", "version": "5.5.1"}, "os": {"type": "Windows", "name": "Windows 11", "architecture": "amd64", "version": "10.0"}, "platform": "Java/Eclipse Adoptium/21.0.8+9-LTS"} created with settings MongoClientSettings{readPreference=primary, writeConcern=WriteConcern{w=null, wTimeout=null ms, journal=null}, retryWrites=true, retryReads=true, readConcern=ReadConcern{level=null}, credential=null, transportSettings=null, commandListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsCommandListener@4fb57fb3], codecRegistry=ProvidersCodecRegistry{codecProviders=[ValueCodecProvider{}, BsonValueCodecProvider{}, DBRefCodecProvider{}, DBObjectCodecProvider{}, DocumentCodecProvider{}, CollectionCodecProvider{}, IterableCodecProvider{}, MapCodecProvider{}, GeoJsonCodecProvider{}, GridFSFileCodecProvider{}, Jsr310CodecProvider{}, JsonObjectCodecProvider{}, BsonCodecProvider{}, EnumCodecProvider{}, com.mongodb.client.model.mql.ExpressionCodecProvider@6b063470, com.mongodb.Jep395RecordCodecProvider@226d5af0, com.mongodb.KotlinCodecProvider@527937d0]}, loggerSettings=LoggerSettings{maxDocumentLength=1000}, clusterSettings={hosts=[localhost:27017], srvServiceName=mongodb, mode=SINGLE, requiredClusterType=UNKNOWN, requiredReplicaSetName='null', serverSelector='null', clusterListeners='[]', serverSelectionTimeout='30000 ms', localThreshold='15 ms'}, socketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=0, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, heartbeatSocketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=10000, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, connectionPoolSettings=ConnectionPoolSettings{maxSize=100, minSize=0, maxWaitTimeMS=120000, maxConnectionLifeTimeMS=0, maxConnectionIdleTimeMS=0, maintenanceInitialDelayMS=0, maintenanceFrequencyMS=60000, connectionPoolListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsConnectionPoolListener@36d582cb], maxConnecting=2}, serverSettings=ServerSettings{heartbeatFrequencyMS=10000, minHeartbeatFrequencyMS=500, serverMonitoringMode=AUTO, serverListeners='[]', serverMonitorListeners='[]'}, sslSettings=SslSettings{enabled=false, invalidHostNameAllowed=false, context=null}, applicationName='null', compressorList=[], uuidRepresentation=JAVA_LEGACY, serverApi=null, autoEncryptionSettings=null, dnsClient=null, inetAddressResolver=null, contextProvider=null, timeoutMS=null}
+2025-09-07T15:33:58.820+05:30  INFO 20840 --- [IngestionAndValidation] [cluster-ClusterId{value='68bd588e0c187a6a057b0adb', description='null'}-localhost:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=47057300, minRoundTripTimeNanos=0}
+2025-09-07T15:33:59.900+05:30  INFO 20840 --- [IngestionAndValidation] [main] c.P.I.services.S3StorageService          : 🔑 Using STATIC credentials for S3 (accessKey provided)
+2025-09-07T15:34:02.571+05:30  INFO 20840 --- [IngestionAndValidation] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2025-09-07T15:34:02.820+05:30  INFO 20840 --- [IngestionAndValidation] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-09-07T15:34:02.842+05:30  INFO 20840 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Started IngestionAndValidationApplication in 11.153 seconds (process running for 12.168)
+2025-09-07T15:34:18.257+05:30  INFO 20840 --- [IngestionAndValidation] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-09-07T15:34:18.259+05:30  INFO 20840 --- [IngestionAndValidation] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-09-07T15:34:18.262+05:30  INFO 20840 --- [IngestionAndValidation] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2025-09-07T15:44:47.702+05:30  INFO 20840 --- [IngestionAndValidation] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-07T15:44:47.714+05:30  INFO 20840 --- [IngestionAndValidation] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-07T15:55:02.128+05:30  INFO 40724 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Starting IngestionAndValidationApplication using Java 21.0.8 with PID 40724 (C:\Users\pasupula.tejaswi\Team1_Big_Project_final\IngestionAndValidation\target\classes started by pasupula.tejaswi in C:\Users\pasupula.tejaswi\Team1_Big_Project_final)
+2025-09-07T15:55:02.133+05:30 DEBUG 40724 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Running with Spring Boot v3.5.4, Spring v6.2.9
+2025-09-07T15:55:02.135+05:30  INFO 40724 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : No active profile set, falling back to 1 default profile: "default"
+2025-09-07T15:55:04.684+05:30  INFO 40724 --- [IngestionAndValidation] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2025-09-07T15:55:04.847+05:30  INFO 40724 --- [IngestionAndValidation] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 140 ms. Found 3 MongoDB repository interfaces.
+2025-09-07T15:55:05.830+05:30  INFO 40724 --- [IngestionAndValidation] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-07T15:55:05.855+05:30  INFO 40724 --- [IngestionAndValidation] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-07T15:55:05.856+05:30  INFO 40724 --- [IngestionAndValidation] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.43]
+2025-09-07T15:55:06.022+05:30  INFO 40724 --- [IngestionAndValidation] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-07T15:55:06.023+05:30  INFO 40724 --- [IngestionAndValidation] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3761 ms
+2025-09-07T15:55:06.236+05:30  INFO 19584 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Starting IngestionAndValidationApplication using Java 21.0.8 with PID 19584 (C:\Users\pasupula.tejaswi\Team1_Big_Project_final\IngestionAndValidation\target\classes started by pasupula.tejaswi in C:\Users\pasupula.tejaswi\Team1_Big_Project_final)
+2025-09-07T15:55:06.241+05:30 DEBUG 19584 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Running with Spring Boot v3.5.4, Spring v6.2.9
+2025-09-07T15:55:06.243+05:30  INFO 19584 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : No active profile set, falling back to 1 default profile: "default"
+2025-09-07T15:55:07.311+05:30  INFO 40724 --- [IngestionAndValidation] [main] org.mongodb.driver.client                : MongoClient with metadata {"driver": {"name": "mongo-java-driver|sync|spring-boot", "version": "5.5.1"}, "os": {"type": "Windows", "name": "Windows 11", "architecture": "amd64", "version": "10.0"}, "platform": "Java/Eclipse Adoptium/21.0.8+9-LTS"} created with settings MongoClientSettings{readPreference=primary, writeConcern=WriteConcern{w=null, wTimeout=null ms, journal=null}, retryWrites=true, retryReads=true, readConcern=ReadConcern{level=null}, credential=null, transportSettings=null, commandListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsCommandListener@7b8ea1db], codecRegistry=ProvidersCodecRegistry{codecProviders=[ValueCodecProvider{}, BsonValueCodecProvider{}, DBRefCodecProvider{}, DBObjectCodecProvider{}, DocumentCodecProvider{}, CollectionCodecProvider{}, IterableCodecProvider{}, MapCodecProvider{}, GeoJsonCodecProvider{}, GridFSFileCodecProvider{}, Jsr310CodecProvider{}, JsonObjectCodecProvider{}, BsonCodecProvider{}, EnumCodecProvider{}, com.mongodb.client.model.mql.ExpressionCodecProvider@a91119b, com.mongodb.Jep395RecordCodecProvider@77083e41, com.mongodb.KotlinCodecProvider@231df705]}, loggerSettings=LoggerSettings{maxDocumentLength=1000}, clusterSettings={hosts=[localhost:27017], srvServiceName=mongodb, mode=SINGLE, requiredClusterType=UNKNOWN, requiredReplicaSetName='null', serverSelector='null', clusterListeners='[]', serverSelectionTimeout='30000 ms', localThreshold='15 ms'}, socketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=0, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, heartbeatSocketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=10000, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, connectionPoolSettings=ConnectionPoolSettings{maxSize=100, minSize=0, maxWaitTimeMS=120000, maxConnectionLifeTimeMS=0, maxConnectionIdleTimeMS=0, maintenanceInitialDelayMS=0, maintenanceFrequencyMS=60000, connectionPoolListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsConnectionPoolListener@2d130ac4], maxConnecting=2}, serverSettings=ServerSettings{heartbeatFrequencyMS=10000, minHeartbeatFrequencyMS=500, serverMonitoringMode=AUTO, serverListeners='[]', serverMonitorListeners='[]'}, sslSettings=SslSettings{enabled=false, invalidHostNameAllowed=false, context=null}, applicationName='null', compressorList=[], uuidRepresentation=JAVA_LEGACY, serverApi=null, autoEncryptionSettings=null, dnsClient=null, inetAddressResolver=null, contextProvider=null, timeoutMS=null}
+2025-09-07T15:55:07.414+05:30  INFO 40724 --- [IngestionAndValidation] [cluster-ClusterId{value='68bd5d839b3e1fa70a586385', description='null'}-localhost:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=129031100, minRoundTripTimeNanos=0}
+2025-09-07T15:55:08.584+05:30  INFO 19584 --- [IngestionAndValidation] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2025-09-07T15:55:08.766+05:30  INFO 19584 --- [IngestionAndValidation] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 162 ms. Found 3 MongoDB repository interfaces.
+2025-09-07T15:55:08.775+05:30  INFO 40724 --- [IngestionAndValidation] [main] c.P.I.services.S3StorageService          : 🔑 Using STATIC credentials for S3 (accessKey provided)
+2025-09-07T15:55:09.816+05:30  INFO 19584 --- [IngestionAndValidation] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-07T15:55:09.849+05:30  INFO 19584 --- [IngestionAndValidation] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-07T15:55:09.849+05:30  INFO 19584 --- [IngestionAndValidation] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.43]
+2025-09-07T15:55:10.005+05:30  INFO 19584 --- [IngestionAndValidation] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-07T15:55:10.005+05:30  INFO 19584 --- [IngestionAndValidation] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3657 ms
+2025-09-07T15:55:11.604+05:30  INFO 40724 --- [IngestionAndValidation] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2025-09-07T15:55:11.746+05:30  INFO 19584 --- [IngestionAndValidation] [main] org.mongodb.driver.client                : MongoClient with metadata {"driver": {"name": "mongo-java-driver|sync|spring-boot", "version": "5.5.1"}, "os": {"type": "Windows", "name": "Windows 11", "architecture": "amd64", "version": "10.0"}, "platform": "Java/Eclipse Adoptium/21.0.8+9-LTS"} created with settings MongoClientSettings{readPreference=primary, writeConcern=WriteConcern{w=null, wTimeout=null ms, journal=null}, retryWrites=true, retryReads=true, readConcern=ReadConcern{level=null}, credential=null, transportSettings=null, commandListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsCommandListener@111cba40], codecRegistry=ProvidersCodecRegistry{codecProviders=[ValueCodecProvider{}, BsonValueCodecProvider{}, DBRefCodecProvider{}, DBObjectCodecProvider{}, DocumentCodecProvider{}, CollectionCodecProvider{}, IterableCodecProvider{}, MapCodecProvider{}, GeoJsonCodecProvider{}, GridFSFileCodecProvider{}, Jsr310CodecProvider{}, JsonObjectCodecProvider{}, BsonCodecProvider{}, EnumCodecProvider{}, com.mongodb.client.model.mql.ExpressionCodecProvider@48e41b5d, com.mongodb.Jep395RecordCodecProvider@51e8d066, com.mongodb.KotlinCodecProvider@5333f08f]}, loggerSettings=LoggerSettings{maxDocumentLength=1000}, clusterSettings={hosts=[localhost:27017], srvServiceName=mongodb, mode=SINGLE, requiredClusterType=UNKNOWN, requiredReplicaSetName='null', serverSelector='null', clusterListeners='[]', serverSelectionTimeout='30000 ms', localThreshold='15 ms'}, socketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=0, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, heartbeatSocketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=10000, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, connectionPoolSettings=ConnectionPoolSettings{maxSize=100, minSize=0, maxWaitTimeMS=120000, maxConnectionLifeTimeMS=0, maxConnectionIdleTimeMS=0, maintenanceInitialDelayMS=0, maintenanceFrequencyMS=60000, connectionPoolListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsConnectionPoolListener@27898e13], maxConnecting=2}, serverSettings=ServerSettings{heartbeatFrequencyMS=10000, minHeartbeatFrequencyMS=500, serverMonitoringMode=AUTO, serverListeners='[]', serverMonitorListeners='[]'}, sslSettings=SslSettings{enabled=false, invalidHostNameAllowed=false, context=null}, applicationName='null', compressorList=[], uuidRepresentation=JAVA_LEGACY, serverApi=null, autoEncryptionSettings=null, dnsClient=null, inetAddressResolver=null, contextProvider=null, timeoutMS=null}
+2025-09-07T15:55:11.841+05:30  INFO 40724 --- [IngestionAndValidation] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-09-07T15:55:11.866+05:30  INFO 40724 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Started IngestionAndValidationApplication in 11.019 seconds (process running for 12.067)
+2025-09-07T15:55:11.874+05:30  INFO 19584 --- [IngestionAndValidation] [cluster-ClusterId{value='68bd5d87024e2c0490248388', description='null'}-localhost:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=180993699, minRoundTripTimeNanos=0}
+2025-09-07T15:55:13.063+05:30  INFO 19584 --- [IngestionAndValidation] [main] c.P.I.services.S3StorageService          : 🔑 Using STATIC credentials for S3 (accessKey provided)
+2025-09-07T15:55:15.778+05:30  INFO 19584 --- [IngestionAndValidation] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2025-09-07T15:55:15.916+05:30  WARN 19584 --- [IngestionAndValidation] [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2025-09-07T15:55:15.971+05:30  INFO 19584 --- [IngestionAndValidation] [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-09-07T15:55:16.023+05:30 ERROR 19584 --- [IngestionAndValidation] [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+2025-09-07T15:56:09.690+05:30  INFO 28600 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Starting IngestionAndValidationApplication using Java 21.0.8 with PID 28600 (C:\Users\pasupula.tejaswi\Team1_Big_Project_final\IngestionAndValidation\target\classes started by pasupula.tejaswi in C:\Users\pasupula.tejaswi\Team1_Big_Project_final)
+2025-09-07T15:56:09.695+05:30 DEBUG 28600 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Running with Spring Boot v3.5.4, Spring v6.2.9
+2025-09-07T15:56:09.697+05:30  INFO 28600 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : No active profile set, falling back to 1 default profile: "default"
+2025-09-07T15:56:12.225+05:30  INFO 28600 --- [IngestionAndValidation] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2025-09-07T15:56:12.393+05:30  INFO 28600 --- [IngestionAndValidation] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 137 ms. Found 3 MongoDB repository interfaces.
+2025-09-07T15:56:13.478+05:30  INFO 28600 --- [IngestionAndValidation] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-07T15:56:13.507+05:30  INFO 28600 --- [IngestionAndValidation] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-07T15:56:13.508+05:30  INFO 28600 --- [IngestionAndValidation] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.43]
+2025-09-07T15:56:13.662+05:30  INFO 28600 --- [IngestionAndValidation] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-07T15:56:13.663+05:30  INFO 28600 --- [IngestionAndValidation] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3841 ms
+2025-09-07T15:56:15.185+05:30  INFO 28600 --- [IngestionAndValidation] [main] org.mongodb.driver.client                : MongoClient with metadata {"driver": {"name": "mongo-java-driver|sync|spring-boot", "version": "5.5.1"}, "os": {"type": "Windows", "name": "Windows 11", "architecture": "amd64", "version": "10.0"}, "platform": "Java/Eclipse Adoptium/21.0.8+9-LTS"} created with settings MongoClientSettings{readPreference=primary, writeConcern=WriteConcern{w=null, wTimeout=null ms, journal=null}, retryWrites=true, retryReads=true, readConcern=ReadConcern{level=null}, credential=null, transportSettings=null, commandListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsCommandListener@75bd28d], codecRegistry=ProvidersCodecRegistry{codecProviders=[ValueCodecProvider{}, BsonValueCodecProvider{}, DBRefCodecProvider{}, DBObjectCodecProvider{}, DocumentCodecProvider{}, CollectionCodecProvider{}, IterableCodecProvider{}, MapCodecProvider{}, GeoJsonCodecProvider{}, GridFSFileCodecProvider{}, Jsr310CodecProvider{}, JsonObjectCodecProvider{}, BsonCodecProvider{}, EnumCodecProvider{}, com.mongodb.client.model.mql.ExpressionCodecProvider@129c4d19, com.mongodb.Jep395RecordCodecProvider@11810917, com.mongodb.KotlinCodecProvider@13278a41]}, loggerSettings=LoggerSettings{maxDocumentLength=1000}, clusterSettings={hosts=[localhost:27017], srvServiceName=mongodb, mode=SINGLE, requiredClusterType=UNKNOWN, requiredReplicaSetName='null', serverSelector='null', clusterListeners='[]', serverSelectionTimeout='30000 ms', localThreshold='15 ms'}, socketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=0, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, heartbeatSocketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=10000, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, connectionPoolSettings=ConnectionPoolSettings{maxSize=100, minSize=0, maxWaitTimeMS=120000, maxConnectionLifeTimeMS=0, maxConnectionIdleTimeMS=0, maintenanceInitialDelayMS=0, maintenanceFrequencyMS=60000, connectionPoolListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsConnectionPoolListener@4a31ed12], maxConnecting=2}, serverSettings=ServerSettings{heartbeatFrequencyMS=10000, minHeartbeatFrequencyMS=500, serverMonitoringMode=AUTO, serverListeners='[]', serverMonitorListeners='[]'}, sslSettings=SslSettings{enabled=false, invalidHostNameAllowed=false, context=null}, applicationName='null', compressorList=[], uuidRepresentation=JAVA_LEGACY, serverApi=null, autoEncryptionSettings=null, dnsClient=null, inetAddressResolver=null, contextProvider=null, timeoutMS=null}
+2025-09-07T15:56:15.267+05:30  INFO 28600 --- [IngestionAndValidation] [cluster-ClusterId{value='68bd5dc65a14ec86c2164ad1', description='null'}-localhost:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=86827300, minRoundTripTimeNanos=0}
+2025-09-07T15:56:16.502+05:30  INFO 28600 --- [IngestionAndValidation] [main] c.P.I.services.S3StorageService          : 🔑 Using STATIC credentials for S3 (accessKey provided)
+2025-09-07T15:56:19.112+05:30  INFO 28600 --- [IngestionAndValidation] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2025-09-07T15:56:19.413+05:30  INFO 28600 --- [IngestionAndValidation] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-09-07T15:56:19.437+05:30  INFO 28600 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Started IngestionAndValidationApplication in 11.193 seconds (process running for 12.191)
+2025-09-07T15:56:35.665+05:30  INFO 28600 --- [IngestionAndValidation] [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-09-07T15:56:35.665+05:30  INFO 28600 --- [IngestionAndValidation] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-09-07T15:56:35.667+05:30  INFO 28600 --- [IngestionAndValidation] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2025-09-07T15:56:36.058+05:30 ERROR 28600 --- [IngestionAndValidation] [http-nio-8080-exec-2] MessageLogger                            : INVALID MESSAGE: Ingestion failed - Error validating payload No validator found for network: 10MessageId: TRqXiE7Lc3SLebUENyNdmzE6DBYlSRO306GWtplUgZE
+2025-09-07T15:56:51.336+05:30  INFO 28600 --- [IngestionAndValidation] [http-nio-8080-exec-3] c.P.I.services.S3StorageService          : ✅ Uploaded raw message to S3 bucket=sirivennelaaaaaaa key=raw/61236f336116d9111a-3479-4ee0-80123328-a267ac4856ce/2025/09/07/msg-1757240810205.json
+2025-09-07T15:56:51.336+05:30  INFO 28600 --- [IngestionAndValidation] [http-nio-8080-exec-3] c.P.I.services.S3StorageService          : 📋 S3 Storage Audit: {bucket=sirivennelaaaaaaa, tenantId=61236f336116d9111a-3479-4ee0-80123328-a267ac4856ce, key=raw/61236f336116d9111a-3479-4ee0-80123328-a267ac4856ce/2025/09/07/msg-1757240810205.json}
+2025-09-07T15:56:51.337+05:30  INFO 28600 --- [IngestionAndValidation] [http-nio-8080-exec-3] c.P.I.services.MessageProducerService    : Preparing to send message to Kafka: {"tenantId":"61236f336116d9111a-3479-4ee0-80123328-a267ac4856ce","network":"email","payload":{"from":"finance@bank01.cm","to":["auditor@bank02.com"],"subject":"Wire Transfer Alert off the record","body":" Wire transfer sent to account 456-789-123.","sentAt":"2025-08-19T15:22:00Z"},"stableMessageId":"18zKVKo7Kw7FCxCpCtOgFC7yYZRyPe8ZjNbeZfoUIg0"}
+2025-09-07T15:56:51.442+05:30  INFO 28600 --- [IngestionAndValidation] [http-nio-8080-exec-3] o.a.k.clients.producer.ProducerConfig    : ProducerConfig values: 
+	acks = -1
+	auto.include.jmx.reporter = true
+	batch.size = 16384
+	bootstrap.servers = [localhost:9092]
+	buffer.memory = 33554432
+	client.dns.lookup = use_all_dns_ips
+	client.id = IngestionAndValidation-producer-1
+	compression.gzip.level = -1
+	compression.lz4.level = 9
+	compression.type = none
+	compression.zstd.level = 3
+	connections.max.idle.ms = 540000
+	delivery.timeout.ms = 120000
+	enable.idempotence = true
+	enable.metrics.push = true
+	interceptor.classes = []
+	key.serializer = class org.springframework.kafka.support.serializer.JsonSerializer
+	linger.ms = 0
+	max.block.ms = 60000
+	max.in.flight.requests.per.connection = 5
+	max.request.size = 1048576
+	metadata.max.age.ms = 300000
+	metadata.max.idle.ms = 300000
+	metadata.recovery.strategy = none
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partitioner.adaptive.partitioning.enable = true
+	partitioner.availability.timeout.ms = 0
+	partitioner.class = null
+	partitioner.ignore.keys = false
+	receive.buffer.bytes = 32768
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 2147483647
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.header.urlencode = false
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.timeout.ms = 60000
+	transactional.id = null
+	value.serializer = class org.apache.kafka.common.serialization.StringSerializer
+
+2025-09-07T15:56:51.542+05:30  INFO 28600 --- [IngestionAndValidation] [http-nio-8080-exec-3] o.a.k.c.t.i.KafkaMetricsCollector        : initializing Kafka metrics collector
+2025-09-07T15:56:51.605+05:30  INFO 28600 --- [IngestionAndValidation] [http-nio-8080-exec-3] o.a.k.clients.producer.KafkaProducer     : [Producer clientId=IngestionAndValidation-producer-1] Instantiated an idempotent producer.
+2025-09-07T15:56:51.729+05:30  INFO 28600 --- [IngestionAndValidation] [http-nio-8080-exec-3] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 3.9.1
+2025-09-07T15:56:51.729+05:30  INFO 28600 --- [IngestionAndValidation] [http-nio-8080-exec-3] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: f745dfdcee2b9851
+2025-09-07T15:56:51.729+05:30  INFO 28600 --- [IngestionAndValidation] [http-nio-8080-exec-3] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1757240811724
+2025-09-07T15:56:52.751+05:30  INFO 28600 --- [IngestionAndValidation] [kafka-producer-network-thread | IngestionAndValidation-producer-1] org.apache.kafka.clients.Metadata        : [Producer clientId=IngestionAndValidation-producer-1] Cluster ID: KU1EaQX8THu0kSP9eTZnaA
+2025-09-07T15:56:52.753+05:30  INFO 28600 --- [IngestionAndValidation] [kafka-producer-network-thread | IngestionAndValidation-producer-1] o.a.k.c.p.internals.TransactionManager   : [Producer clientId=IngestionAndValidation-producer-1] ProducerId set to 3001 with epoch 0
+2025-09-07T15:56:52.793+05:30  INFO 28600 --- [IngestionAndValidation] [http-nio-8080-exec-3] c.P.I.services.MessageProducerService    : ✅ Message sent to Kafka: {"tenantId":"61236f336116d9111a-3479-4ee0-80123328-a267ac4856ce","network":"email","payload":{"from":"finance@bank01.cm","to":["auditor@bank02.com"],"subject":"Wire Transfer Alert off the record","body":" Wire transfer sent to account 456-789-123.","sentAt":"2025-08-19T15:22:00Z"},"stableMessageId":"18zKVKo7Kw7FCxCpCtOgFC7yYZRyPe8ZjNbeZfoUIg0"}
+2025-09-07T16:00:18.577+05:30  INFO 28600 --- [IngestionAndValidation] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-07T16:00:18.592+05:30  INFO 28600 --- [IngestionAndValidation] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-07T16:00:18.598+05:30  INFO 28600 --- [IngestionAndValidation] [SpringApplicationShutdownHook] o.a.k.clients.producer.KafkaProducer     : [Producer clientId=IngestionAndValidation-producer-1] Closing the Kafka producer with timeoutMillis = 30000 ms.
+2025-09-07T16:00:18.623+05:30  INFO 28600 --- [IngestionAndValidation] [SpringApplicationShutdownHook] o.apache.kafka.common.metrics.Metrics    : Metrics scheduler closed
+2025-09-07T16:00:18.624+05:30  INFO 28600 --- [IngestionAndValidation] [SpringApplicationShutdownHook] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.metrics.JmxReporter
+2025-09-07T16:00:18.625+05:30  INFO 28600 --- [IngestionAndValidation] [SpringApplicationShutdownHook] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.telemetry.internals.ClientTelemetryReporter
+2025-09-07T16:00:18.625+05:30  INFO 28600 --- [IngestionAndValidation] [SpringApplicationShutdownHook] o.apache.kafka.common.metrics.Metrics    : Metrics reporters closed
+2025-09-07T16:00:18.626+05:30  INFO 28600 --- [IngestionAndValidation] [SpringApplicationShutdownHook] o.a.kafka.common.utils.AppInfoParser     : App info kafka.producer for IngestionAndValidation-producer-1 unregistered
+2025-09-07T16:00:27.118+05:30  INFO 41676 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Starting IngestionAndValidationApplication using Java 21.0.8 with PID 41676 (C:\Users\pasupula.tejaswi\Team1_Big_Project_final\IngestionAndValidation\target\classes started by pasupula.tejaswi in C:\Users\pasupula.tejaswi\Team1_Big_Project_final)
+2025-09-07T16:00:27.123+05:30 DEBUG 41676 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Running with Spring Boot v3.5.4, Spring v6.2.9
+2025-09-07T16:00:27.124+05:30  INFO 41676 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : No active profile set, falling back to 1 default profile: "default"
+2025-09-07T16:00:29.820+05:30  INFO 41676 --- [IngestionAndValidation] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2025-09-07T16:00:30.015+05:30  INFO 41676 --- [IngestionAndValidation] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 163 ms. Found 3 MongoDB repository interfaces.
+2025-09-07T16:00:31.057+05:30  INFO 41676 --- [IngestionAndValidation] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-07T16:00:31.089+05:30  INFO 41676 --- [IngestionAndValidation] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-07T16:00:31.090+05:30  INFO 41676 --- [IngestionAndValidation] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.43]
+2025-09-07T16:00:31.234+05:30  INFO 41676 --- [IngestionAndValidation] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-07T16:00:31.234+05:30  INFO 41676 --- [IngestionAndValidation] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3990 ms
+2025-09-07T16:00:32.608+05:30  INFO 41676 --- [IngestionAndValidation] [main] org.mongodb.driver.client                : MongoClient with metadata {"driver": {"name": "mongo-java-driver|sync|spring-boot", "version": "5.5.1"}, "os": {"type": "Windows", "name": "Windows 11", "architecture": "amd64", "version": "10.0"}, "platform": "Java/Eclipse Adoptium/21.0.8+9-LTS"} created with settings MongoClientSettings{readPreference=primary, writeConcern=WriteConcern{w=null, wTimeout=null ms, journal=null}, retryWrites=true, retryReads=true, readConcern=ReadConcern{level=null}, credential=null, transportSettings=null, commandListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsCommandListener@2f0ccb34], codecRegistry=ProvidersCodecRegistry{codecProviders=[ValueCodecProvider{}, BsonValueCodecProvider{}, DBRefCodecProvider{}, DBObjectCodecProvider{}, DocumentCodecProvider{}, CollectionCodecProvider{}, IterableCodecProvider{}, MapCodecProvider{}, GeoJsonCodecProvider{}, GridFSFileCodecProvider{}, Jsr310CodecProvider{}, JsonObjectCodecProvider{}, BsonCodecProvider{}, EnumCodecProvider{}, com.mongodb.client.model.mql.ExpressionCodecProvider@194012a2, com.mongodb.Jep395RecordCodecProvider@55296b50, com.mongodb.KotlinCodecProvider@60591e1b]}, loggerSettings=LoggerSettings{maxDocumentLength=1000}, clusterSettings={hosts=[localhost:27017], srvServiceName=mongodb, mode=SINGLE, requiredClusterType=UNKNOWN, requiredReplicaSetName='null', serverSelector='null', clusterListeners='[]', serverSelectionTimeout='30000 ms', localThreshold='15 ms'}, socketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=0, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, heartbeatSocketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=10000, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, connectionPoolSettings=ConnectionPoolSettings{maxSize=100, minSize=0, maxWaitTimeMS=120000, maxConnectionLifeTimeMS=0, maxConnectionIdleTimeMS=0, maintenanceInitialDelayMS=0, maintenanceFrequencyMS=60000, connectionPoolListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsConnectionPoolListener@29c53c4f], maxConnecting=2}, serverSettings=ServerSettings{heartbeatFrequencyMS=10000, minHeartbeatFrequencyMS=500, serverMonitoringMode=AUTO, serverListeners='[]', serverMonitorListeners='[]'}, sslSettings=SslSettings{enabled=false, invalidHostNameAllowed=false, context=null}, applicationName='null', compressorList=[], uuidRepresentation=JAVA_LEGACY, serverApi=null, autoEncryptionSettings=null, dnsClient=null, inetAddressResolver=null, contextProvider=null, timeoutMS=null}
+2025-09-07T16:00:32.720+05:30  INFO 41676 --- [IngestionAndValidation] [cluster-ClusterId{value='68bd5ec8928205638b5a8ec7', description='null'}-localhost:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=113312200, minRoundTripTimeNanos=0}
+2025-09-07T16:00:33.981+05:30  INFO 41676 --- [IngestionAndValidation] [main] c.P.I.services.S3StorageService          : 🔑 Using STATIC credentials for S3 (accessKey provided)
+2025-09-07T16:00:36.437+05:30  INFO 41676 --- [IngestionAndValidation] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2025-09-07T16:00:36.640+05:30  INFO 41676 --- [IngestionAndValidation] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-09-07T16:00:36.665+05:30  INFO 41676 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Started IngestionAndValidationApplication in 10.739 seconds (process running for 11.727)
+2025-09-07T16:00:45.137+05:30  INFO 41676 --- [IngestionAndValidation] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-07T16:00:45.149+05:30  INFO 41676 --- [IngestionAndValidation] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-07T16:00:49.562+05:30  INFO 26628 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Starting IngestionAndValidationApplication using Java 21.0.8 with PID 26628 (C:\Users\pasupula.tejaswi\Team1_Big_Project_final\IngestionAndValidation\target\classes started by pasupula.tejaswi in C:\Users\pasupula.tejaswi\Team1_Big_Project_final)
+2025-09-07T16:00:49.567+05:30 DEBUG 26628 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Running with Spring Boot v3.5.4, Spring v6.2.9
+2025-09-07T16:00:49.570+05:30  INFO 26628 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : No active profile set, falling back to 1 default profile: "default"
+2025-09-07T16:00:52.197+05:30  INFO 26628 --- [IngestionAndValidation] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2025-09-07T16:00:52.376+05:30  INFO 26628 --- [IngestionAndValidation] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 150 ms. Found 3 MongoDB repository interfaces.
+2025-09-07T16:00:53.656+05:30  INFO 26628 --- [IngestionAndValidation] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-07T16:00:53.682+05:30  INFO 26628 --- [IngestionAndValidation] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-07T16:00:53.683+05:30  INFO 26628 --- [IngestionAndValidation] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.43]
+2025-09-07T16:00:53.834+05:30  INFO 26628 --- [IngestionAndValidation] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-07T16:00:53.835+05:30  INFO 26628 --- [IngestionAndValidation] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 4140 ms
+2025-09-07T16:00:55.339+05:30  INFO 26628 --- [IngestionAndValidation] [main] org.mongodb.driver.client                : MongoClient with metadata {"driver": {"name": "mongo-java-driver|sync|spring-boot", "version": "5.5.1"}, "os": {"type": "Windows", "name": "Windows 11", "architecture": "amd64", "version": "10.0"}, "platform": "Java/Eclipse Adoptium/21.0.8+9-LTS"} created with settings MongoClientSettings{readPreference=primary, writeConcern=WriteConcern{w=null, wTimeout=null ms, journal=null}, retryWrites=true, retryReads=true, readConcern=ReadConcern{level=null}, credential=null, transportSettings=null, commandListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsCommandListener@5a30722c], codecRegistry=ProvidersCodecRegistry{codecProviders=[ValueCodecProvider{}, BsonValueCodecProvider{}, DBRefCodecProvider{}, DBObjectCodecProvider{}, DocumentCodecProvider{}, CollectionCodecProvider{}, IterableCodecProvider{}, MapCodecProvider{}, GeoJsonCodecProvider{}, GridFSFileCodecProvider{}, Jsr310CodecProvider{}, JsonObjectCodecProvider{}, BsonCodecProvider{}, EnumCodecProvider{}, com.mongodb.client.model.mql.ExpressionCodecProvider@4f2ac7e0, com.mongodb.Jep395RecordCodecProvider@2484dbb7, com.mongodb.KotlinCodecProvider@111cba40]}, loggerSettings=LoggerSettings{maxDocumentLength=1000}, clusterSettings={hosts=[localhost:27017], srvServiceName=mongodb, mode=SINGLE, requiredClusterType=UNKNOWN, requiredReplicaSetName='null', serverSelector='null', clusterListeners='[]', serverSelectionTimeout='30000 ms', localThreshold='15 ms'}, socketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=0, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, heartbeatSocketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=10000, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, connectionPoolSettings=ConnectionPoolSettings{maxSize=100, minSize=0, maxWaitTimeMS=120000, maxConnectionLifeTimeMS=0, maxConnectionIdleTimeMS=0, maintenanceInitialDelayMS=0, maintenanceFrequencyMS=60000, connectionPoolListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsConnectionPoolListener@48e41b5d], maxConnecting=2}, serverSettings=ServerSettings{heartbeatFrequencyMS=10000, minHeartbeatFrequencyMS=500, serverMonitoringMode=AUTO, serverListeners='[]', serverMonitorListeners='[]'}, sslSettings=SslSettings{enabled=false, invalidHostNameAllowed=false, context=null}, applicationName='null', compressorList=[], uuidRepresentation=JAVA_LEGACY, serverApi=null, autoEncryptionSettings=null, dnsClient=null, inetAddressResolver=null, contextProvider=null, timeoutMS=null}
+2025-09-07T16:00:55.390+05:30  INFO 26628 --- [IngestionAndValidation] [cluster-ClusterId{value='68bd5edfbc46b2d91312853b', description='null'}-localhost:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=57346500, minRoundTripTimeNanos=0}
+2025-09-07T16:00:57.242+05:30  INFO 26628 --- [IngestionAndValidation] [main] c.P.I.services.S3StorageService          : 🔑 Using STATIC credentials for S3 (accessKey provided)
+2025-09-07T16:01:01.479+05:30  INFO 26628 --- [IngestionAndValidation] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2025-09-07T16:01:01.854+05:30  INFO 26628 --- [IngestionAndValidation] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-09-07T16:01:01.892+05:30  INFO 26628 --- [IngestionAndValidation] [main] c.P.I.IngestionAndValidationApplication  : Started IngestionAndValidationApplication in 13.695 seconds (process running for 14.731)
+2025-09-07T16:01:02.304+05:30  INFO 26628 --- [IngestionAndValidation] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-09-07T16:01:02.306+05:30  INFO 26628 --- [IngestionAndValidation] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-09-07T16:01:02.310+05:30  INFO 26628 --- [IngestionAndValidation] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2025-09-07T16:01:04.684+05:30  INFO 26628 --- [IngestionAndValidation] [http-nio-8080-exec-1] c.P.I.services.S3StorageService          : ✅ Uploaded raw message to S3 bucket=sirivennelaaaaaaa key=raw/61236f336116d9111a-3479-4ee0-80123328-a267ac4856ce/2025/09/07/msg-1757241063276.json
+2025-09-07T16:01:04.691+05:30  INFO 26628 --- [IngestionAndValidation] [http-nio-8080-exec-1] c.P.I.services.S3StorageService          : 📋 S3 Storage Audit: {bucket=sirivennelaaaaaaa, tenantId=61236f336116d9111a-3479-4ee0-80123328-a267ac4856ce, key=raw/61236f336116d9111a-3479-4ee0-80123328-a267ac4856ce/2025/09/07/msg-1757241063276.json}
+2025-09-07T16:01:04.692+05:30  INFO 26628 --- [IngestionAndValidation] [http-nio-8080-exec-1] c.P.I.services.MessageProducerService    : Preparing to send message to Kafka: {"tenantId":"61236f336116d9111a-3479-4ee0-80123328-a267ac4856ce","network":"email","payload":{"from":"finance@bank01.cm","to":["auditor@bank02.com"],"subject":"Wire Transfer Alert off the record","body":" Wire transfer sent to account 456-789-123...........","sentAt":"2025-08-19T15:22:00Z"},"stableMessageId":"p-khOMjQFeJjPFBgsrzeRNn9TTGIbx4N_9b3xl2vN8Y"}
+2025-09-07T16:01:04.777+05:30  INFO 26628 --- [IngestionAndValidation] [http-nio-8080-exec-1] o.a.k.clients.producer.ProducerConfig    : ProducerConfig values: 
+	acks = -1
+	auto.include.jmx.reporter = true
+	batch.size = 16384
+	bootstrap.servers = [localhost:9092]
+	buffer.memory = 33554432
+	client.dns.lookup = use_all_dns_ips
+	client.id = IngestionAndValidation-producer-1
+	compression.gzip.level = -1
+	compression.lz4.level = 9
+	compression.type = none
+	compression.zstd.level = 3
+	connections.max.idle.ms = 540000
+	delivery.timeout.ms = 120000
+	enable.idempotence = true
+	enable.metrics.push = true
+	interceptor.classes = []
+	key.serializer = class org.springframework.kafka.support.serializer.JsonSerializer
+	linger.ms = 0
+	max.block.ms = 60000
+	max.in.flight.requests.per.connection = 5
+	max.request.size = 1048576
+	metadata.max.age.ms = 300000
+	metadata.max.idle.ms = 300000
+	metadata.recovery.strategy = none
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partitioner.adaptive.partitioning.enable = true
+	partitioner.availability.timeout.ms = 0
+	partitioner.class = null
+	partitioner.ignore.keys = false
+	receive.buffer.bytes = 32768
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 2147483647
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.header.urlencode = false
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.timeout.ms = 60000
+	transactional.id = null
+	value.serializer = class org.apache.kafka.common.serialization.StringSerializer
+
+2025-09-07T16:01:04.908+05:30  INFO 26628 --- [IngestionAndValidation] [http-nio-8080-exec-1] o.a.k.c.t.i.KafkaMetricsCollector        : initializing Kafka metrics collector
+2025-09-07T16:01:04.978+05:30  INFO 26628 --- [IngestionAndValidation] [http-nio-8080-exec-1] o.a.k.clients.producer.KafkaProducer     : [Producer clientId=IngestionAndValidation-producer-1] Instantiated an idempotent producer.
+2025-09-07T16:01:05.137+05:30  INFO 26628 --- [IngestionAndValidation] [http-nio-8080-exec-1] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 3.9.1
+2025-09-07T16:01:05.138+05:30  INFO 26628 --- [IngestionAndValidation] [http-nio-8080-exec-1] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: f745dfdcee2b9851
+2025-09-07T16:01:05.138+05:30  INFO 26628 --- [IngestionAndValidation] [http-nio-8080-exec-1] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1757241065126
+2025-09-07T16:01:06.537+05:30  INFO 26628 --- [IngestionAndValidation] [kafka-producer-network-thread | IngestionAndValidation-producer-1] org.apache.kafka.clients.Metadata        : [Producer clientId=IngestionAndValidation-producer-1] Cluster ID: KU1EaQX8THu0kSP9eTZnaA
+2025-09-07T16:01:06.540+05:30  INFO 26628 --- [IngestionAndValidation] [kafka-producer-network-thread | IngestionAndValidation-producer-1] o.a.k.c.p.internals.TransactionManager   : [Producer clientId=IngestionAndValidation-producer-1] ProducerId set to 3002 with epoch 0
+2025-09-07T16:01:06.587+05:30  INFO 26628 --- [IngestionAndValidation] [http-nio-8080-exec-1] c.P.I.services.MessageProducerService    : ✅ Message sent to Kafka: {"tenantId":"61236f336116d9111a-3479-4ee0-80123328-a267ac4856ce","network":"email","payload":{"from":"finance@bank01.cm","to":["auditor@bank02.com"],"subject":"Wire Transfer Alert off the record","body":" Wire transfer sent to account 456-789-123...........","sentAt":"2025-08-19T15:22:00Z"},"stableMessageId":"p-khOMjQFeJjPFBgsrzeRNn9TTGIbx4N_9b3xl2vN8Y"}
