@@ -34,20 +34,6 @@ public class MessageIdGenerator {
         }
         return instance;
     }
-    private final AuditService auditService;
-
-
-    private MessageIdGenerator(AuditService auditService) {
-        this.auditService = auditService;
-    }
-
-
-    public static MessageIdGenerator getInstance(AuditService auditService) {
-        if (instance == null) {
-            instance = new MessageIdGenerator(auditService);
-        }
-        return instance;
-    }
 
 
     public String generate(JsonNode payload) {
@@ -58,18 +44,7 @@ public class MessageIdGenerator {
             byte[] hash = digest.digest(json.getBytes(StandardCharsets.UTF_8));
 
 
-            String messageId = Base64.getUrlEncoder().withoutPadding().encodeToString(hash);
-            auditService.logEvent(
-                    payload.get("tenantId").asText(),
-                    messageId,
-                    payload.get("network").asText(),
-                    "ID_GENERATED",
-                    Map.of("stableMessageId", messageId)
-            );
-
-
             // Encode in Base64 (URL safe, no padding)
-
             String messageId = Base64.getUrlEncoder().withoutPadding().encodeToString(hash);
             auditService.logEvent(
                     payload.get("tenantId").asText(),
@@ -78,11 +53,10 @@ public class MessageIdGenerator {
                     "ID_GENERATED",
                     Map.of("stableMessageId", messageId)
             );
-
             return messageId;
         } catch (Exception e) {
 
-            throw new MessageIdGenerationException("Unexpected error generating stableMessageId", e);
+            throw new RuntimeException("Failed to generate message ID", e);
         }
     }
 
@@ -97,9 +71,9 @@ public class MessageIdGenerator {
     public static class MessageIdGenerationException extends RuntimeException {
         public MessageIdGenerationException(String message, Throwable cause) {
             super(message, cause);
-
-            throw new RuntimeException("Error generating stableMessageId", e);
-
+            // If you want to throw another exception using 'e', you must pass it as 'cause' from the catch block
+            // Example usage in catch block:
+            // throw new MessageIdGenerationException("Error generating stableMessageId", e);
         }
     }
 

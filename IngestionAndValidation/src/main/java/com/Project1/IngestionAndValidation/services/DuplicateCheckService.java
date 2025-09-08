@@ -27,7 +27,9 @@
 //}
 package com.Project1.IngestionAndValidation.services;
 
+import com.Project1.IngestionAndValidation.Models.UniqueId;
 import com.Project1.IngestionAndValidation.exception.CompanyVaultPersistenceException;
+import com.Project1.IngestionAndValidation.exception.DataAccessException;
 import com.Project1.IngestionAndValidation.repository.UniqueIdRepository;
 import org.springframework.stereotype.Service;
 
@@ -42,21 +44,13 @@ public class DuplicateCheckService {
 
     public boolean isDuplicate(String messageId) {
         try {
-            return uniqueIdRepository.existsById(messageId);
-        } catch (Exception e) {
-            throw new CompanyVaultPersistenceException("Failed to check duplicate message in DB", e);
-
             if (uniqueIdRepository.existsById(messageId)) {
                 return true; // duplicate
             }
-            // save first time
             uniqueIdRepository.save(new UniqueId(messageId));
             return false;
-        } catch (DataAccessException e) {
-            throw new CompanyVaultPersistenceException(
-                    "Failed to check/save duplicate for messageId=" + messageId, e
-            );
-
+        } catch (Exception e) {
+            throw new DataAccessException("Failed to check/save duplicate for messageId=" + messageId, e);
         }
     }
 }
