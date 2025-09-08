@@ -23,7 +23,7 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 @Slf4j
 @Service
-public abstract class S3StorageService {
+public class S3StorageService {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final S3Client s3Client;
@@ -59,8 +59,6 @@ public abstract class S3StorageService {
                     .build();
         }
     }
-
-
 
     public void storeRawMessage(String rawJson) {
         try {
@@ -112,5 +110,4 @@ public abstract class S3StorageService {
         }
     }
 
-    protected abstract S3Client createS3Client(String region, String accessKey, String secretKey);
 }
