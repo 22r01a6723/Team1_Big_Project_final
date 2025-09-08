@@ -22,7 +22,6 @@ public class MessageController {
     @PostMapping
     public ResponseEntity<String> ingestMessage(@RequestBody String payload) {
         try {
-
             // Parse payload to extract network
             String network = null;
             try {
@@ -36,18 +35,6 @@ public class MessageController {
                 return ResponseEntity.badRequest().body("Network field is required");
             }
             String result = messageValidationService.processIncoming(payload, network);
-
-            return ResponseEntity.ok(result);
-
-            String result = messageValidationService.processIncoming(payload);
-            return ResponseEntity.ok(result);
-
-         
-        } catch (InvalidMessageException e) {
-            log.error("INVALID MESSAGE: {}", e.getMessage(), e);
-            return ResponseEntity.badRequest()
-                    .body("InvalidMessageException: " + e.getMessage());  
-
             return ResponseEntity.ok(result);
         } catch (InvalidMessageException e) {
             log.error("INVALID MESSAGE: {}", e.getMessage(), e);
@@ -57,19 +44,8 @@ public class MessageController {
             log.error("SYSTEM ERROR: {}", e.getMessage(), e);
             return ResponseEntity.internalServerError()
                     .body("CompanyVaultException: " + e.getMessage());
-
-        
         } catch (Exception e) {
             log.error("ERROR: {}", e.getMessage(), e);
-
-
-        } catch (Exception e) {
-            log.error("ERROR: {}", e.getMessage(), e);
-            // Show the exact exception class name + message
-
-        } catch (Exception e) {
-            log.error("ERROR: {}", e.getMessage(), e);
-
             return ResponseEntity.internalServerError()
                     .body(e.getClass().getSimpleName() + ": " + e.getMessage());
         }
