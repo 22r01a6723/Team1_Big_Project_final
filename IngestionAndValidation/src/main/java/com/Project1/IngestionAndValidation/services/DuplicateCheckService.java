@@ -27,10 +27,8 @@
 //}
 package com.Project1.IngestionAndValidation.services;
 
-import com.Project1.IngestionAndValidation.Models.UniqueId;
 import com.Project1.IngestionAndValidation.exception.CompanyVaultPersistenceException;
 import com.Project1.IngestionAndValidation.repository.UniqueIdRepository;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -42,16 +40,12 @@ public class DuplicateCheckService {
         this.uniqueIdRepository = uniqueIdRepository;
     }
 
-    /**
-     * Checks if the given messageId is duplicate.
-     * If it's the first time, saves it and returns false.
-     * If it already exists, returns true.
-     */
     public boolean isDuplicate(String messageId) {
         try {
             return uniqueIdRepository.existsById(messageId);
         } catch (Exception e) {
             throw new CompanyVaultPersistenceException("Failed to check duplicate message in DB", e);
+
             if (uniqueIdRepository.existsById(messageId)) {
                 return true; // duplicate
             }
@@ -62,6 +56,7 @@ public class DuplicateCheckService {
             throw new CompanyVaultPersistenceException(
                     "Failed to check/save duplicate for messageId=" + messageId, e
             );
+
         }
     }
 }
