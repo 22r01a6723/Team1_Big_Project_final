@@ -20,7 +20,7 @@ import java.util.Map;
 @RequestMapping("/v1")
 public class IngestController {
 
-//    private final NormalizationFactory factory;
+    //    private final NormalizationFactory factory;
     private final MessageService messageService;
     private final MongoStorageService mongoStorageService;
     private ObjectMapper objectMapper=new ObjectMapper();

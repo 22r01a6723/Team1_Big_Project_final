@@ -14,12 +14,31 @@ public class ProducerService {
     public ProducerService(ComplianceProducer complianceProducer) {
         this.complianceProducer = complianceProducer;
     }
-     public void sendMessage(CanonicalMessage messageJson) {
-        try {
-           complianceProducer.sendMessage(messageJson);
-        }
-        catch (Exception e) {
-            log.error(e.getMessage());
-        }
-     }
+//     public void sendMessage(CanonicalMessage messageJson) {
+//        try {
+//           complianceProducer.sendMessage(messageJson);
+//        }
+//        catch (Exception e) {
+//            log.error(e.getMessage());
+//        }
+//     }
+
+public void store(CanonicalMessage message, String raw) {
+    try {
+        message.setCreatedAt(Instant.now());
+        messageRepository.save(message);
+
+        auditService.logEvent(
+                message.getTenantId(),
+                message.getMessageId(),
+                message.getNetwork(),
+                "STORED_MONGODB",
+                Map.of("collection", "messages", "documentId", message.getMessageId())
+        );
+
+    } catch (Exception e) {
+        throw new StorageException("Mongo save failed for messageId=" + message.getMessageId(), e);
+    }
+}
+
 }

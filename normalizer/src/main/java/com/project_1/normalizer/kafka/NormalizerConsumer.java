@@ -23,11 +23,13 @@ public class NormalizerConsumer {
 
 
     private final ObjectMapper objectMapper=new ObjectMapper();
-    private final MessageService messageService;
-    private final AuditService auditService;
+    private final MongoStorageService mongoStorageService;
+    private MessageService messageService;
+    private AuditService auditService;
 
-    public NormalizerConsumer(MessageService messageService,AuditService auditService) {
+    public NormalizerConsumer(MessageService messageService, MongoStorageService mongoStorageService,AuditService auditService) {
         this.messageService = messageService;
+        this.mongoStorageService = mongoStorageService;
         this.auditService=auditService;
     }
 
@@ -37,17 +39,24 @@ public class NormalizerConsumer {
             log.info("Received Message from Kafka,{}", messageJson);
 
             Map<String,Object> mp=new HashMap<>();
-
+            auditService.logEvent(
+                    "123",
+                    "2e",
+                    "email",
+                    "log",
+                    mp
+            );
+            System.out.println("log saved");
             JsonNode root = objectMapper.readTree(messageJson);
 
             CanonicalMessage message = messageService.processMessage(messageJson);
-             System.out.println(message);
+            System.out.println(message);
         }
         catch (JsonProcessingException e) {
-            auditService.logEvent("","","","JSON_PARSE_ERROR",Map.of("error",e.getMessage()));
+            System.err.println("Error parsing Kafka message: " + e.getMessage());
         }
         catch (Exception e) {
-            auditService.logEvent("","","","",Map.of("error",e.getMessage()));
+            log.error("Error in processing messages: " + e.getMessage());
         }
     }
 }

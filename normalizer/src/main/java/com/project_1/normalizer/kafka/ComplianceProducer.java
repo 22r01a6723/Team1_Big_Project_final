@@ -12,7 +12,7 @@ public class ComplianceProducer {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final ObjectMapper objectMapper;
-   // put in application.yml/properties
+    // put in application.yml/properties
     private String topic="compliance-topic";
 
     public ComplianceProducer(KafkaTemplate<String, String> kafkaTemplate, ObjectMapper objectMapper) {
@@ -20,17 +20,26 @@ public class ComplianceProducer {
         this.objectMapper = objectMapper;
     }
 
-    public void sendMessage(CanonicalMessage message) {
-        try {
-            // Convert object to JSON
-            String jsonMessage = objectMapper.writeValueAsString(message);
-
-            // Send to Kafka
-            kafkaTemplate.send(topic, message.getTenantId(), jsonMessage);
-            System.out.println("✅ Sent message to Kafka: " + jsonMessage);
-
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Error serializing CanonicalMessage", e);
-        }
+//    public void sendMessage(CanonicalMessage message) {
+//        try {
+//            // Convert object to JSON
+//            String jsonMessage = objectMapper.writeValueAsString(message);
+//
+//            // Send to Kafka
+//            kafkaTemplate.send(topic, message.getTenantId(), jsonMessage);
+//            System.out.println("✅ Sent message to Kafka: " + jsonMessage);
+//
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException("Error serializing CanonicalMessage", e);
+//        }
+//    }
+public void sendMessage(CanonicalMessage message) {
+    try {
+        String jsonMessage = objectMapper.writeValueAsString(message);
+        kafkaTemplate.send(topic, message.getTenantId(), jsonMessage);
+    } catch (JsonProcessingException e) {
+        throw new KafkaPublishException("Error serializing CanonicalMessage", e);
     }
+}
+
 }
