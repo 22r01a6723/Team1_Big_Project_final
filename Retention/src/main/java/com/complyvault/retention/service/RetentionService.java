@@ -128,7 +128,7 @@ public class RetentionService {
         }
     }
 
-    private boolean shouldDeleteMessage(CanonicalMessage message, Instant cutoffDate) {
+    public boolean shouldDeleteMessage(CanonicalMessage message, Instant cutoffDate) {
         return message.getTimestamp().isBefore(cutoffDate);
     }
 
