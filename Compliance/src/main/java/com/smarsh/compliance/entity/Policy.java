@@ -5,7 +5,11 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 
+import java.util.List;
+
+@Setter
 @Getter
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -23,7 +27,7 @@ import lombok.Getter;
 })
 
 @Data
-public abstract class Policy {
+public class Policy {
 
     @Id
     private String ruleId;
@@ -34,4 +38,8 @@ public abstract class Policy {
     private String version;
     @Embedded
     private PolicyCondition when;
+
+
+
+
 }

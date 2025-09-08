@@ -25,7 +25,7 @@ public class PolicyService {
         this.flagRepository=flagRepository;
     }
 
-    List<Policy>  getPoliciesByIds(List<String> policyIds) {
+    public List<Policy>  getPoliciesByIds(List<String> policyIds) {
         List<Policy> policies=new ArrayList<>();
         policyIds.forEach(policyId->{
             Optional<Policy> policy=policyRepository.findById(policyId);
