@@ -46,7 +46,7 @@ public class MongoStorageService implements StorageService {
 
 package com.project_1.normalizer.service;
 
-import com.project_1.normalizer.service.AuditService;
+import com.project_1.normalizer.exception.NormalizerStorageException;
 import com.project_1.normalizer.model.CanonicalMessage;
 import com.project_1.normalizer.repository.MessageRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -58,12 +58,10 @@ import java.util.Map;
 @Slf4j
 @Service
 public class MongoStorageService implements StorageService {
-
     private final MessageRepository messageRepository;
-    private final AuditService auditService; // 🔹 add
+    private final AuditService auditService;
 
-    public MongoStorageService(MessageRepository messageRepository,
-                               AuditService auditService) { // 🔹 add
+    public MongoStorageService(MessageRepository messageRepository, AuditService auditService) {
         this.messageRepository = messageRepository;
         this.auditService = auditService;
     }
@@ -74,33 +72,31 @@ public class MongoStorageService implements StorageService {
             message.setCreatedAt(Instant.now());
             messageRepository.save(message);
             log.info("Message saved in MongoDB successfully {}", message.getMessageId());
-
-            // 🔹 AUDIT #2: STORED_MONGODB
             auditService.logEvent(
-                    message.getTenantId(),
-                    message.getMessageId(),
-                    message.getNetwork(),
-                    "STORED_MONGODB",
-                    Map.of(
-                            "collection", "messages",
-                            "documentId", message.getMessageId()
-                    )
+                message.getTenantId(),
+                message.getMessageId(),
+                message.getNetwork(),
+                "STORED_MONGODB",
+                Map.of(
+                    "collection", "messages",
+                    "documentId", message.getMessageId()
+                )
             );
-
         } catch (Exception e) {
             log.error("Mongo save failed for {}: {}", message.getMessageId(), e.getMessage());
-            // Optional failure audit if you want:
             auditService.logEvent(
-                    message.getTenantId(),
-                    message.getMessageId(),
-                    message.getNetwork(),
-                    "STORE_MONGODB_FAILED",
-                    Map.of("error", e.getMessage())
+                message.getTenantId(),
+                message.getMessageId(),
+                message.getNetwork(),
+                "STORE_MONGODB_FAILED",
+                Map.of("error", e.getMessage())
             );
+            throw new NormalizerStorageException("Failed to store message in MongoDB for messageId=" + message.getMessageId(), e);
         }
     }
 
     public boolean isDuplicate(String id) {
+        if (id == null) return false;
         if (messageRepository.existsById(id)) {
             log.warn("Dropped message with uuid={} because duplicate found", id);
             return true;
@@ -108,4 +104,3 @@ public class MongoStorageService implements StorageService {
         return false;
     }
 }
-

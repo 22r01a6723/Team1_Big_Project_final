@@ -20,7 +20,7 @@ import java.util.Map;
 @RequestMapping("/v1")
 public class IngestController {
 
-    //    private final NormalizationFactory factory;
+//    private final NormalizationFactory factory;
     private final MessageService messageService;
     private final MongoStorageService mongoStorageService;
     private ObjectMapper objectMapper=new ObjectMapper();
@@ -31,17 +31,24 @@ public class IngestController {
         this.mongoStorageService = mongoStorageService;
     }
 
-//    @PostMapping("/norm/ingest")
-//    public String ingestMessage(@RequestBody String json) throws IOException {
-//        JsonNode root = objectMapper.readTree(json);
-//        String Id=root.get("id").asText();
-//         if(mongoStorageService.isDuplicate(Id)){
-//             return "Message Dropped. Reason: found duplicate";
-//         }
-//         log.info("Message not found duplicate and sent for processing");
-//         messageService.processMessage(root);
-//         return "Message Processed";
-//    }
+    @PostMapping("/ingest")
+    public ResponseEntity<String> ingestMessage(@RequestBody String json) {
+        try {
+            JsonNode root = objectMapper.readTree(json);
+            JsonNode idNode = root.get("id");
+            if (idNode == null || idNode.asText().trim().isEmpty()) {
+                return ResponseEntity.badRequest().body("Missing or blank required field: id");
+            }
+            String id = idNode.asText();
+            if (mongoStorageService.isDuplicate(id)) {
+                return ResponseEntity.status(409).body("Duplicate ID " + id);
+            }
+            messageService.processMessage(json);
+            return ResponseEntity.ok("Message Processed");
+        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+            return ResponseEntity.status(500).body("invalid JSON: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Internal error: " + e.getMessage());
+        }
+    }
 }
-
-

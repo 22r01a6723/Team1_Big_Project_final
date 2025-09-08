@@ -8,8 +8,15 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * SOLID Principles:
+ * - SRP: Only responsible for logging audit events.
+ * - OCP: Can be extended for new audit event handling strategies.
+ * - LSP: Can be used wherever AuditEventListener is expected.
+ * - DIP: Depends on AuditEventRepository abstraction.
+ */
 @Service
-public class AuditService {
+public class AuditService implements AuditEventListener {
 
     private final AuditEventRepository repo;
 
@@ -52,5 +59,10 @@ public class AuditService {
 
     public boolean isDuplicate(String messageId) {
         return repo.existsByMessageId(messageId);
+    }
+
+    @Override
+    public void onAuditEvent(AuditEvent event) {
+        repo.save(event);
     }
 }
