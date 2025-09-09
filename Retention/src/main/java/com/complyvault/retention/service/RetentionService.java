@@ -1,5 +1,8 @@
 package com.complyvault.retention.service;
 
+import com.complyvault.retention.exception.RetentionNotFoundException;
+import com.complyvault.retention.exception.RetentionDataAccessException;
+import com.complyvault.retention.exception.RetentionServiceException;
 import com.complyvault.retention.repository.CanonicalMessageRepository;
 import com.complyvault.retention.repository.RetentionAuditLogRepository;
 import com.complyvault.retention.repository.RetentionPolicyRepository;
@@ -40,85 +43,110 @@ public class RetentionService {
     public RetentionPolicy saveOrUpdatePolicy(RetentionPolicy policy) {
         String policyId = policy.getTenantId() + "_" + policy.getChannel();
         policy.setId(policyId);
-
-        RetentionPolicy savedPolicy = policyRepository.save(policy);
-
-        // Add audit log for policy creation/update
-        RetentionAuditLog logEntry = RetentionAuditLog.builder()
-                .tenantId(savedPolicy.getTenantId())
-                .channel(savedPolicy.getChannel())
-                .messageId(null) // No message ID because this is about the policy
-                .processedAt(Instant.now())
-                .cutoffDate(null) // Not relevant for policy creation
-                .retentionDays(savedPolicy.getRetentionPeriodDays())
-                .status("POLICY_CREATED_OR_UPDATED")
-                .details("Retention policy created or updated for tenant "
-                        + savedPolicy.getTenantId() + " and channel "
-                        + savedPolicy.getChannel())
-                .build();
-
-        auditLogRepository.save(logEntry);
-
-        return savedPolicy;
+        try {
+            RetentionPolicy savedPolicy = policyRepository.save(policy);
+            RetentionAuditLog logEntry = RetentionAuditLog.builder()
+                    .tenantId(savedPolicy.getTenantId())
+                    .channel(savedPolicy.getChannel())
+                    .messageId(null)
+                    .processedAt(Instant.now())
+                    .cutoffDate(null)
+                    .retentionDays(savedPolicy.getRetentionPeriodDays())
+                    .status("POLICY_CREATED_OR_UPDATED")
+                    .details("Retention policy created or updated for tenant "
+                            + savedPolicy.getTenantId() + " and channel "
+                            + savedPolicy.getChannel())
+                    .build();
+            auditLogRepository.save(logEntry);
+            return savedPolicy;
+        } catch (Exception e) {
+            log.error("Error saving or updating retention policy: {}", e.getMessage(), e);
+            throw new RetentionDataAccessException("Failed to save or update retention policy", e);
+        }
     }
 
     public Optional<RetentionPolicy> getPolicy(String tenantId, String channel) {
-        return policyRepository.findByTenantIdAndChannel(tenantId, channel);
+        try {
+            return policyRepository.findByTenantIdAndChannel(tenantId, channel);
+        } catch (Exception e) {
+            log.error("Error fetching retention policy for tenantId={}, channel={}: {}", tenantId, channel, e.getMessage(), e);
+            throw new RetentionDataAccessException("Failed to fetch retention policy", e);
+        }
     }
 
     public List<RetentionPolicy> getAllPolicies() {
-        return policyRepository.findAll();
+        try {
+            return policyRepository.findAll();
+        } catch (Exception e) {
+            log.error("Error fetching all retention policies: {}", e.getMessage(), e);
+            throw new RetentionDataAccessException("Failed to fetch all retention policies", e);
+        }
     }
 
     public void deleteMessageById(String id) {
-        canonicalMessageRepository.deleteById(id);
+        try {
+            canonicalMessageRepository.deleteById(id);
+        } catch (Exception e) {
+            log.error("Error deleting message by id={}: {}", id, e.getMessage(), e);
+            throw new RetentionDataAccessException("Failed to delete message by id", e);
+        }
     }
 
     public void processExpiredMessages() {
         log.info("Starting retention policy processing at {}", Instant.now());
-
-        List<RetentionPolicy> allPolicies = policyRepository.findAll();
+        List<RetentionPolicy> allPolicies;
+        try {
+            allPolicies = policyRepository.findAll();
+        } catch (Exception e) {
+            log.error("Error fetching all retention policies for processing: {}", e.getMessage(), e);
+            throw new RetentionDataAccessException("Failed to fetch all retention policies for processing", e);
+        }
         log.info("Found {} policies to process", allPolicies.size());
-
         for (RetentionPolicy policy : allPolicies) {
             log.info("Processing policy: tenantId={}, channel={}, retentionDays={}",
                     policy.getTenantId(), policy.getChannel(), policy.getRetentionPeriodDays());
-            processMessagesForPolicy(policy);
+            try {
+                processMessagesForPolicy(policy);
+            } catch (Exception e) {
+                log.error("Error processing messages for policy tenantId={}, channel={}: {}", policy.getTenantId(), policy.getChannel(), e.getMessage(), e);
+                // Continue processing other policies
+            }
         }
-
         log.info("Completed retention policy processing. Processed {} policies", allPolicies.size());
     }
 
     private void processMessagesForPolicy(RetentionPolicy policy) {
-        List<CanonicalMessage> messages = canonicalMessageRepository
-                .findByTenantIdAndNetwork(policy.getTenantId(), policy.getChannel());
+        List<CanonicalMessage> messages;
+        try {
+            messages = canonicalMessageRepository.findByTenantIdAndNetwork(policy.getTenantId(), policy.getChannel());
+        } catch (Exception e) {
+            log.error("Error fetching messages for tenantId={}, channel={}: {}", policy.getTenantId(), policy.getChannel(), e.getMessage(), e);
+            throw new RetentionDataAccessException("Failed to fetch messages for policy", e);
+        }
         log.info("Query: findByTenantIdAndNetwork(tenantId={}, network={}) returned {} messages",
                 policy.getTenantId(), policy.getChannel(), messages.size());
-
         Instant cutoffDate = Instant.now().minusSeconds(policy.getRetentionPeriodDays() * 86400L);
-
         if (messages.isEmpty()) {
             saveAuditLog(policy, null, cutoffDate, "NOT_FOUND", "No messages found");
             return;
         }
-
         int expiredCount = 0;
-
         for (CanonicalMessage message : messages) {
             if (shouldDeleteMessage(message, cutoffDate)) {
                 String messageId = message.getMessageId();
-                canonicalMessageRepository.deleteById(messageId);
-                boolean fileDeleted = deleteFile(messageId, policy);
-
-                // Save audit log
-                saveAuditLog(policy, messageId, cutoffDate,
-                        fileDeleted ? "DELETED" : "FAILED",
-                        fileDeleted ? "Message deleted successfully" : "Failed to delete message");
-
-                expiredCount++;
+                try {
+                    canonicalMessageRepository.deleteById(messageId);
+                    boolean fileDeleted = deleteFile(messageId, policy);
+                    saveAuditLog(policy, messageId, cutoffDate,
+                            fileDeleted ? "DELETED" : "FAILED",
+                            fileDeleted ? "Message deleted successfully" : "Failed to delete message");
+                    expiredCount++;
+                } catch (Exception e) {
+                    log.error("Error deleting message or file for messageId={}: {}", messageId, e.getMessage(), e);
+                    saveAuditLog(policy, messageId, cutoffDate, "FAILED", "Exception during message deletion: " + e.getMessage());
+                }
             }
         }
-
         if (expiredCount > 0) {
             log.info("Identified {} messages for deletion for tenant {} channel {}",
                     expiredCount, policy.getTenantId(), policy.getChannel());
@@ -140,21 +168,19 @@ public class RetentionService {
                 Files.delete(filePath);
                 log.info("Message deleted from disk, with file name: {}", id);
                 deleted = true;
-
-                // Save audit log for successful deletion
                 saveAuditLog(policy, id, Instant.now(), "DELETED", "Message deleted successfully from disk");
-
             } else {
                 log.warn("File not found: {}", id);
-
-                // Save audit log for file not found
                 saveAuditLog(policy, id, Instant.now(), "NOT_FOUND", "File not found on disk");
             }
         } catch (IOException e) {
-            log.error("Failed to delete file {}: {}", id, e.getMessage());
-
-            // Save audit log for error
-            saveAuditLog(policy, id, Instant.now(), "ERROR", "Failed to delete file: " + e.getMessage());
+            log.error("I/O error deleting file for messageId={}: {}", id, e.getMessage(), e);
+            saveAuditLog(policy, id, Instant.now(), "FAILED", "I/O error during file deletion: " + e.getMessage());
+            throw new RetentionDataAccessException("I/O error deleting file for messageId=" + id, e);
+        } catch (Exception e) {
+            log.error("Unexpected error deleting file for messageId={}: {}", id, e.getMessage(), e);
+            saveAuditLog(policy, id, Instant.now(), "FAILED", "Unexpected error during file deletion: " + e.getMessage());
+            throw new RetentionServiceException("Unexpected error deleting file for messageId=" + id, e);
         }
         return deleted;
     }
