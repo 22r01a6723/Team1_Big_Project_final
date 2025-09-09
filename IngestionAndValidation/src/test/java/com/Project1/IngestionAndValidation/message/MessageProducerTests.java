@@ -2,6 +2,7 @@ package com.Project1.IngestionAndValidation.message;
 
 
 import com.Project1.IngestionAndValidation.exception.MessagePublishingException;
+import com.Project1.IngestionAndValidation.kafka.KafkaMessageProducer;
 import com.Project1.IngestionAndValidation.kafka.MessageProducer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,7 +34,7 @@ class MessageProducerTest {
 
     @BeforeEach
     void setUp() {
-        messageProducer = new MessageProducer(kafkaTemplate, objectMapper);
+        messageProducer = new KafkaMessageProducer(kafkaTemplate, objectMapper);
     }
 
     @Test
