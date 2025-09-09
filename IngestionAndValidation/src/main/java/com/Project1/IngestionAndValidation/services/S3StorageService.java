@@ -43,7 +43,7 @@ public class S3StorageService {
             @Value("${app.s3.secretKey:}") String secretKey
     ) {
         Region awsRegion = Region.of(region);
-        if (accessKey != null && !accessKey.isBlank() && secretKey != null && !secretKey.isBlank()) {
+        /*if (accessKey != null && !accessKey.isBlank() && secretKey != null && !secretKey.isBlank()) {
             log.info("🔑 Using STATIC credentials for S3 (accessKey provided)");
             this.s3Client = S3Client.builder()
                     .region(awsRegion)
@@ -51,41 +51,43 @@ public class S3StorageService {
                             AwsBasicCredentials.create(accessKey, secretKey)
                     ))
                     .build();
-        } else {
+        } else {*/
             log.info("🔑 Using DEFAULT credential provider chain for S3 (no static keys)");
             this.s3Client = S3Client.builder()
                     .region(awsRegion)
                     .credentialsProvider(DefaultCredentialsProvider.create())
                     .build();
-        }
+       //}
     }
 
-    public void storeRawMessage(String rawJson) {
+    /**
+     * Stores a raw JSON message in S3.
+     * @param rawJson the raw message
+     * @return the full S3 key where the file was stored
+     */
+    public String storeRawMessage(String rawJson) {
+        String key = null;
         try {
             // Parse JSON to extract tenant info
             JsonNode root = objectMapper.readTree(rawJson);
-            String tenantId = root.get("tenantId").asText("unknown-tenant");
+            String tenantId = root.path("tenantId").asText("unknown-tenant");
 
-            // Build S3 key with tenant/date partitioning
+            // Build S3 key
             StringBuilder keyBuilder = new StringBuilder();
-            keyBuilder.append(keyPrefix);
-            keyBuilder.append(tenantId).append('/');
+            keyBuilder.append(keyPrefix).append(tenantId).append('/');
 
             if (partitionByDate) {
                 LocalDate now = LocalDate.now(ZoneOffset.UTC);
-                keyBuilder
-                        .append(now.getYear()).append('/')
+                keyBuilder.append(now.getYear()).append('/')
                         .append(String.format("%02d", now.getMonthValue())).append('/')
                         .append(String.format("%02d", now.getDayOfMonth())).append('/');
             }
 
-            // Instead of messageId, use a unique timestamp-based name
             String fileName = "msg-" + System.currentTimeMillis() + ".json";
             keyBuilder.append(fileName);
+            key = keyBuilder.toString();
 
-            String key = keyBuilder.toString();
-
-            // Upload raw JSON to S3
+            // Upload
             PutObjectRequest putReq = PutObjectRequest.builder()
                     .bucket(bucket)
                     .key(key)
@@ -94,20 +96,19 @@ public class S3StorageService {
 
             s3Client.putObject(putReq, RequestBody.fromBytes(rawJson.getBytes(StandardCharsets.UTF_8)));
 
-            log.info("✅ Uploaded raw message to S3 bucket={} key={}", bucket, key);
+            log.info("✅ Uploaded raw message to S3: bucket={} key={}", bucket, key);
 
-            // Log audit details
+            // Audit log
             Map<String, Object> details = new HashMap<>();
             details.put("bucket", bucket);
             details.put("key", key);
             details.put("tenantId", tenantId);
-
             log.info("📋 S3 Storage Audit: {}", details);
 
         } catch (Exception e) {
-            log.error("❌ S3 upload failed: {}", e.getMessage());
+            log.error("❌ S3 upload failed (bucket={} key={}): {}", bucket, key, e.getMessage(), e);
             throw new RuntimeException("Failed to store message in S3", e);
         }
+        return key;
     }
-
 }

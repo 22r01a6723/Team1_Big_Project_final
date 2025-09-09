@@ -72,6 +72,11 @@
         </dependency>
 
         <!-- Embedded MongoDB for integration tests (optional) -->
+        <dependency>
+            <groupId>com.complyvault</groupId>
+            <artifactId>shared-models</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
     </dependencies>
 

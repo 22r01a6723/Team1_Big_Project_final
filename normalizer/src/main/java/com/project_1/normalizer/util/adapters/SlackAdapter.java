@@ -1,11 +1,12 @@
 package com.project_1.normalizer.util.adapters;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.project_1.normalizer.model.CanonicalMessage;
-import org.springframework.stereotype.Service;
-
 import java.time.Instant;
 import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.project_1.normalizer.model.CanonicalMessage;
 
 @Service
 public class SlackAdapter implements MessageAdapter {
@@ -17,7 +18,7 @@ public class SlackAdapter implements MessageAdapter {
     @Override
     public CanonicalMessage map(JsonNode root) {
         return CanonicalMessage.builder()
-                .messageId(root.get("stableMessageId").asText())
+                .messageId(root.has("stableMessageId") ? root.get("stableMessageId").asText() : root.get("messageId").asText())
                 .tenantId(root.get("tenantId").asText())
                 .network("slack")
                 .timestamp(Instant.parse(root.get("timestamp").asText()))
@@ -31,9 +32,9 @@ public class SlackAdapter implements MessageAdapter {
                         .body(root.get("text").asText())
                         .build())
                 .context(CanonicalMessage.Context.builder()
-                        .team(root.get("team").asText())
-                        .channel(root.get("channel").asText())
-                        .rawReference(root.get("rawReference").asText())
+                        .team(root.has("team") ? root.get("team").asText() : null)
+                        .channel(root.has("channel") ? root.get("channel").asText() : null)
+                        .rawReference(root.has("rawReference") ? root.get("rawReference").asText() : null)
                         .build())
                 .build();
     }

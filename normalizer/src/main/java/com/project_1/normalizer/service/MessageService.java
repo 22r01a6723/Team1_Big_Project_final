@@ -1,19 +1,26 @@
 package com.project_1.normalizer.service;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.stereotype.Service;
+
+import com.complyvault.shared.client.AuditClient;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project_1.normalizer.exception.*;
+import com.project_1.normalizer.exception.NormalizerException;
+import com.project_1.normalizer.exception.NormalizerInvalidMessageFormatException;
+import com.project_1.normalizer.exception.NormalizerMappingException;
+import com.project_1.normalizer.exception.NormalizerProducerException;
+import com.project_1.normalizer.exception.NormalizerStorageException;
 import com.project_1.normalizer.model.CanonicalMessage;
 import com.project_1.normalizer.model.UniqueId;
 import com.project_1.normalizer.repository.UniqueIdRepository;
 import com.project_1.normalizer.util.MessageAdapterFactory;
 import com.project_1.normalizer.util.adapters.MessageAdapter;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -23,18 +30,18 @@ public class MessageService implements IMessageService {
     private final MessageAdapterFactory messageAdapterFactory;
     private final List<StorageService> storageServices;
     private final ProducerService producerService;
-    private final AuditService auditService;
+    private final AuditClient auditClient;
     private final UniqueIdRepository uniqueIdRepository;
 
     public MessageService(MessageAdapterFactory messageAdapterFactory,
                           List<StorageService> storageServices,
                           ProducerService producerService,
-                          AuditService auditService,
+                          AuditClient auditClient,
                           UniqueIdRepository uniqueIdRepository) {
         this.messageAdapterFactory = messageAdapterFactory;
         this.storageServices = storageServices;
         this.producerService = producerService;
-        this.auditService = auditService;
+        this.auditClient = auditClient;
         this.uniqueIdRepository = uniqueIdRepository;
     }
 
@@ -57,17 +64,21 @@ public class MessageService implements IMessageService {
             MessageAdapter adapter = messageAdapterFactory.getAdapter(network);
             CanonicalMessage message;
             try {
+                log.debug("Using adapter for network: {}", network);
                 message = adapter.map(root);
+                log.debug("Successfully mapped message to canonical format: {}", message.getMessageId());
             } catch (Exception ex) {
-                throw new NormalizerMappingException("Failed to map message fields", ex);
+                log.error("Failed to map message fields for network: {}, message: {}", network, json, ex);
+                throw new NormalizerMappingException("Failed to map message fields for network: " + network, ex);
             }
 
             // ✅ Audit event: CANONICALIZED
-            auditService.logEvent(
+            auditClient.logEvent(
                     message.getTenantId(),
                     message.getMessageId(),
                     message.getNetwork(),
                     "CANONICALIZED",
+                    "normalizer-service",
                     Map.of("rawPayload", json)
             );
 

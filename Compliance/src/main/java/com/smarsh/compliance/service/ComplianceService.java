@@ -1,10 +1,10 @@
 package com.smarsh.compliance.service;
 
+import com.complyvault.shared.client.AuditClient;
 import com.smarsh.compliance.entity.Policy;
 import com.smarsh.compliance.entity.Tenant;
 import com.smarsh.compliance.evaluators.PolicyEvaluator;
 import com.smarsh.compliance.models.Message;
-import com.smarsh.compliance.repository.TenantPolicyRepository;
 import com.smarsh.compliance.repository.TenantRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 
 @Slf4j
@@ -27,17 +26,17 @@ public class ComplianceService {
     private final PolicyService policyService;
     private final TenantRepository tenantRepository;
     private final FlagService flagService;
-    private final AuditService auditService;
+    private final AuditClient auditClient;
 
     public ComplianceService(List<PolicyEvaluator> evaluators,
                              PolicyService policyService, TenantRepository tenantRepository,
                              FlagService flagService,
-                             AuditService auditService) {
+                             AuditClient auditClient) {
         this.evaluators = evaluators;
         this.policyService = policyService;
         this.tenantRepository = tenantRepository;
         this.flagService = flagService;
-        this.auditService = auditService;
+        this.auditClient = auditClient;
     }
 
     public Message process(Message message) {
@@ -78,8 +77,8 @@ public class ComplianceService {
             flagInfo.setFlagDescription(flagDescription.toString());
             flagInfo.setTimestamp(Instant.now());
             message.setFlagInfo(flagInfo);
-            auditService.logEvent(message.getTenantId(), message.getMessageId(), message.getNetwork(), "POLICIES_EVALUATED",
-                    Map.of());
+            auditClient.logEvent(message.getTenantId(), message.getMessageId(), message.getNetwork(), "POLICIES_EVALUATED",
+                    "compliance-service", Map.of());
             return message;
         } catch (com.smarsh.compliance.exception.ComplianceException ce) {
             throw ce;

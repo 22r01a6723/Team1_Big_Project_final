@@ -46,6 +46,7 @@ public class MongoStorageService implements StorageService {
 
 package com.project_1.normalizer.service;
 
+import com.complyvault.shared.client.AuditClient;
 import com.project_1.normalizer.exception.NormalizerStorageException;
 import com.project_1.normalizer.model.CanonicalMessage;
 import com.project_1.normalizer.repository.MessageRepository;
@@ -60,11 +61,11 @@ import java.util.Map;
 @Service
 public class MongoStorageService implements StorageService, IMongoStorageService {
     private final MessageRepository messageRepository;
-    private final AuditService auditService;
+    private final AuditClient auditClient;
 
-    public MongoStorageService(MessageRepository messageRepository, AuditService auditService) {
+    public MongoStorageService(MessageRepository messageRepository, AuditClient auditClient) {
         this.messageRepository = messageRepository;
-        this.auditService = auditService;
+        this.auditClient = auditClient;
     }
 
     @Override
@@ -73,11 +74,12 @@ public class MongoStorageService implements StorageService, IMongoStorageService
             message.setCreatedAt(Instant.now());
             messageRepository.save(message);
             log.info("Message saved in MongoDB successfully {}", message.getMessageId());
-            auditService.logEvent(
+            auditClient.logEvent(
                 message.getTenantId(),
                 message.getMessageId(),
                 message.getNetwork(),
                 "STORED_MONGODB",
+                "normalizer-service",
                 Map.of(
                     "collection", "messages",
                     "documentId", message.getMessageId()
@@ -85,11 +87,12 @@ public class MongoStorageService implements StorageService, IMongoStorageService
             );
         } catch (Exception e) {
             log.error("Mongo save failed for {}: {}", message.getMessageId(), e.getMessage());
-            auditService.logEvent(
+            auditClient.logEvent(
                 message.getTenantId(),
                 message.getMessageId(),
                 message.getNetwork(),
                 "STORE_MONGODB_FAILED",
+                "normalizer-service",
                 Map.of("error", e.getMessage())
             );
             throw new NormalizerStorageException("Failed to store message in MongoDB for messageId=" + message.getMessageId(), e);

@@ -1,6 +1,6 @@
 package com.Project1.IngestionAndValidation.message;
 
-import com.Project1.IngestionAndValidation.services.AuditService;
+import com.complyvault.shared.client.AuditClient;
 import com.Project1.IngestionAndValidation.utils.MessageIdGenerator;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,14 +17,14 @@ import static org.mockito.Mockito.*;
 class MessageIdGeneratorTests {
 
     @Mock
-    private AuditService auditService;
+    private AuditClient auditClient;
 
     private MessageIdGenerator messageIdGenerator;
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     void setUp() {
-        messageIdGenerator = new MessageIdGenerator(auditService);
+        messageIdGenerator = new MessageIdGenerator(auditClient);
     }
 
     @Test
@@ -72,10 +72,10 @@ class MessageIdGeneratorTests {
 
 
     @Test
-    void testGenerate_AuditServiceCalled() throws Exception {
+    void testGenerate_AuditClientCalled() throws Exception {
         JsonNode payload = objectMapper.readTree("{\"field\":\"value\"}");
         messageIdGenerator.generate(payload);
-        verify(auditService, atLeastOnce()).logEvent(any(), any(), any(), any(), any());
+        verify(auditClient, atLeastOnce()).logEvent(any(), any(), any(), any(), any(), any());
     }
 
     @Test
@@ -83,7 +83,7 @@ class MessageIdGeneratorTests {
         JsonNode payload = objectMapper.readTree("{\"field\":\"value\"}");
         messageIdGenerator.generate(payload);
         messageIdGenerator.generate(payload);
-        verify(auditService, times(2)).logEvent(any(), any(), any(), any(), any());
+        verify(auditClient, times(2)).logEvent(any(), any(), any(), any(), any(), any());
     }
 
     @Test

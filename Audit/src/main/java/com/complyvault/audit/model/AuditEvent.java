@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "audit_events")
+@Document(collection = "audit_logs")
 public class AuditEvent {
 
     @Id

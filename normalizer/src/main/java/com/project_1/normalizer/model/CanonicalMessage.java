@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Document
+@Document(collection = "canonical_messages")
 public class CanonicalMessage {
     @Id
     private String messageId;

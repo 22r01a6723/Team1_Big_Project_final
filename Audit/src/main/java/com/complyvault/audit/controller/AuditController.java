@@ -1,15 +1,24 @@
 package com.complyvault.audit.controller;
 
-import com.complyvault.audit.model.AuditEvent;
-import com.complyvault.audit.service.AuditService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.complyvault.audit.model.AuditEvent;
+import com.complyvault.audit.service.AuditService;
+import com.complyvault.shared.dto.AuditEventDTO;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/audit")
@@ -19,7 +28,7 @@ public class AuditController {
     private final AuditService auditService;
 
     @PostMapping("/log")
-    public ResponseEntity<String> logEvent(@RequestBody AuditEventRequest request) {
+    public ResponseEntity<String> logEvent(@RequestBody AuditEventDTO request) {
         auditService.logEvent(
                 request.getTenantId(),
                 request.getMessageId(),

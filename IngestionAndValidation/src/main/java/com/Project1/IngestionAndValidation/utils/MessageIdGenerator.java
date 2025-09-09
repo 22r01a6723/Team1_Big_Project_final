@@ -2,7 +2,7 @@
 package com.Project1.IngestionAndValidation.utils;
 
 import com.Project1.IngestionAndValidation.Models.BaseMessageDTO;
-import com.Project1.IngestionAndValidation.services.AuditService;
+import com.complyvault.shared.client.AuditClient;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
@@ -16,21 +16,21 @@ import java.util.Map;
  * SOLID Principles:
  * - SRP: Only responsible for generating message IDs.
  * - OCP: Can be extended for new ID generation strategies.
- * - DIP: Depends on AuditService abstraction.
+ * - DIP: Depends on AuditClient abstraction.
  */
 @Service
 public class MessageIdGenerator {
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static MessageIdGenerator instance;
-    private AuditService auditService;
+    private AuditClient auditClient;
 
-    private MessageIdGenerator(AuditService auditService) {
-        this.auditService = auditService;
+    private MessageIdGenerator(AuditClient auditClient) {
+        this.auditClient = auditClient;
     }
 
-    public static MessageIdGenerator getInstance(AuditService auditService) {
+    public static MessageIdGenerator getInstance(AuditClient auditClient) {
         if (instance == null) {
-            instance = new MessageIdGenerator(auditService);
+            instance = new MessageIdGenerator(auditClient);
         }
         return instance;
     }
@@ -46,11 +46,12 @@ public class MessageIdGenerator {
 
             // Encode in Base64 (URL safe, no padding)
             String messageId = Base64.getUrlEncoder().withoutPadding().encodeToString(hash);
-            auditService.logEvent(
+            auditClient.logEvent(
                     payload.get("tenantId").asText(),
                     messageId,
                     payload.get("network").asText(),
                     "ID_GENERATED",
+                    "ingestion-validation-service",
                     Map.of("stableMessageId", messageId)
             );
             return messageId;

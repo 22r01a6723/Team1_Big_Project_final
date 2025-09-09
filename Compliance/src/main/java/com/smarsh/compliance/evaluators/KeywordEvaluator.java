@@ -1,12 +1,12 @@
 package com.smarsh.compliance.evaluators;
 
 
+import com.complyvault.shared.client.AuditClient;
 import com.smarsh.compliance.entity.Flag;
 import com.smarsh.compliance.entity.KeywordPolicy;
 import com.smarsh.compliance.entity.Policy;
 import com.smarsh.compliance.entity.RegexPolicy;
 import com.smarsh.compliance.models.Message;
-import com.smarsh.compliance.service.AuditService;
 import com.smarsh.compliance.service.PolicyMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,10 +21,10 @@ import java.util.regex.Pattern;
 @Service
 public class KeywordEvaluator implements PolicyEvaluator {
 
-    private final AuditService auditService;
+    private final AuditClient auditClient;
 
-    public KeywordEvaluator(AuditService auditService) {
-        this.auditService = auditService;
+    public KeywordEvaluator(AuditClient auditClient) {
+        this.auditClient = auditClient;
     }
 
 
@@ -45,8 +45,8 @@ public class KeywordEvaluator implements PolicyEvaluator {
           for (String keyword : keywords) {
               if(fieldValue.contains(keyword)){
                     Flag flag = new Flag(policy.getRuleId(),message.getMessageId(),policy.getDescription(),message.getNetwork(),message.getTenantId());
-                  auditService.logEvent(message.getTenantId(),message.getMessageId(),message.getNetwork()
-                          ,"MESSAGE_FLAGGED", Map.of("flag",flag));
+                  auditClient.logEvent(message.getTenantId(),message.getMessageId(),message.getNetwork()
+                          ,"MESSAGE_FLAGGED", "compliance-service", Map.of("flag",flag));
                     return Optional.of(flag);
               }
         }

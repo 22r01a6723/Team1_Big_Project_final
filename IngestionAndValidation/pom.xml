@@ -104,7 +104,12 @@
             <optional>true</optional>
         </dependency>
 
-
+        <!-- Shared Models -->
+        <dependency>
+            <groupId>com.complyvault</groupId>
+            <artifactId>shared-models</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
         <!-- Test -->
         <dependency>

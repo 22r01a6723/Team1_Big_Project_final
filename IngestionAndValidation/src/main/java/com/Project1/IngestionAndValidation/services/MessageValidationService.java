@@ -1,45 +1,54 @@
 package com.Project1.IngestionAndValidation.services;
 
+import java.util.Map;
+
+import org.springframework.stereotype.Service;
+
 import com.Project1.IngestionAndValidation.Models.UniqueId;
 import com.Project1.IngestionAndValidation.Validation.MessageValidator;
 import com.Project1.IngestionAndValidation.Validation.ValidatorRegistry;
-import com.Project1.IngestionAndValidation.exception.*;
+import com.Project1.IngestionAndValidation.exception.AuditLoggingException;
+import com.Project1.IngestionAndValidation.exception.CompanyVaultPersistenceException;
+import com.Project1.IngestionAndValidation.exception.DuplicateMessageException;
+import com.Project1.IngestionAndValidation.exception.InvalidMessageException;
+import com.Project1.IngestionAndValidation.exception.MessagePublishingException;
+import com.Project1.IngestionAndValidation.exception.UnsupportedNetworkException;
+import com.Project1.IngestionAndValidation.exception.ValidationException;
 import com.Project1.IngestionAndValidation.repository.UniqueIdRepository;
 import com.Project1.IngestionAndValidation.utils.MessageIdGenerator;
+import com.complyvault.shared.client.AuditClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.apache.catalina.Session;
-import org.apache.catalina.Store;
-import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 @Service
 public class MessageValidationService {
 
     private final ValidatorRegistry validatorRegistry;
-    private final AuditService auditService;
+    private final AuditClient auditClient;
     private final DuplicateCheckService duplicateCheckService;
     private final MessageIdGenerator messageIdGenerator;
     private final MessageProducerService messageProducerService;
+    private final S3StorageService s3StorageService;
     private final ObjectMapper mapper = new ObjectMapper();
     private final UniqueIdRepository uniqueIdRepository;
 
     public MessageValidationService(
             ValidatorRegistry validatorRegistry,
-            AuditService auditService,
+            AuditClient auditClient,
             UniqueIdRepository uniqueIdRepository,
             DuplicateCheckService duplicateCheckService,
             MessageIdGenerator messageIdGenerator,
-            MessageProducerService messageProducerService) {
+            MessageProducerService messageProducerService,
+            S3StorageService s3StorageService) {
         this.validatorRegistry = validatorRegistry;
-        this.auditService = auditService;
+        this.auditClient = auditClient;
         this.uniqueIdRepository = uniqueIdRepository;
         this.duplicateCheckService = duplicateCheckService;
         this.messageIdGenerator = messageIdGenerator;
         this.messageProducerService = messageProducerService;
+        this.s3StorageService = s3StorageService;
     }
 
     public String processIncoming(String payload, String network) {
@@ -56,13 +65,22 @@ public class MessageValidationService {
         ObjectNode objectNode = (ObjectNode) root;
         objectNode.put("stableMessageId", stableId);
 
+        // Store raw message in S3
+        String s3Key = null;
         try {
-            auditService.logEvent(
+            s3Key = s3StorageService.storeRawMessage(payload);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to store raw message in S3", e);
+        }
+
+        try {
+            auditClient.logEvent(
                     tenantIdFromPayload,
                     null,
                     network,
                     "INGESTED",
-                    Map.of("rawPayload", payload)
+                    "ingestion-validation-service",
+                    Map.of("rawPayload", payload, "s3Key", s3Key)
             );
         } catch (Exception e) {
             throw new AuditLoggingException("Failed to log INGESTED event", e);
@@ -81,11 +99,12 @@ public class MessageValidationService {
         // Check for duplicates
         if (duplicateCheckService.isDuplicate(stableId)) {
             try {
-                auditService.logEvent(
+                auditClient.logEvent(
                         tenantIdFromPayload,
                         stableId,
                         network,
                         "DUPLICATE",
+                        "ingestion-validation-service",
                         Map.of("status", "duplicate")
                 );
             } catch (Exception e) {
@@ -95,11 +114,12 @@ public class MessageValidationService {
         }
 
         try {
-            auditService.logEvent(
+            auditClient.logEvent(
                     tenantIdFromPayload,
                     stableId,
                     network,
                     "VALIDATED",
+                    "ingestion-validation-service",
                     Map.of("status", "success")
             );
         } catch (Exception e) {

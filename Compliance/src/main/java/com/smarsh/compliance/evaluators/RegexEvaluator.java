@@ -1,12 +1,12 @@
 package com.smarsh.compliance.evaluators;
 
 
+import com.complyvault.shared.client.AuditClient;
 import com.smarsh.compliance.entity.Flag;
 import com.smarsh.compliance.entity.KeywordPolicy;
 import com.smarsh.compliance.entity.Policy;
 import com.smarsh.compliance.entity.RegexPolicy;
 import com.smarsh.compliance.models.Message;
-import com.smarsh.compliance.service.AuditService;
 import com.smarsh.compliance.service.PolicyMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,10 +20,10 @@ import java.util.regex.Pattern;
 @Service
 public class RegexEvaluator implements PolicyEvaluator {
 
-    private AuditService  auditService;
+    private final AuditClient auditClient;
 
-    public RegexEvaluator(AuditService auditService) {
-        this.auditService = auditService;
+    public RegexEvaluator(AuditClient auditClient) {
+        this.auditClient = auditClient;
     }
 
     @Override
@@ -53,8 +53,8 @@ public class RegexEvaluator implements PolicyEvaluator {
                     message.getNetwork(),
                     message.getTenantId()
             );
-            auditService.logEvent(message.getTenantId(),message.getMessageId(),message.getNetwork()
-                    ,"MESSAGE_FLAGGED", Map.of("flag",flag));
+            auditClient.logEvent(message.getTenantId(),message.getMessageId(),message.getNetwork()
+                    ,"MESSAGE_FLAGGED", "compliance-service", Map.of("flag",flag));
             return Optional.of(flag);
         }
         log.info("Message is fine: {}",message.getMessageId());

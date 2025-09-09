@@ -4,7 +4,7 @@ package com.Project1.IngestionAndValidation.service;
 import com.Project1.IngestionAndValidation.Validation.MessageValidator;
 import com.Project1.IngestionAndValidation.Validation.ValidatorRegistry;
 import com.Project1.IngestionAndValidation.exception.*;
-import com.Project1.IngestionAndValidation.services.AuditService;
+import com.complyvault.shared.client.AuditClient;
 import com.Project1.IngestionAndValidation.services.DuplicateCheckService;
 import com.Project1.IngestionAndValidation.services.MessageProducerService;
 import com.Project1.IngestionAndValidation.services.MessageValidationService;
@@ -31,7 +31,7 @@ class MessageValidationServiceTest {
     private ValidatorRegistry validatorRegistry;
 
     @Mock
-    private AuditService auditService;
+    private AuditClient auditClient;
 
     @Mock
     private DuplicateCheckService duplicateCheckService;
@@ -51,7 +51,7 @@ class MessageValidationServiceTest {
     @BeforeEach
     void setUp() {
         messageValidationService = new MessageValidationService(
-                validatorRegistry, auditService, null, duplicateCheckService,
+                validatorRegistry, auditClient, null, duplicateCheckService,
                 messageIdGenerator, messageProducerService
         );
     }
@@ -98,7 +98,7 @@ class MessageValidationServiceTest {
 
         assertEquals("Duplicate message detected. ID=stable-123", result);
         verify(duplicateCheckService).isDuplicate("stable-123");
-        verify(auditService, times(2)).logEvent(anyString(), any(), anyString(), anyString(), any());
+        verify(auditClient, times(2)).logEvent(anyString(), any(), anyString(), anyString(), anyString(), any());
     }
 
 
@@ -126,8 +126,8 @@ class MessageValidationServiceTest {
         JsonNode root = objectMapper.readTree(payload);
 
         when(messageIdGenerator.generate(any(JsonNode.class))).thenReturn("stable-123");
-        doThrow(new RuntimeException("Audit error")).when(auditService)
-                .logEvent(anyString(), any(), anyString(), anyString(), any());
+        doThrow(new RuntimeException("Audit error")).when(auditClient)
+                .logEvent(anyString(), any(), anyString(), anyString(), anyString(), any());
 
         AuditLoggingException exception = assertThrows(
                 AuditLoggingException.class,
