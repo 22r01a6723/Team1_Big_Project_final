@@ -9,6 +9,8 @@ import com.complyvault.retention.repository.RetentionPolicyRepository;
 import com.complyvault.retention.model.RetentionAuditLog;
 import com.complyvault.retention.model.RetentionPolicy;
 import com.complyvault.retention.model.CanonicalMessage;
+import com.complyvault.retention.service.strategy.RetentionPolicyStrategyFactory;
+import com.complyvault.retention.service.strategy.RetentionPolicyStrategy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -28,16 +30,19 @@ public class RetentionService {
     private final RetentionPolicyRepository policyRepository;
     private final CanonicalMessageRepository canonicalMessageRepository;
     private final RetentionAuditLogRepository auditLogRepository;
+    private final RetentionPolicyStrategyFactory strategyFactory;
 
     @Value("${app.disk.path}")
     private String fileStorageDirectory;
 
     public RetentionService(RetentionPolicyRepository policyRepository,
                             CanonicalMessageRepository canonicalMessageRepository,
-                            RetentionAuditLogRepository auditLogRepository) {
+                            RetentionAuditLogRepository auditLogRepository,
+                            RetentionPolicyStrategyFactory strategyFactory) {
         this.policyRepository = policyRepository;
         this.canonicalMessageRepository = canonicalMessageRepository;
         this.auditLogRepository = auditLogRepository;
+        this.strategyFactory = strategyFactory;
     }
 
     public RetentionPolicy saveOrUpdatePolicy(RetentionPolicy policy) {
@@ -125,35 +130,8 @@ public class RetentionService {
         }
         log.info("Query: findByTenantIdAndNetwork(tenantId={}, network={}) returned {} messages",
                 policy.getTenantId(), policy.getChannel(), messages.size());
-        Instant cutoffDate = Instant.now().minusSeconds(policy.getRetentionPeriodDays() * 86400L);
-        if (messages.isEmpty()) {
-            saveAuditLog(policy, null, cutoffDate, "NOT_FOUND", "No messages found");
-            return;
-        }
-        int expiredCount = 0;
-        for (CanonicalMessage message : messages) {
-            if (shouldDeleteMessage(message, cutoffDate)) {
-                String messageId = message.getMessageId();
-                try {
-                    canonicalMessageRepository.deleteById(messageId);
-                    boolean fileDeleted = deleteFile(messageId, policy);
-                    saveAuditLog(policy, messageId, cutoffDate,
-                            fileDeleted ? "DELETED" : "FAILED",
-                            fileDeleted ? "Message deleted successfully" : "Failed to delete message");
-                    expiredCount++;
-                } catch (Exception e) {
-                    log.error("Error deleting message or file for messageId={}: {}", messageId, e.getMessage(), e);
-                    saveAuditLog(policy, messageId, cutoffDate, "FAILED", "Exception during message deletion: " + e.getMessage());
-                }
-            }
-        }
-        if (expiredCount > 0) {
-            log.info("Identified {} messages for deletion for tenant {} channel {}",
-                    expiredCount, policy.getTenantId(), policy.getChannel());
-        } else {
-            log.info("No expired messages found for tenant {} channel {}",
-                    policy.getTenantId(), policy.getChannel());
-        }
+        RetentionPolicyStrategy strategy = strategyFactory.getStrategy(policy);
+        strategy.processExpiredMessages(messages, policy);
     }
 
     public boolean shouldDeleteMessage(CanonicalMessage message, Instant cutoffDate) {
