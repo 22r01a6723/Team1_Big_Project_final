@@ -12,6 +12,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
+
     <groupId>com.complyvault</groupId>
     <artifactId>shared-models</artifactId>
     <version>0.0.1-SNAPSHOT</version>
