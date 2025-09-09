@@ -1,7 +1,7 @@
-package com.complyvault.audit.service;
+package com.complyvault.audit.audit.service;
 
-import com.complyvault.audit.model.AuditEvent;
-import com.complyvault.audit.repository.AuditEventRepository;
+import com.complyvault.audit.audit.model.AuditEvent;
+import com.complyvault.audit.audit.repository.AuditEventRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

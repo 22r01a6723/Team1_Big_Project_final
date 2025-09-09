@@ -1,4 +1,4 @@
-package com.complyvault.audit.repository;
+package com.complyvault.audit.audit.repository;
 
 import java.time.Instant;
 import java.util.List;
@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.complyvault.audit.model.AuditEvent;
+import com.complyvault.audit.audit.model.AuditEvent;
 
 @Repository
 public interface AuditEventRepository extends MongoRepository<AuditEvent, String> {
