@@ -1,15 +1,14 @@
 package com.Project1.Search.service;
 
+
 import com.Project1.Search.dto.SearchRequest;
 import com.Project1.Search.model.Message;
 import com.Project1.Search.repository.MessageCustomRepository;
 import com.Project1.Search.repository.MessageRepository;
+import com.Project1.Search.util.PageableFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -23,51 +22,37 @@ public class MessageSearchServiceImpl implements MessageSearchService {
     private final MessageCustomRepository messageCustomRepository;
 
     @Override
-    public Page<Message> searchMessages(SearchRequest request) throws IllegalArgumentException {
-        Pageable pageable = PageRequest.of(request.getPage(), request.getSize(),
-                Sort.by(Sort.Direction.DESC, "timestamp"));
+    public Page<Message> searchMessages(SearchRequest request) {
+        validateRequest(request);
 
-        // Validate tenantId
-        if (request.getTenantId() == null || request.getTenantId().isEmpty()) {
-            throw new IllegalArgumentException("Tenant ID is required");
+        Pageable pageable = PageableFactory.create(request.getPage(), request.getSize(), "timestamp");
+
+        // Strategy: Keyword search takes priority
+        if (hasText(request.getKeyword())) {
+            return messageRepository.fullTextSearch(request.getKeyword(), request.getTenantId(), pageable);
         }
 
-        // Keyword search (highest priority) - uses simple repository
-        if (request.getKeyword() != null && !request.getKeyword().isEmpty()) {
-            return messageRepository.fullTextSearch(
-                    request.getKeyword(),
-                    request.getTenantId(),
-                    pageable
-            );
-        }
-        System.out.println("Searching in custom "+request);
-        // Use custom repository for complex multi-criteria searches
+        // Fallback: advanced multi-filter search
         return messageCustomRepository.advancedSearch(request, pageable);
     }
 
-    // Add this method to SearchService
-
-
     @Override
     public Page<Message> fullTextSearch(String keyword, String tenantId, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "timestamp"));
+        Pageable pageable = PageableFactory.create(page, size, "timestamp");
         return messageRepository.fullTextSearch(keyword, tenantId, pageable);
     }
 
     @Override
     public Page<Message> searchByField(String field, String value, String tenantId, boolean exactMatch, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "timestamp"));
-
-        if (exactMatch) {
-            return messageRepository.exactMatchSearch(field, value, tenantId, pageable);
-        } else {
-            return messageRepository.partialMatchSearch(field, value, tenantId, pageable);
-        }
+        Pageable pageable = PageableFactory.create(page, size, "timestamp");
+        return exactMatch
+                ? messageRepository.exactMatchSearch(field, value, tenantId, pageable)
+                : messageRepository.partialMatchSearch(field, value, tenantId, pageable);
     }
 
     @Override
     public Page<Message> searchByTimeRange(String tenantId, Instant start, Instant end, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "timestamp"));
+        Pageable pageable = PageableFactory.create(page, size, "timestamp");
         return messageRepository.findByTenantIdAndTimestampBetween(
                 tenantId,
                 Optional.ofNullable(start).orElse(Instant.MIN),
@@ -78,7 +63,7 @@ public class MessageSearchServiceImpl implements MessageSearchService {
 
     @Override
     public Page<Message> searchByFlagTimeRange(String tenantId, Instant start, Instant end, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "flagInfo.timestamp"));
+        Pageable pageable = PageableFactory.create(page, size, "flagInfo.timestamp");
         return messageRepository.findByTenantIdAndFlagInfoTimestampBetween(
                 tenantId,
                 Optional.ofNullable(start).orElse(Instant.MIN),
@@ -87,49 +72,47 @@ public class MessageSearchServiceImpl implements MessageSearchService {
         );
     }
 
-    // Additional specific search methods that use the simple repository
     public Page<Message> findByNetwork(String tenantId, String network, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "timestamp"));
-        return messageRepository.findByTenantIdAndNetwork(tenantId, network, pageable);
+        return messageRepository.findByTenantIdAndNetwork(tenantId, network, PageableFactory.create(page, size, "timestamp"));
     }
 
     public Page<Message> findByFlaggedStatus(String tenantId, boolean flagged, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "timestamp"));
-        return messageRepository.findByTenantIdAndFlagged(tenantId, flagged, pageable);
+        return messageRepository.findByTenantIdAndFlagged(tenantId, flagged, PageableFactory.create(page, size, "timestamp"));
     }
 
-//    public Page<Message> findByTeam(String tenantId, String team, int page, int size) {
-//        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "timestamp"));
-//        return messageRepository.findByTeam(team, tenantId, pageable);
-//    }
-
     public Page<Message> findByTeam(String tenantId, String team, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "timestamp"));
-        return messageRepository.findByTeam(team,tenantId, pageable);
+        return messageRepository.findByTeam(team, tenantId, PageableFactory.create(page, size, "timestamp"));
     }
 
     public Page<Message> findByChannel(String tenantId, String channel, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "timestamp"));
-        return messageRepository.findByChannel(channel, tenantId, pageable);
+        return messageRepository.findByChannel(channel, tenantId, PageableFactory.create(page, size, "timestamp"));
     }
 
     public Page<Message> findByParticipantId(String tenantId, String participantId, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "timestamp"));
-        return messageRepository.findByParticipantId(participantId, tenantId, pageable);
+        return messageRepository.findByParticipantId(participantId, tenantId, PageableFactory.create(page, size, "timestamp"));
     }
 
     public Page<Message> findByParticipantRole(String tenantId, String role, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "timestamp"));
-        return messageRepository.findByParticipantRole(role, tenantId, pageable);
+        return messageRepository.findByParticipantRole(role, tenantId, PageableFactory.create(page, size, "timestamp"));
     }
 
     public Page<Message> findByFlagDescription(String tenantId, String flagDescription, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "timestamp"));
-        return messageRepository.findByFlagDescription(flagDescription, tenantId, pageable);
+        return messageRepository.findByFlagDescription(flagDescription, tenantId, PageableFactory.create(page, size, "timestamp"));
     }
 
     public Page<Message> findByRuleId(String tenantId, String ruleId, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "timestamp"));
-        return messageRepository.findByRuleId(ruleId, tenantId, pageable);
+        return messageRepository.findByRuleId(ruleId, tenantId, PageableFactory.create(page, size, "timestamp"));
+    }
+
+    // === Private helpers ===
+
+    private void validateRequest(SearchRequest request) {
+        if (!hasText(request.getTenantId())) {
+            throw new IllegalArgumentException("Tenant ID is required");
+        }
+    }
+
+    private boolean hasText(String value) {
+        return value != null && !value.trim().isEmpty();
     }
 }
