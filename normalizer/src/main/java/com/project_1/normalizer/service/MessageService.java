@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Slf4j
 @Service
-public class MessageService {
+public class MessageService implements IMessageService {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final MessageAdapterFactory messageAdapterFactory;
@@ -38,6 +38,7 @@ public class MessageService {
         this.uniqueIdRepository = uniqueIdRepository;
     }
 
+    @Override
     public CanonicalMessage processMessage(String json) throws IOException {
         try {
             JsonNode root = objectMapper.readTree(json);

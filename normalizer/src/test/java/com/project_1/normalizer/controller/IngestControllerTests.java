@@ -9,6 +9,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -51,7 +53,7 @@ class IngestControllerTest {
 
     /** 4. Duplicate ID */
     @Test
-    void testIngestMessage_DuplicateId() {
+    void testIngestMessage_DuplicateId() throws IOException {
         String json = "{\"id\":\"123\",\"network\":\"email\"}";
         when(mongoStorageService.isDuplicate("123")).thenReturn(true);
 

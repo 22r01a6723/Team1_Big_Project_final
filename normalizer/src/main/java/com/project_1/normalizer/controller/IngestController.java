@@ -3,30 +3,32 @@ package com.project_1.normalizer.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project_1.normalizer.model.CanonicalMessage;
-import com.project_1.normalizer.service.MessageService;
-
-import com.project_1.normalizer.service.MongoStorageService;
+import com.project_1.normalizer.service.IMessageService; // Use interface for DIP
+import com.project_1.normalizer.service.IMongoStorageService; // Use interface for DIP
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.project_1.normalizer.util.NormalizationFactory;
-
 import java.io.IOException;
 import java.util.Map;
 
+/**
+ * IngestController follows SRP (Single Responsibility Principle):
+ *   - Only handles HTTP requests and delegates business logic to services.
+ * Uses DIP (Dependency Inversion Principle):
+ *   - Depends on interfaces, not concrete implementations.
+ * Design Patterns:
+ *   - Uses Service Layer pattern for business logic separation.
+ */
 @Slf4j
 @RestController
 @RequestMapping("/v1")
 public class IngestController {
+    private final IMessageService messageService; // DIP
+    private final IMongoStorageService mongoStorageService; // DIP
+    private ObjectMapper objectMapper = new ObjectMapper();
 
-//    private final NormalizationFactory factory;
-    private final MessageService messageService;
-    private final MongoStorageService mongoStorageService;
-    private ObjectMapper objectMapper=new ObjectMapper();
-
-    public IngestController(MessageService messageService, MongoStorageService mongoStorageService) {
-//        this.factory = factory;
+    public IngestController(IMessageService messageService, IMongoStorageService mongoStorageService) {
         this.messageService = messageService;
         this.mongoStorageService = mongoStorageService;
     }

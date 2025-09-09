@@ -52,12 +52,13 @@ import com.project_1.normalizer.repository.MessageRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.util.Map;
 
 @Slf4j
 @Service
-public class MongoStorageService implements StorageService {
+public class MongoStorageService implements StorageService, IMongoStorageService {
     private final MessageRepository messageRepository;
     private final AuditService auditService;
 
@@ -95,10 +96,11 @@ public class MongoStorageService implements StorageService {
         }
     }
 
-    public boolean isDuplicate(String id) {
-        if (id == null) return false;
-        if (messageRepository.existsById(id)) {
-            log.warn("Dropped message with uuid={} because duplicate found", id);
+    @Override
+    public boolean isDuplicate(String Id) {
+        if (Id == null) return false;
+        if (messageRepository.existsById(Id)) {
+            log.warn("Dropped message with uuid={} because duplicate found", Id);
             return true;
         }
         return false;
