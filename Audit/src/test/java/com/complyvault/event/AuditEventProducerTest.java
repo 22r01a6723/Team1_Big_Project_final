@@ -1,7 +1,7 @@
-package com.complyvault.audit.event;
+package com.complyvault.event;
 
 
-import com.complyvault.audit.audit.kafka.AuditEventProducer;
+import com.complyvault.audit.kafka.AuditEventProducer;
 import com.complyvault.shared.dto.AuditEventDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

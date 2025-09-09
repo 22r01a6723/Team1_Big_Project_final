@@ -1,7 +1,7 @@
-package com.complyvault.audit.audit.kafka;
+package com.complyvault.audit.kafka;
 
-import com.complyvault.audit.audit.model.AuditEvent;
-import com.complyvault.audit.audit.service.AuditService;
+import com.complyvault.audit.model.AuditEvent;
+import com.complyvault.audit.service.AuditService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;

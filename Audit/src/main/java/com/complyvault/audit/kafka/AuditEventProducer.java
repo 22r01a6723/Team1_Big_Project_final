@@ -1,4 +1,4 @@
-package com.complyvault.audit.audit.kafka;
+package com.complyvault.audit.kafka;
 
 import com.complyvault.shared.dto.AuditEventDTO;
 import lombok.RequiredArgsConstructor;

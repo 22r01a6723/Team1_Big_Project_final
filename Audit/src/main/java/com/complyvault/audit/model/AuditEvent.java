@@ -1,4 +1,4 @@
-package com.complyvault.audit.audit.model;
+package com.complyvault.audit.model;
 
 import java.time.Instant;
 import java.util.Map;

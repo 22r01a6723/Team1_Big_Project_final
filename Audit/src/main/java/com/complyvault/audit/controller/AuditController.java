@@ -1,7 +1,7 @@
-package com.complyvault.audit.audit.controller;
+package com.complyvault.audit.controller;
 
-import com.complyvault.audit.audit.model.AuditEvent;
-import com.complyvault.audit.audit.service.AuditService;
+import com.complyvault.audit.model.AuditEvent;
+import com.complyvault.audit.service.AuditService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;

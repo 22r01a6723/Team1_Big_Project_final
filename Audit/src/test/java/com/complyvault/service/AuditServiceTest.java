@@ -1,9 +1,9 @@
-package com.complyvault.audit.service;
+package com.complyvault.service;
 
 
-import com.complyvault.audit.audit.model.AuditEvent;
-import com.complyvault.audit.audit.repository.AuditEventRepository;
-import com.complyvault.audit.audit.service.AuditService;
+import com.complyvault.audit.model.AuditEvent;
+import com.complyvault.audit.repository.AuditEventRepository;
+import com.complyvault.audit.service.AuditService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

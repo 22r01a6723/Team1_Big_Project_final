@@ -1,4 +1,4 @@
-package com.complyvault.audit;
+package com.complyvault;
 
 public class AuditServiceApplicationTests {
 }

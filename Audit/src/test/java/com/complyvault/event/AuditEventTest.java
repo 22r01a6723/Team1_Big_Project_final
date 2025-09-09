@@ -1,6 +1,6 @@
-package com.complyvault.audit.event;
+package com.complyvault.event;
 
-import com.complyvault.audit.audit.model.AuditEvent;
+import com.complyvault.audit.model.AuditEvent;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.mongodb.core.mapping.Document;
 
