@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: search-deployment
+  labels:
+    app: search
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: search
+  template:
+    metadata:
+      labels:
+        app: search
+    spec:
+      containers:
+        - name: search
+          image: search-service:1.0
+          ports:
+            - containerPort: 8085
+          env:
+            - name: AUDIT_SERVICE_URL
+              value: "http://audit-service:8093"
+            - name: SPRING_DATA_MONGODB_URI
+              value: "mongodb://mongodb-service:27017/complyvault_search"
+            - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+              value: "kafka-service:9092"
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"

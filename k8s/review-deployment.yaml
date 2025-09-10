@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: review-deployment
+  labels:
+    app: review
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: review
+  template:
+    metadata:
+      labels:
+        app: review
+    spec:
+      containers:
+        - name: review
+          image: review-service:1.0
+          ports:
+            - containerPort: 8084
+          env:
+            - name: AUDIT_SERVICE_URL
+              value: "http://audit-service:8093"
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:h2:mem:reviewdb"
+            - name: SPRING_H2_CONSOLE_ENABLED
+              value: "true"
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"

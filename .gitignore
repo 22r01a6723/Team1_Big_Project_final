@@ -1,7 +1,10 @@
-.idea
+# IDE files
+.idea/
+*.iml
+.vscode/
 
-log
-target
+# Build outputs
+target/
 **/target/
 **/log/
 normalizer/target/classes
