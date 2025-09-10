@@ -43,7 +43,7 @@ public class MessageController {
         } catch (CompanyVaultException e) {
             log.error("SYSTEM ERROR: {}", e.getMessage(), e);
             return ResponseEntity.internalServerError()
-                    .body("CompanyVaultException: " + e.getMessage());
+                    .body(e.getMessage());
         } catch (Exception e) {
             log.error("ERROR: {}", e.getMessage(), e);
             return ResponseEntity.internalServerError()
