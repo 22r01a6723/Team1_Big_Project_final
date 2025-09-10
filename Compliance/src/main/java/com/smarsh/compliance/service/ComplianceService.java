@@ -1,11 +1,13 @@
 package com.smarsh.compliance.service;
 
-import com.complyvault.shared.client.AuditClient;
+import com.smarsh.compliance.entity.Flag;
 import com.smarsh.compliance.entity.Policy;
 import com.smarsh.compliance.entity.Tenant;
-import com.smarsh.compliance.evaluators.PolicyEvaluator;
-import com.smarsh.compliance.models.Message;
+import com.smarsh.compliance.handler.PolicyHandler;
+import com.smarsh.compliance.handler.PolicyHandlerChainBuilder;
+import com.smarsh.compliance.repository.PolicyRepository;
 import com.smarsh.compliance.repository.TenantRepository;
+import com.smarsh.compliance.models.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -16,75 +18,80 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-
 @Slf4j
 @Service
 public class ComplianceService {
 
-
-    private final List<PolicyEvaluator> evaluators;
-    private final PolicyService policyService;
+    private final PolicyHandlerChainBuilder chainBuilder;
     private final TenantRepository tenantRepository;
+    private final PolicyRepository policyRepository;
     private final FlagService flagService;
-    private final AuditClient auditClient;
+    private final AuditClientProxy auditClientProxy; // thin wrapper to avoid direct dependency in this example
 
-    public ComplianceService(List<PolicyEvaluator> evaluators,
-                             PolicyService policyService, TenantRepository tenantRepository,
+    public ComplianceService(PolicyHandlerChainBuilder chainBuilder,
+                             TenantRepository tenantRepository,
+                             PolicyRepository policyRepository,
                              FlagService flagService,
-                             AuditClient auditClient) {
-        this.evaluators = evaluators;
-        this.policyService = policyService;
+                             AuditClientProxy auditClientProxy) {
+        this.chainBuilder = chainBuilder;
         this.tenantRepository = tenantRepository;
+        this.policyRepository = policyRepository;
         this.flagService = flagService;
-        this.auditClient = auditClient;
+        this.auditClientProxy = auditClientProxy;
     }
 
+    /**
+     * Process message: get tenant policies, filter by tenant/network condition, then run each policy through the chain.
+     * If any handler returns a Flag, it's saved and message is marked flagged.
+     */
     public Message process(Message message) {
         try {
-            Optional<Tenant> tenant = tenantRepository.findByTenantId(message.getTenantId());
+            Optional<Tenant> tenantOpt = tenantRepository.findByTenantId(message.getTenantId());
             List<String> policyIds = new ArrayList<>();
-            tenant.ifPresent(value -> policyIds.addAll(value.getPolicyIds()));
-            log.info("Policy Ids: {}", policyIds);
-            List<Policy> policies = policyService.getPoliciesByIds(policyIds);
-            log.info("Compliance Processing started,{}", message.getMessageId());
+            tenantOpt.ifPresent(t -> policyIds.addAll(t.getPolicyIds()));
 
-            StringBuilder flagDescription = new StringBuilder();
+            List<Policy> policies = policyRepository.findAllById(policyIds);
+            log.info("Processing message {} with {} policies", message.getMessageId(), policies.size());
+
+            PolicyHandler chainHead = chainBuilder.buildChain();
+
             AtomicBoolean flagged = new AtomicBoolean(false);
-            // Filter policies by network
-            policies.stream()
-                    .filter(p -> p.getWhen().getNetworkEquals().equalsIgnoreCase(message.getNetwork()))
-                    .forEach(policy -> evaluators.stream()
-                            .filter(e -> e.supports(policy.getType()))
-                            .forEach(e -> {
-                                try {
-                                    e.evaluate(message, policy)
-                                            .ifPresent(flag -> {
-                                                flagService.saveFlag(flag);
-                                                flagDescription.append(policy.getDescription()).append(" ");
-                                                flagged.set(true);
-                                            });
-                                } catch (Exception ex) {
-                                    log.error("Error during policy evaluation or flag saving: {}", ex.getMessage(), ex);
-                                    throw new com.smarsh.compliance.exception.ComplianceException("Policy evaluation or flag saving failed", ex);
-                                }
-                            })
-                    );
-            if (!flagged.get()) {
-                return message;
+            StringBuilder flagDescription = new StringBuilder();
+
+            for (Policy p : policies) {
+                // filter by network condition if present
+                if (p.getWhen() != null && p.getWhen().getNetworkEquals() != null) {
+                    if (!p.getWhen().getNetworkEquals().equalsIgnoreCase(message.getNetwork())) {
+                        continue;
+                    }
+                }
+
+                if (chainHead != null) {
+                    Optional<Flag> maybeFlag = chainHead.handle(message, p);
+                    if (maybeFlag.isPresent()) {
+                        Flag f = maybeFlag.get();
+                        flagService.saveFlag(f);
+                        flagDescription.append(p.getDescription()).append(" ");
+                        flagged.set(true);
+                    }
+                }
             }
-            Message.FlagInfo flagInfo = new Message.FlagInfo();
-            message.setFlagged(true);
-            flagInfo.setFlagDescription(flagDescription.toString());
-            flagInfo.setTimestamp(Instant.now());
-            message.setFlagInfo(flagInfo);
-            auditClient.logEvent(message.getTenantId(), message.getMessageId(), message.getNetwork(), "POLICIES_EVALUATED",
-                    "compliance-service", Map.of());
+
+            if (flagged.get()) {
+                message.setFlagged(true);
+                Message.FlagInfo fi = new Message.FlagInfo();
+                fi.setFlagDescription(flagDescription.toString().trim());
+                fi.setTimestamp(Instant.now());
+                message.setFlagInfo(fi);
+            }
+
+            auditClientProxy.logEvent(message.getTenantId(), message.getMessageId(), message.getNetwork(),
+                    "POLICIES_EVALUATED", "compliance-service", Map.of());
+
             return message;
-        } catch (com.smarsh.compliance.exception.ComplianceException ce) {
-            throw ce;
         } catch (Exception e) {
-            log.error("Error in ComplianceService.process: {}", e.getMessage(), e);
-            throw new com.smarsh.compliance.exception.ComplianceException("Failed to process compliance message", e);
+            log.error("Error in ComplianceService.process", e);
+            throw new com.smarsh.compliance.exception.ComplianceException("Failed to process message", e);
         }
     }
 }
