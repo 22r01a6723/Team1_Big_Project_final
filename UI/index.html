@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="complyVaultApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ComplyVault - Search & Compliance</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 1.1em;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .tabs {
+            display: flex;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 8px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px 25px;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .tab:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .tab-content {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            min-height: 600px;
+        }
+
+        .search-form {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 1px solid #e9ecef;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .results-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-item {
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            background: white;
+        }
+
+        .result-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .message-id {
+            font-size: 0.9em;
+            color: #6c757d;
+            font-family: monospace;
+        }
+
+        .timestamp {
+            font-size: 0.9em;
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .flagged-badge {
+            background: #dc3545;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        .participants {
+            margin: 10px 0;
+            font-size: 0.9em;
+        }
+
+        .participant {
+            display: inline-block;
+            background: #e7f3ff;
+            padding: 4px 8px;
+            margin: 2px;
+            border-radius: 4px;
+            font-size: 0.8em;
+        }
+
+        .content {
+            margin-top: 15px;
+        }
+
+        .subject {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+
+        .body {
+            color: #6c757d;
+            line-height: 1.5;
+        }
+
+        .flag-info {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+            gap: 10px;
+        }
+
+        .page-info {
+            margin: 0 20px;
+            color: #6c757d;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-online { background: #28a745; }
+        .status-offline { background: #dc3545; }
+
+        .service-status {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e9ecef;
+        }
+
+        .service-name {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .service-url {
+            font-size: 0.9em;
+            color: #6c757d;
+            font-family: monospace;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
+        .error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
+        .policy-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .policy-item {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .policy-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .policy-type {
+            background: #007bff;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        .tenant-selector {
+            background: #e8f4fd;
+            border: 1px solid #bee5eb;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>ComplyVault</h1>
+        <p>Enterprise Communication Search & Compliance Platform</p>
+    </div>
+
+    <div class="container" ng-controller="MainController">
+        <!-- Tenant Selector -->
+        <div class="tenant-selector">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Tenant:</label>
+                    <select ng-model="currentTenant" ng-options="tenant.tenantId as tenant.tenantName for tenant in tenants" class="form-control" ng-change="onTenantChange()">
+                        <option value="">Select Tenant</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Network:</label>
+                    <select ng-model="currentNetwork" class="form-control">
+                        <option value="email">Email</option>
+                        <option value="teams">Teams</option>
+                        <option value="slack">Slack</option>
+                        <option value="whatsapp">WhatsApp</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab" ng-class="{active: activeTab === 'search'}" ng-click="setActiveTab('search')">
+                Search Messages
+            </button>
+            <button class="tab" ng-class="{active: activeTab === 'compliance'}" ng-click="setActiveTab('compliance')">
+                Policy Violations
+            </button>
+            <button class="tab" ng-class="{active: activeTab === 'monitoring'}" ng-click="setActiveTab('monitoring')">
+                System Monitoring
+            </button>
+        </div>
+
+        <!-- Search Tab -->
+        <div class="tab-content" ng-show="activeTab === 'search'">
+            <div class="search-form">
+                <h3 style="margin-bottom: 20px; color: #495057;">Search Communication Records</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Keyword Search:</label>
+                        <input type="text" ng-model="searchParams.keyword" placeholder="Enter keywords..." class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Message ID:</label>
+                        <input type="text" ng-model="searchParams.messageId" placeholder="Specific message ID..." class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Subject:</label>
+                        <input type="text" ng-model="searchParams.subject" placeholder="Email subject..." class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Body Content:</label>
+                        <input type="text" ng-model="searchParams.body" placeholder="Message content..." class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Team/Channel:</label>
+                        <input type="text" ng-model="searchParams.channel" placeholder="Channel or team name..." class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Participant ID:</label>
+                        <input type="text" ng-model="searchParams.participantId" placeholder="Email or username..." class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Start Date:</label>
+                        <input type="datetime-local" ng-model="searchParams.startTime" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>End Date:</label>
+                        <input type="datetime-local" ng-model="searchParams.endTime" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" ng-model="searchParams.flagged"> Show only flagged messages
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" ng-model="searchParams.exactMatch"> Exact match
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <button class="btn btn-primary" ng-click="performSearch()" ng-disabled="loading">
+                        {{loading ? 'Searching...' : 'Search Messages'}}
+                    </button>
+                    <button class="btn btn-secondary" ng-click="clearSearch()">Clear</button>
+                </div>
+            </div>
+
+            <!-- Search Results -->
+            <div class="results-container">
+                <div ng-if="loading" class="loading">
+                    <p>Searching messages...</p>
+                </div>
+
+                <div ng-if="error" class="error">
+                    <strong>Error:</strong> {{error}}
+                </div>
+
+                <div ng-if="!loading && !error && searchResults.length === 0 && searchPerformed" class="no-results">
+                    <p>No messages found matching your search criteria.</p>
+                </div>
+
+                <div ng-if="!loading && searchResults.length > 0">
+                    <h4 style="margin-bottom: 20px;">Found {{totalElements}} messages (Page {{currentPage + 1}} of {{totalPages}})</h4>
+                    
+                    <div ng-repeat="message in searchResults" class="result-item">
+                        <div class="result-header">
+                            <div>
+                                <span class="message-id">ID: {{message.messageId}}</span>
+                                <span ng-if="message.flagged" class="flagged-badge">FLAGGED</span>
+                            </div>
+                            <span class="timestamp">{{formatTimestamp(message.timestamp)}}</span>
+                        </div>
+
+                        <div class="participants">
+                            <strong>Participants:</strong>
+                            <span ng-repeat="participant in message.participants" class="participant">
+                                {{participant.role}}: {{participant.id}} {{participant.displayName ? '(' + participant.displayName + ')' : ''}}
+                            </span>
+                        </div>
+
+                        <div class="content">
+                            <div class="subject" ng-if="message.content.subject">
+                                <strong>Subject:</strong> {{message.content.subject}}
+                            </div>
+                            <div class="body" ng-if="message.content.body">
+                                <strong>Content:</strong> {{message.content.body | limitTo:200}}{{message.content.body.length > 200 ? '...' : ''}}
+                            </div>
+                        </div>
+
+                        <div ng-if="message.flagInfo" class="flag-info">
+                            <strong>Flag:</strong> {{message.flagInfo.flagDescription}} 
+                            <em>({{formatTimestamp(message.flagInfo.timestamp)}})</em>
+                        </div>
+                    </div>
+
+                    <div class="pagination">
+                        <button class="btn btn-secondary" ng-click="previousPage()" ng-disabled="currentPage === 0">
+                            Previous
+                        </button>
+                        <span class="page-info">Page {{currentPage + 1}} of {{totalPages}}</span>
+                        <button class="btn btn-secondary" ng-click="nextPage()" ng-disabled="currentPage >= totalPages - 1">
+                            Next
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Compliance Tab -->
+        <div class="tab-content" ng-show="activeTab === 'compliance'">
+            <h3 style="margin-bottom: 30px; color: #495057;">Policy Violations & Compliance</h3>
+
+            <!-- Policy Violations (Flags) -->
+            <div style="margin-bottom: 40px;">
+                <h4 style="margin-bottom: 20px; color: #dc3545;">Recent Policy Violations</h4>
+                
+                <div ng-if="flagsLoading" class="loading">
+                    <p>Loading policy violations...</p>
+                </div>
+
+                <div ng-if="flagsError" class="error">
+                    <strong>Error:</strong> {{flagsError}}
+                </div>
+
+                <div ng-if="!flagsLoading && flags.length === 0" class="no-results">
+                    <p>No policy violations found.</p>
+                </div>
+
+                <div ng-if="!flagsLoading && flags.length > 0">
+                    <div ng-repeat="flag in flags" class="result-item">
+                        <div class="result-header">
+                            <div>
+                                <span class="message-id">Flag ID: {{flag.flagId}}</span>
+                                <span class="flagged-badge">VIOLATION</span>
+                            </div>
+                            <span class="timestamp">{{formatTimestamp(flag.createdAt)}}</span>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <p><strong>Message ID:</strong> {{flag.messageId}}</p>
+                            <p><strong>Rule ID:</strong> {{flag.ruleId}}</p>
+                            <p><strong>Description:</strong> {{flag.flagDescription}}</p>
+                            <p><strong>Network:</strong> {{flag.network}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Policies -->
+            <div>
+                <h4 style="margin-bottom: 20px; color: #007bff;">Active Policies</h4>
+                
+                <div ng-if="policiesLoading" class="loading">
+                    <p>Loading policies...</p>
+                </div>
+
+                <div ng-if="policiesError" class="error">
+                    <strong>Error:</strong> {{policiesError}}
+                </div>
+
+                <div ng-if="!policiesLoading && policies.length === 0" class="no-results">
+                    <p>No policies configured.</p>
+                </div>
+
+                <div ng-if="!policiesLoading && policies.length > 0" class="policy-list">
+                    <div ng-repeat="policy in policies" class="policy-item">
+                        <div class="policy-header">
+                            <div>
+                                <span class="policy-type">{{policy.type | uppercase}}</span>
+                                <strong style="margin-left: 10px;">{{policy.ruleId}}</strong>
+                            </div>
+                            <span style="color: #6c757d; font-size: 0.9em;">v{{policy.version}}</span>
+                        </div>
+                        <p><strong>Description:</strong> {{policy.description}}</p>
+                        <p><strong>Field:</strong> {{policy.field}}</p>
+                        <div ng-if="policy.when">
+                            <p><strong>Condition:</strong> {{policy.when | json}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monitoring Tab -->
+        <div class="tab-content" ng-show="activeTab === 'monitoring'">
+            <h3 style="margin-bottom: 30px; color: #495057;">System Health Monitoring</h3>
+            
+            <div class="service-status">
+                <div ng-repeat="service in services" class="service-card">
+                    <div class="service-name">
+                        <span class="status-indicator" ng-class="service.status === 'online' ? 'status-online' : 'status-offline'"></span>
+                        {{service.name}}
+                    </div>
+                    <div class="service-url">{{service.url}}</div>
+                    <div style="margin-top: 10px; color: #6c757d; font-size: 0.9em;">
+                        Status: <strong ng-style="{'color': service.status === 'online' ? '#28a745' : '#dc3545'}">{{service.status | uppercase}}</strong>
+                    </div>
+                    <div style="margin-top: 5px; color: #6c757d; font-size: 0.8em;">
+                        Last checked: {{service.lastChecked}}
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <button class="btn btn-primary" ng-click="checkAllServices()">Refresh All Services</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        angular.module('complyVaultApp', [])
+        .controller('MainController', function($scope, $http, $timeout) {
+            // Configuration
+            const API_BASE = 'http://localhost';
+            const SERVICES = {
+                search: `${API_BASE}:8083`,
+                review: `${API_BASE}:8084`, 
+                compliance: `${API_BASE}:8082`,
+                audit: `${API_BASE}:8093`,
+                ingestion: `${API_BASE}:8080`,
+                normalizer: `${API_BASE}:8081`,
+                retention: `${API_BASE}:8085`
+            };
+
+            // Initialize scope variables
+            $scope.activeTab = 'search';
+            $scope.currentTenant = 'tenant_alpha';
+            $scope.currentNetwork = 'email';
+            $scope.loading = false;
+            $scope.error = null;
+            $scope.searchResults = [];
+            $scope.searchPerformed = false;
+            $scope.currentPage = 0;
+            $scope.totalPages = 0;
+            $scope.totalElements = 0;
+            
+            // Search parameters
+            $scope.searchParams = {
+                keyword: '',
+                messageId: '',
+                subject: '',
+                body: '',
+                channel: '',
+                participantId: '',
+                startTime: null,
+                endTime: null,
+                flagged: false,
+                exactMatch: false,
+                page: 0,
+                size: 20
+            };
+
+            // Compliance data
+            $scope.flags = [];
+            $scope.policies = [];
+            $scope.tenants = [];
+            $scope.flagsLoading = false;
+            $scope.policiesLoading = false;
+            $scope.flagsError = null;
+            $scope.policiesError = null;
+
+            // System monitoring
+            $scope.services = [
+                {name: 'Search Service', url: SERVICES.search, status: 'checking', lastChecked: 'Never'},
+                {name: 'Review Service', url: SERVICES.review, status: 'checking', lastChecked: 'Never'},
+                {name: 'Compliance Service', url: SERVICES.compliance, status: 'checking', lastChecked: 'Never'},
+                {name: 'Audit Service', url: SERVICES.audit, status: 'checking', lastChecked: 'Never'},
+                {name: 'Ingestion Service', url: SERVICES.ingestion, status: 'checking', lastChecked: 'Never'},
+                {name: 'Normalizer Service', url: SERVICES.normalizer, status: 'checking', lastChecked: 'Never'},
+                {name: 'Retention Service', url: SERVICES.retention, status: 'checking', lastChecked: 'Never'}
+            ];
+
+            // Tab management
+            $scope.setActiveTab = function(tab) {
+                $scope.activeTab = tab;
+                if (tab === 'compliance') {
+                    $scope.loadComplianceData();
+                } else if (tab === 'monitoring') {
+                    $scope.checkAllServices();
+                }
+            };
+
+            // Tenant management
+            $scope.loadTenants = function() {
+                $http.get(`${SERVICES.compliance}/api/public/tenant`)
+                    .then(function(response) {
+                        $scope.tenants = response.data;
+                        if ($scope.tenants.length > 0 && !$scope.currentTenant) {
+                            $scope.currentTenant = $scope.tenants[0].tenantId;
+                        }
+                    })
+                    .catch(function(error) {
+                        console.error('Error loading tenants:', error);
+                    });
+            };
+
+            $scope.onTenantChange = function() {
+                if ($scope.activeTab === 'compliance') {
+                    $scope.loadComplianceData();
+                }
+            };
+
+            // Search functionality
+            $scope.performSearch = function() {
+                if (!$scope.currentTenant) {
+                    $scope.error = 'Please select a tenant first';
+                    return;
+                }
+
+                $scope.loading = true;
+                $scope.error = null;
+                $scope.searchPerformed = true;
+
+                const searchRequest = {
+                    tenantId: $scope.currentTenant,
+                    network: $scope.currentNetwork,
+                    page: $scope.searchParams.page,
+                    size: $scope.searchParams.size,
+                    exactMatch: $scope.searchParams.exactMatch,
+                    partialMatch: !$scope.searchParams.exactMatch
+                };
+
+                // Add non-empty search parameters
+                if ($scope.searchParams.keyword) searchRequest.keyword = $scope.searchParams.keyword;
+                if ($scope.searchParams.messageId) searchRequest.messageId = $scope.searchParams.messageId;
+                if ($scope.searchParams.subject) searchRequest.subject = $scope.searchParams.subject;
+                if ($scope.searchParams.body) searchRequest.body = $scope.searchParams.body;
+                if ($scope.searchParams.channel) searchRequest.channel = $scope.searchParams.channel;
+                if ($scope.searchParams.participantId) searchRequest.participantIds = [$scope.searchParams.participantId];
+                if ($scope.searchParams.flagged) searchRequest.flagged = true;
+
+                // Handle date conversion
+                if ($scope.searchParams.startTime) {
+                    searchRequest.startTime = new Date($scope.searchParams.startTime).toISOString();
+                }
+                if ($scope.searchParams.endTime) {
+                    searchRequest.endTime = new Date($scope.searchParams.endTime).toISOString();
+                }
+
+                // Determine which endpoint to use
+                let searchUrl = `${SERVICES.search}/api/search`;
+                
+                if ($scope.searchParams.keyword) {
+                    searchUrl += `/keyword/${$scope.currentTenant}?keyword=${encodeURIComponent($scope.searchParams.keyword)}`;
+                    if ($scope.currentNetwork) searchUrl += `&network=${$scope.currentNetwork}`;
+                } else {
+                    searchUrl += `/field-search`;
+                }
+
+                const requestConfig = {
+                    url: searchUrl,
+                    method: $scope.searchParams.keyword ? 'GET' : 'POST',
+                    data: $scope.searchParams.keyword ? undefined : searchRequest,
+                    params: $scope.searchParams.keyword ? {
+                        page: $scope.searchParams.page,
+                        size: $scope.searchParams.size
+                    } : undefined
+                };
+
+                $http(requestConfig)
+                    .then(function(response) {
+                        // Handle different response formats
+                        if (response.data.content) {
+                            // Paginated response
+                            $scope.searchResults = response.data.content;
+                            $scope.currentPage = response.data.number;
+                            $scope.totalPages = response.data.totalPages;
+                            $scope.totalElements = response.data.totalElements;
+                        } else if (Array.isArray(response.data)) {
+                            // Array response
+                            $scope.searchResults = response.data;
+                            $scope.totalElements = response.data.length;
+                            $scope.totalPages = 1;
+                            $scope.currentPage = 0;
+                        } else {
+                            $scope.searchResults = [response.data];
+                            $scope.totalElements = 1;
+                            $scope.totalPages = 1;
+                            $scope.currentPage = 0;
+                        }
+                    })
+                    .catch(function(error) {
+                        console.error('Search error:', error);
+                        $scope.error = error.data?.message || 'Search failed. Please check if the search service is running.';
+                        $scope.searchResults = [];
+                    })
+                    .finally(function() {
+                        $scope.loading = false;
+                    });
+            };
+
+            $scope.clearSearch = function() {
+                $scope.searchParams = {
+                    keyword: '',
+                    messageId: '',
+                    subject: '',
+                    body: '',
+                    channel: '',
+                    participantId: '',
+                    startTime: null,
+                    endTime: null,
+                    flagged: false,
+                    exactMatch: false,
+                    page: 0,
+                    size: 20
+                };
+                $scope.searchResults = [];
+                $scope.error = null;
+                $scope.searchPerformed = false;
+                $scope.currentPage = 0;
+                $scope.totalPages = 0;
+                $scope.totalElements = 0;
+            };
+
+            $scope.nextPage = function() {
+                if ($scope.currentPage < $scope.totalPages - 1) {
+                    $scope.searchParams.page = $scope.currentPage + 1;
+                    $scope.performSearch();
+                }
+            };
+
+            $scope.previousPage = function() {
+                if ($scope.currentPage > 0) {
+                    $scope.searchParams.page = $scope.currentPage - 1;
+                    $scope.performSearch();
+                }
+            };
+
+            // Compliance functionality
+            $scope.loadComplianceData = function() {
+                $scope.loadFlags();
+                $scope.loadPolicies();
+            };
+
+            $scope.loadFlags = function() {
+                if (!$scope.currentTenant) return;
+                
+                $scope.flagsLoading = true;
+                $scope.flagsError = null;
+
+                const params = {
+                    tenantId: $scope.currentTenant,
+                    network: $scope.currentNetwork
+                };
+
+                $http.get(`${SERVICES.review}/api/flags`, { params: params })
+                    .then(function(response) {
+                        $scope.flags = response.data;
+                    })
+                    .catch(function(error) {
+                        console.error('Error loading flags:', error);
+                        $scope.flagsError = error.data?.message || 'Failed to load policy violations. Please check if the review service is running.';
+                        $scope.flags = [];
+                    })
+                    .finally(function() {
+                        $scope.flagsLoading = false;
+                    });
+            };
+
+            $scope.loadPolicies = function() {
+                $scope.policiesLoading = true;
+                $scope.policiesError = null;
+
+                $http.get(`${SERVICES.compliance}/api/public/policy`)
+                    .then(function(response) {
+                        $scope.policies = response.data;
+                    })
+                    .catch(function(error) {
+                        console.error('Error loading policies:', error);
+                        $scope.policiesError = error.data?.message || 'Failed to load policies. Please check if the compliance service is running.';
+                        $scope.policies = [];
+                    })
+                    .finally(function() {
+                        $scope.policiesLoading = false;
+                    });
+            };
+
+            // System monitoring
+            $scope.checkAllServices = function() {
+                $scope.services.forEach(function(service) {
+                    $scope.checkServiceHealth(service);
+                });
+            };
+
+            $scope.checkServiceHealth = function(service) {
+                service.status = 'checking';
+                
+                // Try to hit a health endpoint or basic endpoint
+                const healthEndpoint = service.url + '/actuator/health';
+                const fallbackEndpoint = service.url;
+                
+                $http.get(healthEndpoint, { timeout: 5000 })
+                    .then(function(response) {
+                        service.status = 'online';
+                        service.lastChecked = $scope.formatTimestamp(Date.now());
+                    })
+                    .catch(function(error) {
+                        // Try fallback endpoint
+                        $http.get(fallbackEndpoint, { timeout: 5000 })
+                            .then(function(response) {
+                                service.status = 'online';
+                                service.lastChecked = $scope.formatTimestamp(Date.now());
+                            })
+                            .catch(function(error) {
+                                service.status = 'offline';
+                                service.lastChecked = $scope.formatTimestamp(Date.now());
+                            });
+                    });
+            };
+
+            // Utility functions
+            $scope.formatTimestamp = function(timestamp) {
+                if (!timestamp) return 'N/A';
+                
+                let date;
+                if (typeof timestamp === 'number') {
+                    // Handle epoch milliseconds
+                    date = new Date(timestamp);
+                } else if (typeof timestamp === 'string') {
+                    date = new Date(timestamp);
+                } else {
+                    return 'Invalid date';
+                }
+                
+                if (isNaN(date.getTime())) {
+                    return 'Invalid date';
+                }
+                
+                return date.toLocaleString();
+            };
+
+            // Search by specific criteria functions
+            $scope.searchByMessageId = function(messageId) {
+                if (!$scope.currentTenant) {
+                    $scope.error = 'Please select a tenant first';
+                    return;
+                }
+
+                $scope.loading = true;
+                $scope.error = null;
+
+                const params = {
+                    messageId: messageId,
+                    tenantId: $scope.currentTenant,
+                    network: $scope.currentNetwork
+                };
+
+                $http.get(`${SERVICES.search}/api/search/message/${messageId}`, { params: params })
+                    .then(function(response) {
+                        $scope.searchResults = Array.isArray(response.data) ? response.data : [response.data];
+                        $scope.totalElements = $scope.searchResults.length;
+                        $scope.totalPages = 1;
+                        $scope.currentPage = 0;
+                        $scope.searchPerformed = true;
+                    })
+                    .catch(function(error) {
+                        console.error('Message search error:', error);
+                        $scope.error = error.data?.message || 'Message search failed';
+                        $scope.searchResults = [];
+                    })
+                    .finally(function() {
+                        $scope.loading = false;
+                    });
+            };
+
+            $scope.searchByDateRange = function(startTime, endTime) {
+                if (!$scope.currentTenant) {
+                    $scope.error = 'Please select a tenant first';
+                    return;
+                }
+
+                $scope.loading = true;
+                $scope.error = null;
+
+                const params = {
+                    startTime: startTime,
+                    endTime: endTime,
+                    tenantId: $scope.currentTenant,
+                    network: $scope.currentNetwork,
+                    page: 0,
+                    size: 20
+                };
+
+                $http.get(`${SERVICES.search}/api/search/time-range`, { params: params })
+                    .then(function(response) {
+                        if (response.data.content) {
+                            $scope.searchResults = response.data.content;
+                            $scope.currentPage = response.data.number;
+                            $scope.totalPages = response.data.totalPages;
+                            $scope.totalElements = response.data.totalElements;
+                        } else {
+                            $scope.searchResults = Array.isArray(response.data) ? response.data : [response.data];
+                            $scope.totalElements = $scope.searchResults.length;
+                            $scope.totalPages = 1;
+                            $scope.currentPage = 0;
+                        }
+                        $scope.searchPerformed = true;
+                    })
+                    .catch(function(error) {
+                        console.error('Date range search error:', error);
+                        $scope.error = error.data?.message || 'Date range search failed';
+                        $scope.searchResults = [];
+                    })
+                    .finally(function() {
+                        $scope.loading = false;
+                    });
+            };
+
+            $scope.searchFlagsByDescription = function(description) {
+                if (!$scope.currentTenant) return;
+
+                const params = {
+                    description: description,
+                    tenantId: $scope.currentTenant,
+                    network: $scope.currentNetwork
+                };
+
+                $http.get(`${SERVICES.review}/api/flags/search`, { params: params })
+                    .then(function(response) {
+                        $scope.flags = response.data;
+                    })
+                    .catch(function(error) {
+                        console.error('Flag search error:', error);
+                        $scope.flagsError = 'Failed to search flags';
+                    });
+            };
+
+            $scope.getFlagsByDateRange = function(start, end) {
+                if (!$scope.currentTenant) return;
+
+                const params = {
+                    start: start,
+                    end: end,
+                    tenantId: $scope.currentTenant,
+                    network: $scope.currentNetwork
+                };
+
+                $http.get(`${SERVICES.review}/api/flags/date-range`, { params: params })
+                    .then(function(response) {
+                        $scope.flags = response.data;
+                    })
+                    .catch(function(error) {
+                        console.error('Flag date range error:', error);
+                        $scope.flagsError = 'Failed to get flags by date range';
+                    });
+            };
+
+            // Initialize the application
+            $scope.init = function() {
+                $scope.loadTenants();
+                $scope.checkAllServices();
+            };
+
+            // Auto-refresh service status every 30 seconds
+            $scope.startStatusMonitoring = function() {
+                setInterval(function() {
+                    if ($scope.activeTab === 'monitoring') {
+                        $scope.checkAllServices();
+                    }
+                }, 30000);
+            };
+
+            // Start the application
+            $scope.init();
+            $scope.startStatusMonitoring();
+        });
+    </script>
+</body>
+</html>
+                
