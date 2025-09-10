@@ -1,11 +1,11 @@
 package com.smarsh.compliance.TextEvaluator;
 
+import com.complyvault.shared.client.AuditClient;
 import com.smarsh.compliance.entity.KeywordPolicy;
 import com.smarsh.compliance.entity.Policy;
 import com.smarsh.compliance.entity.PolicyCondition;
 import com.smarsh.compliance.evaluators.KeywordEvaluator;
 import com.smarsh.compliance.models.Message;
-import com.smarsh.compliance.service.AuditService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,13 +23,13 @@ import static org.mockito.Mockito.*;
 class KeywordEvaluatorTest {
 
     @Mock
-    private AuditService auditService;
+    private AuditClient auditClient;
 
     private KeywordEvaluator keywordEvaluator;
 
     @BeforeEach
     void setUp() {
-        keywordEvaluator = new KeywordEvaluator(auditService);
+        keywordEvaluator = new KeywordEvaluator(auditClient);
     }
 
     // --- supports() tests ---
@@ -55,7 +55,7 @@ class KeywordEvaluatorTest {
         Optional<?> result = keywordEvaluator.evaluate(message, policy);
 
         assertFalse(result.isPresent(), "Expected no flag when no keyword matches");
-        verify(auditService, never()).logEvent(any(), any(), any(), any(), any());
+        verify(auditClient, never()).logEvent(any(), any(), any(), any(), any());
     }
 
     @Test
