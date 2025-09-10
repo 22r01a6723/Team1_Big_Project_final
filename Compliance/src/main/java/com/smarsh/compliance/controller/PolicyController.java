@@ -4,15 +4,13 @@ import com.smarsh.compliance.entity.Policy;
 import com.smarsh.compliance.service.PolicyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Slf4j
 @RestController
+@RequestMapping("/api/public/policy")
 public class PolicyController {
 
     private final PolicyService policyService;
@@ -21,17 +19,16 @@ public class PolicyController {
         this.policyService = policyService;
     }
 
-    @PostMapping("/api/public/policy")
+    @PostMapping
     public ResponseEntity<String> createPolicy(@RequestBody Policy policy) {
-        log.info("Creating policy {}", policy.toString());
+        log.info("Creating policy {}", policy);
         policyService.addPolicy(policy);
         return ResponseEntity.ok("Policy created successfully");
     }
 
-    @GetMapping("/api/public/policy")
+    @GetMapping
     public ResponseEntity<List<Policy>> getAllPolicies() {
         List<Policy> policies = policyService.getAllPolicies();
         return ResponseEntity.ok(policies);
     }
-
 }

@@ -1,39 +1,31 @@
 package com.smarsh.compliance.controller;
 
-import java.util.List;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.smarsh.compliance.entity.Tenant;
 import com.smarsh.compliance.service.TenantService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
 
 @RestController
-@Slf4j
+@RequestMapping("/api/public/tenant")
 public class TenantController {
 
-    private TenantService tenantService;
+    private final TenantService tenantService;
 
     public TenantController(TenantService tenantService) {
         this.tenantService = tenantService;
     }
 
-    @PostMapping("/api/public/tenant")
-    public org.springframework.http.ResponseEntity<String> addTenant(@RequestBody Tenant tenant) {
-        log.info("START addTenant tenantId={}", tenant.getTenantId());
+    @PostMapping
+    public ResponseEntity<String> addTenant(@RequestBody Tenant tenant) {
         String result = tenantService.addTenant(tenant);
-        log.info("END addTenant tenantId={} result={} ", tenant.getTenantId(), result);
-        return org.springframework.http.ResponseEntity.ok(result);
+        return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/api/public/tenant")
-    public org.springframework.http.ResponseEntity<List<Tenant>> getAllTenant() {
-        log.info("FETCH getAllTenant");
+    @GetMapping
+    public ResponseEntity<List<Tenant>> getAllTenant() {
         List<Tenant> tenants = tenantService.getAllTenant();
-        return org.springframework.http.ResponseEntity.ok(tenants);
+        return ResponseEntity.ok(tenants);
     }
 }
